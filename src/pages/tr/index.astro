@@ -1,0 +1,113 @@
+---
+import Base from '../../layouts/Base.astro';
+import Bench from '../../components/Bench.astro';
+import { kits, kitPath, SETUP_PRICE_TRY } from '../../data/kits.js';
+import { SITE } from '../../data/site.js';
+const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit Labs', url: SITE.url, inLanguage: ['en', 'tr'], publisher: { '@id': `${SITE.url}/#org` } }];
+---
+<Base
+  title="Silit Labs: klinikler ve web stüdyoları için hazır araçlar"
+  description="Silit Labs diş, estetik ve saç ekimi klinikleri için düzenlenebilir hasta doküman kitleri ve Webflow ajansları için Flowdeck panelini üretir. Kliniğinize özel kurulum hizmeti. Antalya."
+  lang="tr"
+  intro={true}
+  jsonld={jsonld}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1 class="hero-in"><span>Klinikler ve</span> <span>web stüdyoları için</span> <span>hazır araçlar</span></h1>
+        <p class="lead hero-in" style="--d:.25s">Her gün klinik pazarlaması ve Webflow siteleri üzerinde çalışıyoruz. Silit Labs, işimizde ihtiyaç duyduğumuz dokümanları ve panelleri bugün kullanabileceğiniz ürünlere dönüştürüyor.</p>
+        <div class="actions hero-in" style="--d:.4s">
+          <a class="btn" href="/tr/klinik-kitleri/">Klinik kitlerini görün</a>
+          <a class="btn quiet" href="/tr/kurulum-hizmeti/">Kurulumu biz yapalım</a>
+        </div>
+      </div>
+      <div class="hero-in" style="--d:.15s"><Bench lang="tr" /></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Neler yapıyoruz</h2>
+        <p>Her ürün önce kendi işimiz için yapıldı. Size uyanı seçin.</p>
+      </div>
+      <div class="shelf">
+        <article class="shelf-kits">
+          <div class="shelf-top"><span class="tag">Satışta</span><a class="shelf-link" href="/tr/klinik-kitleri/">Tüm klinik kitleri</a></div>
+          <h3><a href="/tr/klinik-kitleri/">Klinik kitleri</a></h3>
+          <p class="muted">Bir kez markalayıp her hastada kullandığınız doküman kitleri: onam formları, tıklanabilir haritalı tedavi planları, bakım rehberleri ve sosyal medya postları, TR ve EN.</p>
+          <img src="/images/kits/dental/tr-icerik.webp" width="1500" height="1125" alt="Diş kliniği hasta kitinden sayfalar" loading="lazy" />
+          <ul class="rows">
+            {kits.map((k) => <li><a href={kitPath(k, 'tr')}><span>{k.name.tr}</span><span class="p">${k.price}</span></a></li>)}
+          </ul>
+        </article>
+        <article class="shelf-setup dark">
+          <div class="shelf-top"><span class="tag">Türkiye</span><span class="price" style="font-size:26px">{SETUP_PRICE_TRY}</span></div>
+          <h3><a href="/tr/kurulum-hizmeti/">Kliniğinize özel kurulum</a></h3>
+          <p class="muted">Logonuz, renkleriniz, tedavi ve fiyat listeniz işlenmiş dokümanlar; TR ve EN, baskıya hazır PDF olarak 3 iş gününde elinizde.</p>
+          <img src="/images/kits/dental/tr-kurulum-hizmeti.webp" width="1500" height="1125" alt="Kurulum hizmeti" loading="lazy" />
+        </article>
+        <article class="shelf-lab">
+          <div class="shelf-top"><span class="tag">Webflow</span><span class="muted small">Sayfa EN</span></div>
+          <h3><a href="/webflow-apps/flowdeck/" hreflang="en">Flowdeck</a></h3>
+          <p class="muted">Webflow ajansları için tek panel: yönettiğiniz tüm sitelerin erişim, SSL, form ve SEO durumu. Tek site için ücretsiz.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Nasıl çalışıyoruz</h2></div>
+      <div class="principles">
+        <div><h3>Gerçek işten doğdu</h3><p class="muted">Her ürün, kendi işimizde ihtiyaç duyduğumuz bir doküman ya da panel olarak başladı. Bize zaman kazandırmıyorsa satışa çıkmıyor.</p></div>
+        <div><h3>Kolay karar verilen fiyat</h3><p class="muted">Tek şablonlar $6'dan başlıyor, Flowdeck tek site için ücretsiz. Bir aracı denemek için toplantıya ya da sözleşmeye gerek yok.</p></div>
+        <div><h3>Tamamen sizin</h3><p class="muted">Kitteki her yazı düzenlenebilir, hiçbir şeye bağlı kalmazsınız. Flowdeck sitelerinizi sadece okur, hiçbir şey yazmaz.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Kliniğiniz için hangi kit uygun? Sorularınızı yanıtlayalım.</h2>
+      <a class="mail" href={`mailto:${SITE.email}?subject=Silit%20Labs`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding: clamp(28px, 4vw, 56px) 0 clamp(24px, 3vw, 40px); }
+  .hero h1 { font-size: clamp(40px, 5.1vw, 72px); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .hero h1 span { display: inline-block; }
+  @media (min-width: 600px) { .hero h1 span { white-space: nowrap; } }
+  .hero .lead { margin-top: 26px; }
+  @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-in { animation: hero-rise .8s var(--ease) both; animation-delay: var(--d, 0s); }
+    h1.hero-in { animation: none; }
+    h1.hero-in span { animation: hero-rise .8s var(--ease) both; }
+    h1.hero-in span:nth-child(2) { animation-delay: .08s; }
+    h1.hero-in span:nth-child(3) { animation-delay: .16s; }
+    :global(html.intro) .hero-in, :global(html.intro) h1.hero-in span { animation-delay: calc(var(--d, 0s) + 1.35s); }
+    :global(html.intro) h1.hero-in span:nth-child(2) { animation-delay: 1.43s; }
+    :global(html.intro) h1.hero-in span:nth-child(3) { animation-delay: 1.51s; }
+  }
+  @keyframes hero-rise { from { opacity: 0; transform: translateY(24px); } }
+  .shelf { display: grid; grid-template-columns: 7fr 5fr; gap: 20px; }
+  .shelf > article { border-radius: 26px; padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .shelf h3 { font-size: clamp(28px, 3vw, 40px); font-stretch: 88%; }
+  .shelf h3 a { text-decoration: none; }
+  .shelf-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .shelf-link { font-weight: 600; font-size: 15px; }
+  .shelf-kits { grid-row: span 2; background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
+  .shelf-kits img { border-radius: 16px; margin: 8px 0 4px; }
+  .shelf-setup img { border-radius: 14px; margin-top: auto; }
+  .shelf-lab { border: 2px dashed #B8C6D6; }
+  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } }
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 48px); }
+  .principles > div { border-top: 2px solid var(--ink); padding-top: 20px; }
+  .principles p { margin-top: 10px; }
+  @media (max-width: 800px) { .principles { grid-template-columns: 1fr; } }
+</style>

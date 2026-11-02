@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site.js';
+const items = [
+  { name: 'Treatment plan presenter', who: 'For clinics', status: 'Designing', text: 'An online way to walk patients through their treatment plan, built on the smile, face and graft maps from our kits. Patients get a link instead of a PDF.' },
+  { name: 'More clinic kits', who: 'For clinics', status: 'Planned', text: 'Kits for more clinic types, made the same way: every document a patient sees, ready to brand, in English and Turkish.' },
+  { name: 'A plugin for Framer', who: 'For web studios', status: 'Planned', text: 'A tool for studios that build client sites on Framer, in the spirit of Flowdeck.' }
+];
+---
+<Base title="In the lab: what Silit Labs is building next" description="Projects on the Silit Labs bench: a treatment plan presenter for clinics, more clinic kits and a plugin for Framer.">
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">In the lab</li></ol>
+      <span class="kicker">In the lab</span>
+      <h1>What we are building next</h1>
+      <p class="lead">Ideas move here when we start working on them. No dates, because we ship when a tool is good enough to use every day.</p>
+    </div>
+  </section>
+  <section class="section tight">
+    <div class="wrap">
+      <ul class="bench-list">
+        {items.map((x) => (
+          <li>
+            <div class="bl-head"><span class="tag soon">{x.status}</span><span class="muted small">{x.who}</span></div>
+            <h2>{x.name}</h2>
+            <p class="muted">{x.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Is there a tool your clinic or studio keeps wishing for? Tell us.</h2>
+      <a class="mail" href={`mailto:${SITE.email}?subject=Idea%20for%20Silit%20Labs`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .bench-list { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .bench-list li { border: 2px dashed #B8C6D6; border-radius: 24px; padding: 28px; display: grid; gap: 12px; align-content: start; }
+  .bench-list h2 { font-size: clamp(24px, 2.4vw, 30px); }
+  .bl-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  @media (max-width: 900px) { .bench-list { grid-template-columns: 1fr; } }
+</style>

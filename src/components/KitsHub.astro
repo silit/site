@@ -1,0 +1,171 @@
+---
+import Base from '../layouts/Base.astro';
+import KitFaq from './KitFaq.astro';
+import { kits, kitPath, SHOP, SETUP_PRICE_TRY } from '../data/kits.js';
+import { SITE } from '../data/site.js';
+
+const { lang = 'en' } = Astro.props;
+const tr = lang === 'tr';
+const path = tr ? '/tr/klinik-kitleri/' : '/clinic-kits/';
+const T = tr
+  ? {
+      title: 'Klinik Hasta Doküman Kitleri: Diş, Estetik, Saç Ekimi',
+      desc: 'Diş, estetik ve saç ekimi klinikleri için düzenlenebilir hasta doküman kitleri: onam formları, haritalı tedavi planları, bakım rehberleri ve sosyal medya postları. TR ve EN, kurulum hizmetiyle.',
+      home: 'Ana sayfa', crumb: 'Klinik kitleri', kicker: 'Klinik kitleri',
+      h1: 'Hastanıza verdiğiniz her doküman, tek pakette',
+      lead: 'Karşılama rehberinden onam formlarına, haritalı tedavi planından bakım rehberine ve sosyal medya postlarına kadar 15 doküman. Logonuzu ve renginizi bir kez girin, tüm sayfalar güncellensin.',
+      cta1: 'Kitleri görün', cta2: 'Kurulumu biz yapalım',
+      view: 'Kiti inceleyin', etsy: "Etsy'de", buy: "Etsy'de satın al",
+      howH: 'Üç kit, aynı çalışma şekli', steps: [['Kit-Builder.html dosyasını açın', 'Chrome ya da Edge ile, internetsiz ve hesapsız.'], ['Kliniğinizi bir kez ekleyin', 'Ad, logo, iletişim ve marka renginiz tüm sayfalara işlenir.'], ['Düzenleyin, yazdırın, gönderin', 'Her yazı düzenlenebilir. A4 PDF ve WhatsApp için PNG.']],
+      canvaH: 'Canva kullanıyorsanız orada da hazır', canvaP: 'Tam kitlerde her sayfanın Canva şablonu var: basılı dokümanlar, sosyal medya postları, telefon ekranları ve kartlar, TR ve EN. Ücretsiz Canva hesabı yeterli.',
+      packsH: 'Paketler ve tek şablonlar', packsP: 'Tam kit yerine sadece ihtiyacınız olan kısmı alın.',
+      setupH: 'Kitinizi biz hazırlayalım', setupP: 'Logonuz, renkleriniz, tedavi ve fiyat listeniz işlenmiş dokümanlar; TR ve EN, baskıya hazır PDF olarak 3 iş gününde elinizde.', setupCta: 'Kurulum hizmetini inceleyin',
+      faqH: 'Sık sorulanlar', note: "Etsy, Türkiye'den yapılan alışverişte fiyatı TL olarak gösterir. Türkiye'ye özel ödeme seçeneği yakında."
+    }
+  : {
+      title: 'Clinic Patient Document Kits: Dental, Aesthetic, Hair',
+      desc: 'Editable patient document kits for dental, aesthetic and hair transplant clinics: consent forms, treatment plans with clickable maps, aftercare guides and social posts. English and Turkish.',
+      home: 'Home', crumb: 'Clinic kits', kicker: 'Clinic kits',
+      h1: 'Every document you hand a patient, in one kit',
+      lead: 'Fifteen documents from the welcome guide to consent forms, a treatment plan with a clickable map, aftercare and social posts. Add your logo and colour once and every page updates.',
+      cta1: 'Choose your kit', cta2: 'Visit the Etsy shop',
+      view: 'View the kit', etsy: 'on Etsy', buy: 'Buy on Etsy',
+      howH: 'Three kits, one way of working', steps: [['Open Kit-Builder.html', 'In Chrome or Edge, offline, with no account.'], ['Add your clinic once', 'Name, logo, contacts and brand colour flow into every page.'], ['Edit, print, send', 'Every text is editable. A4 PDF for print, PNG for WhatsApp.']],
+      canvaH: 'Prefer Canva? Every page is there too', canvaP: 'The full kits include a Canva template for every page: print documents, social posts, phone screens and cards, in English and Turkish. A free Canva account is enough.',
+      packsH: 'Packs and single templates', packsP: 'Only need part of a kit? Each one is also sold in smaller packs.',
+      setupH: 'Want us to set it up for you?', setupP: 'Send us your logo, colours, treatments and prices, and we send back the branded kit as print-ready PDFs.', setupCta: 'Write to us',
+      faqH: 'Good to know', note: ''
+    };
+
+const jsonld = [
+  {
+    '@type': 'CollectionPage',
+    name: T.title,
+    url: new URL(path, SITE.url).href,
+    inLanguage: lang,
+    mainEntity: { '@type': 'ItemList', itemListElement: kits.map((k, n) => ({ '@type': 'ListItem', position: n + 1, url: new URL(kitPath(k, lang), SITE.url).href, name: k.name[lang] })) }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: T.home, item: new URL(tr ? '/tr/' : '/', SITE.url).href },
+      { '@type': 'ListItem', position: 2, name: T.crumb, item: new URL(path, SITE.url).href }
+    ]
+  }
+];
+---
+<Base title={T.title} description={T.desc} lang={lang} image="/images/og/dental.jpg" jsonld={jsonld}>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href={tr ? '/tr/' : '/'}>{T.home}</a></li><li aria-current="page">{T.crumb}</li></ol>
+      <div class="grid">
+        <div>
+          <span class="kicker">{T.kicker}</span>
+          <h1>{T.h1}</h1>
+          <p class="lead">{T.lead}</p>
+          <div class="actions">
+            <a class="btn" href="#kits">{T.cta1}</a>
+            {tr ? <a class="btn quiet" href="/tr/kurulum-hizmeti/">{T.cta2}</a> : <a class="btn quiet" href={SHOP} rel="noopener">{T.cta2}</a>}
+          </div>
+        </div>
+        <div class="figure"><img src={tr ? '/images/kits/dental/tr-kapak.webp' : '/images/kits/dental/journey.webp'} width="1500" height="1125" alt={T.h1} fetchpriority="high" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" id="kits">
+    <div class="wrap kitlist">
+      {kits.map((k, n) => (
+        <article class={n % 2 ? 'kitrow flip' : 'kitrow'}>
+          <a class="figure" href={kitPath(k, lang)} tabindex="-1" aria-hidden="true"><img src={tr ? k.img.trHero : k.img.hero} width="1500" height="1125" alt="" loading={n ? 'lazy' : 'eager'} /></a>
+          <div>
+            <span class="kicker">{k.audience[lang]}</span>
+            <h2><a href={kitPath(k, lang)}>{k.name[lang]}</a></h2>
+            <ul class="hl">{k.highlights[lang].map((h) => <li>{h}</li>)}</ul>
+            <div class="buy">
+              <span class="price">${k.price}<small>{T.etsy}</small></span>
+              <a class="btn" href={kitPath(k, lang)}>{T.view}</a>
+              <a class="link" href={k.etsy} rel="noopener">{T.buy}</a>
+            </div>
+          </div>
+        </article>
+      ))}
+      {T.note && <p class="small muted">{T.note}</p>}
+    </div>
+  </section>
+
+  <section class="section dark">
+    <div class="wrap split">
+      <div>
+        <h2>{T.howH}</h2>
+        <ol class="steps">{T.steps.map(([b, s]) => <li><div><b>{b}</b><span>{s}</span></div></li>)}</ol>
+      </div>
+      <div class="figure"><video src={tr ? '/video/hair-builder-tr.mp4' : '/video/aesthetic-builder-en.mp4'} autoplay muted loop playsinline preload="none" poster="/images/kits/aesthetic/styles.webp" aria-label={T.howH}></video></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split flip">
+      <div>
+        <h2>{T.canvaH}</h2>
+        <p class="lead" style="margin-top:18px">{T.canvaP}</p>
+      </div>
+      <div class="figure light canva"><img src="/images/kits/canva.webp" width="1500" height="2250" alt={T.canvaH} loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>{T.packsH}</h2><p>{T.packsP}</p></div>
+      <div class="packs">
+        {kits.map((k) => (
+          <div>
+            <h3><a href={kitPath(k, lang)}>{k.short[lang]}</a></h3>
+            <ul class="rows">{k.packs.map((p) => <li><a href={p.url} rel="noopener"><span>{p[lang]}</span><span class="p">${p.price}</span></a></li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap setup">
+      <div>
+        <h2>{T.setupH}</h2>
+        <p class="lead" style="margin-top:16px">{T.setupP}</p>
+      </div>
+      <div class="setup-cta">
+        {tr && <span class="price">{SETUP_PRICE_TRY}</span>}
+        <a class="btn" href={tr ? '/tr/kurulum-hizmeti/' : `mailto:${SITE.email}?subject=Kit%20setup`}>{T.setupCta}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>{T.faqH}</h2></div>
+      <KitFaq lang={lang} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .kitlist { display: grid; gap: clamp(48px, 7vw, 96px); }
+  .kitrow { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(24px, 5vw, 64px); align-items: center; }
+  .kitrow.flip > :first-child { order: 2; }
+  .kitrow h2 a { text-decoration: none; }
+  .kitrow h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .hl { list-style: none; display: grid; gap: 8px; margin-top: 20px; font-weight: 550; }
+  .hl li { display: flex; gap: 12px; }
+  .hl li::before { content: ''; flex: none; width: 8px; height: 8px; margin-top: 9px; border-radius: 50%; background: var(--coral); }
+  .kitrow .buy { margin-top: 26px; }
+  @media (max-width: 860px) { .kitrow { grid-template-columns: 1fr; } .kitrow.flip > :first-child { order: 0; } }
+  .canva img { max-height: 560px; width: 100%; object-fit: cover; object-position: top; }
+  .packs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .packs h3 { margin-bottom: 12px; }
+  .packs h3 a { text-decoration: none; }
+  @media (max-width: 900px) { .packs { grid-template-columns: 1fr; } }
+  .setup { display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; padding: clamp(28px, 4vw, 48px); border-radius: 26px; border: 2px solid var(--ink); }
+  .setup > div:first-child { max-width: 640px; }
+  .setup-cta { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 20px; }
+</style>

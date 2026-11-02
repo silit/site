@@ -1,0 +1,184 @@
+---
+import Base from '../layouts/Base.astro';
+import KitFaq from './KitFaq.astro';
+import { kits, kitPath, SHOP } from '../data/kits.js';
+import { SITE } from '../data/site.js';
+
+const { kit, lang = 'en' } = Astro.props;
+const tr = lang === 'tr';
+const path = kitPath(kit, lang);
+const hub = tr ? '/tr/klinik-kitleri/' : '/clinic-kits/';
+const home = tr ? '/tr/' : '/';
+const letters = 'ABCDEFGHIJKL';
+const trMap = { aesthetic: '/images/kits/aesthetic/tr-yuz-haritasi.webp', hair: '/images/kits/hair/tr-greft-haritasi.webp' };
+const img = {
+  hero: tr ? kit.img.trHero : kit.img.hero,
+  inside: tr ? kit.img.trInside : kit.img.inside,
+  map: tr && trMap[kit.id] ? trMap[kit.id] : kit.img.map,
+  marketing: tr ? kit.img.trMarketing : kit.img.marketing
+};
+const others = kits.filter((k) => k.id !== kit.id);
+
+const T = tr
+  ? {
+      home: 'Ana sayfa', hub: 'Klinik kitleri', docs: '15 doküman', pages: `${kit.pages} sayfa`, posts: '10 sosyal medya postu', langs: 'TR ve EN',
+      priceNote: "Etsy'de", buy: "Etsy'de satın al", setup: 'Kurulumu biz yapalım',
+      insideH: 'Pakette neler var', insideP: 'Hasta yolculuğunun her adımı için bir doküman. Hepsi aynı marka renginde, TR ve EN.',
+      builderK: 'Kit Builder', formsH: `${kit.consent.rangeTr} ${kit.consent.count} onam formu`,
+      formsP: `Her tedavi için ayrı form: riskler, alternatifler, bakım ve imza alanları. Word dosyaları da pakette: ${kit.word.tr}.`,
+      formsNote: "Formlar hukuki ya da tıbbi tavsiye değildir. Kullanmadan önce hekiminize ve hukuk danışmanınıza kontrol ettirin, KVKK'ya göre uyarlayın.",
+      howH: 'Bir kez markalayın, her sayfa güncellensin',
+      steps: [['Kit-Builder.html dosyasını açın', 'Tek dosya. Chrome ya da Edge ile açılır; internet, hesap ya da abonelik gerektirmez.'], ['Kliniğinizi ekleyin', 'Ad, logo, iletişim bilgileri ve marka renginiz tüm sayfalara aynı anda işlenir.'], ['Yazıları düzenleyin', 'Sayfadaki her yazıya tıklayın. Listelerde Enter yeni satır ekler. 3 hazır stil arasında geçin.'], ['Yazdırın ya da gönderin', 'Baskı için A4 PDF; WhatsApp için telefon ekranları, kartlar ve postlar PNG olarak.']],
+      moreH: 'Sadece evrak değil', moreP: 'Fiyat listesi, hediye çekleri, randevu ve bakım kartları ile 10 sosyal medya postu da aynı renklerle hazır. Kliniğinizin her yerde aynı göründüğünü hastalarınız da fark eder.',
+      filesH: 'Tek zip, içinde her şey',
+      files: ['Kit-Builder.html', 'Tüm sayfalar TR ve EN PDF, B ve C stilleri de hazır PDF', `Word: ${kit.word.tr}`, 'PNG: 10 sosyal medya postu, telefon ekranları, dijital kart, A6 yorum kartı', '18 WhatsApp mesajı metin olarak', 'Canva şablon bağlantıları ve hızlı başlangıç rehberi'],
+      packsH: 'Sadece bir kısmı mı lazım?', packsP: 'Paketler ve tek şablonlar da Etsy mağazamızda.',
+      faqH: 'Sık sorulanlar', otherH: 'Diğer kitler', guideL: 'Rehber (EN)'
+    }
+  : {
+      home: 'Home', hub: 'Clinic kits', docs: '15 documents', pages: `${kit.pages} pages`, posts: '10 social posts', langs: 'English and Turkish',
+      priceNote: 'on Etsy', buy: 'Buy on Etsy', setup: 'See what is inside',
+      insideH: 'What is inside', insideP: 'One document for every step of the patient journey, all in your brand colour, in English and Turkish.',
+      builderK: 'Kit builder', formsH: `${kit.consent.count} consent forms, ${kit.consent.range}`,
+      formsP: `A separate form for each treatment, with risks, alternatives, aftercare and signature fields. Word files are included too: ${kit.word.en}.`,
+      formsNote: 'The forms are templates, not legal or medical advice. Have them reviewed by your clinician and a legal advisor in your country before use.',
+      howH: 'Brand it once, every page updates',
+      steps: [['Open Kit-Builder.html', 'One file. It opens in Chrome or Edge and needs no internet, account or subscription.'], ['Add your clinic', 'Name, logo, contacts and brand colour flow into every page at once.'], ['Edit any text', 'Click a text on the page to change it. Enter adds a line to any list. Switch between 3 ready styles.'], ['Print or send', 'A4 PDF for print. Phone screens, cards and posts as PNG for WhatsApp and social.']],
+      moreH: 'More than paperwork', moreP: 'A price list, gift vouchers, appointment and aftercare cards and 10 social media posts come in the same colours, so your clinic looks the same everywhere a patient meets it.',
+      filesH: 'One zip with everything',
+      files: ['Kit-Builder.html', 'Every page as PDF in English and Turkish, plus styles B and C as ready PDFs', `Word: ${kit.word.en}`, 'PNG: 10 social posts, phone screens, digital card, A6 review card', '18 WhatsApp messages as text', 'Canva template links and a quick start guide'],
+      packsH: 'Need only part of it?', packsP: 'Smaller packs and single templates from this kit are on our Etsy shop.',
+      faqH: 'Good to know', otherH: 'Other kits', guideL: 'Related guide'
+    };
+
+const jsonld = [
+  {
+    '@type': 'Product',
+    name: kit.name[lang],
+    description: kit.seoDesc[lang],
+    image: [new URL(kit.img.hero, SITE.url).href, new URL(kit.img.inside, SITE.url).href],
+    brand: { '@type': 'Brand', name: 'Silit Labs' },
+    category: tr ? 'Klinik doküman şablonları' : 'Clinic document templates',
+    offers: { '@type': 'Offer', price: String(kit.price), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: kit.etsy, seller: { '@id': `${SITE.url}/#org` } }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: T.home, item: new URL(home, SITE.url).href },
+      { '@type': 'ListItem', position: 2, name: T.hub, item: new URL(hub, SITE.url).href },
+      { '@type': 'ListItem', position: 3, name: kit.name[lang], item: new URL(path, SITE.url).href }
+    ]
+  }
+];
+---
+<Base title={kit.seoTitle[lang]} description={kit.seoDesc[lang]} lang={lang} image={kit.og} jsonld={jsonld}>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href={home}>{T.home}</a></li><li><a href={hub}>{T.hub}</a></li><li aria-current="page">{kit.name[lang]}</li></ol>
+      <div class="grid">
+        <div>
+          <span class="kicker">{kit.audience[lang]}</span>
+          <h1>{kit.name[lang]}</h1>
+          <p class="lead">{kit.lead[lang]}</p>
+          <ul class="facts"><li>{T.docs}</li><li>{T.pages}</li><li>{T.posts}</li><li>{T.langs}</li></ul>
+          <div class="buy">
+            <span class="price">${kit.price}<small>{T.priceNote}</small></span>
+            <a class="btn" href={kit.etsy} rel="noopener">{T.buy}</a>
+            {tr ? <a class="btn quiet" href="/tr/kurulum-hizmeti/">{T.setup}</a> : <a class="btn quiet" href="#inside">{T.setup}</a>}
+          </div>
+        </div>
+        <div class="figure"><img src={img.hero} width="1500" height="1125" alt={`${kit.name[lang]}: ${kit.highlights[lang][0]}`} fetchpriority="high" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" id="inside">
+    <div class="wrap">
+      <div class="section-head"><h2>{T.insideH}</h2><p>{T.insideP}</p></div>
+      <div class="split top">
+        <ol class="doclist">{kit.docs[lang].map((d) => <li>{d}</li>)}</ol>
+        <div class="figure light"><img src={img.inside} width="1500" height="1125" alt={`${kit.name[lang]}: ${T.insideH}`} loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split flip">
+      <div>
+        <span class="kicker">{T.builderK}</span>
+        <h2>{kit.map.title[lang]}</h2>
+        <p class="lead">{kit.map.text[lang]}</p>
+      </div>
+      <div class="figure"><img src={img.map} width="1500" height="1125" alt={kit.map.title[lang]} loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap split">
+      <div>
+        <h2>{T.formsH}</h2>
+        <p class="lead" style="margin-top:18px">{T.formsP}</p>
+        <ul class="formlist">{kit.consent.forms[lang].map((f, n) => <li><b>{letters[n]}</b>{f}</li>)}</ul>
+        <p class="small muted" style="margin-top:18px">{T.formsNote}</p>
+      </div>
+      <div class="figure"><img src={kit.img.consent} width="1500" height="1125" alt={T.formsH} loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section dark">
+    <div class="wrap split">
+      <div class="figure"><video src={kit.video[lang]} autoplay muted loop playsinline preload="none" poster={kit.img.styles} aria-label={T.howH}></video></div>
+      <div>
+        <span class="kicker">{T.builderK}</span>
+        <h2>{T.howH}</h2>
+        <ol class="steps">{T.steps.map(([b, s]) => <li><div><b>{b}</b><span>{s}</span></div></li>)}</ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split flip">
+      <div>
+        <h2>{T.moreH}</h2>
+        <p class="lead" style="margin-top:18px">{T.moreP}</p>
+        <h3 style="margin-top:36px">{T.filesH}</h3>
+        <ul class="rows" style="margin-top:14px">{T.files.map((f) => <li><span class="row">{f}</span></li>)}</ul>
+      </div>
+      <div class="figure"><img src={img.marketing} width="1500" height="1125" alt={T.moreH} loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap split">
+      <div>
+        <h2>{T.packsH}</h2>
+        <p class="lead" style="margin-top:18px">{T.packsP}</p>
+      </div>
+      <ul class="rows">{kit.packs.map((p) => <li><a href={p.url} rel="noopener"><span>{p[lang]}</span><span class="p">${p.price}</span></a></li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>{T.faqH}</h2></div>
+      <KitFaq lang={lang} />
+      <div class="related">
+        <div>
+          <h3>{T.otherH}</h3>
+          <ul class="rows" style="margin-top:12px">{others.map((k) => <li><a href={kitPath(k, lang)}><span>{k.name[lang]}</span><span class="p">${k.price}</span></a></li>)}</ul>
+        </div>
+        <div>
+          <h3>{T.guideL}</h3>
+          <ul class="rows" style="margin-top:12px"><li><a href={`/guides/${kit.guide}/`} hreflang="en"><span>{kit.id === 'dental' ? 'Dental treatment plan template: what to include' : kit.id === 'aesthetic' ? 'Dermal filler consent form: what to include' : 'Hair transplant aftercare instructions for clinics'}</span></a></li><li><a href={SHOP} rel="noopener"><span>{tr ? 'Etsy mağazası' : 'Our Etsy shop'}</span></a></li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .split.top { align-items: start; }
+  .split.top .figure { position: sticky; top: 96px; }
+  .related { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 64px; }
+  @media (max-width: 760px) { .related { grid-template-columns: 1fr; } }
+</style>

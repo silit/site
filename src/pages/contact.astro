@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site.js';
+const ways = [
+  ['Questions about a kit or an order', 'Email us, or message us on Etsy if you bought there.', `mailto:${SITE.email}?subject=Clinic%20kit`, SITE.email],
+  ['Kit setup for your clinic', 'Send your logo, colours and treatment list and we brand the kit for you.', `mailto:${SITE.email}?subject=Kit%20setup`, 'Ask about setup'],
+  ['Flowdeck support', 'Billing, more sites for a trial, or anything that looks wrong in your panel.', `mailto:${SITE.email}?subject=Flowdeck`, 'Email Flowdeck support'],
+  ['Ideas and partnerships', 'A tool your clinic or studio needs, or reselling our kits.', `mailto:${SITE.email}?subject=Partnership`, 'Tell us']
+];
+---
+<Base title="Contact Silit Labs" description="Contact Silit Labs about clinic kits, kit setup, Flowdeck support or partnerships. Email info@silitlabs.com.">
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Contact</li></ol>
+      <span class="kicker">Contact</span>
+      <h1>Write to us</h1>
+      <p class="lead">One inbox for everything: <a class="link" href={`mailto:${SITE.email}`}>{SITE.email}</a>. We reply on working days, Turkey time.</p>
+    </div>
+  </section>
+  <section class="section tight">
+    <div class="wrap">
+      <ul class="rows ways">
+        {ways.map(([h, p, href, cta]) => <li><div class="row"><span><b>{h}</b><span class="meta">{p}</span></span><a class="btn sm quiet" href={href}>{cta}</a></div></li>)}
+      </ul>
+      <p class="muted" style="margin-top:28px">Also on <a class="link" href={SITE.instagram} rel="noopener">Instagram</a>, <a class="link" href={SITE.pinterest} rel="noopener">Pinterest</a> and <a class="link" href={SITE.etsy} rel="noopener">Etsy</a>.</p>
+    </div>
+  </section>
+</Base>
+<style>
+  .ways .row { padding: 22px 4px; flex-wrap: wrap; }
+  .ways b { display: block; font-size: 19px; }
+  .ways .meta { display: block; margin-top: 4px; }
+</style>

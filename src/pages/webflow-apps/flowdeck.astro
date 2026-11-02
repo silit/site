@@ -1,0 +1,135 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../data/site.js';
+
+const plans = [
+  { name: 'Free', price: '$0', sites: '1 site' },
+  { name: 'Solo', price: '$9', sites: 'Up to 5 sites' },
+  { name: 'Studio', price: '$24', sites: 'Up to 15 sites' },
+  { name: 'Agency', price: '$49', sites: 'Up to 40 sites' }
+];
+const checks = [
+  ['Uptime and response time', 'Every 5 minutes, checked from outside Webflow.'],
+  ['SSL certificates', 'Expiry dates for every custom domain, with a warning before they lapse.'],
+  ['Unpublished changes', 'Designer changes that have waited more than 7 days to go live.'],
+  ['Forms', 'Submissions per form for the last 7 and 30 days, and forms that went quiet.'],
+  ['CMS limits', 'Item counts against each site plan limit.'],
+  ['SEO basics', 'Missing or duplicate meta titles, missing descriptions, overlong titles and descriptions.']
+];
+const jsonld = [
+  {
+    '@type': 'SoftwareApplication',
+    name: 'Flowdeck',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: SITE.flowdeck,
+    description: 'One dashboard for every Webflow site you manage: uptime, SSL, forms, SEO and client reports.',
+    image: `${SITE.url}/images/flowdeck/dashboard.webp`,
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'AggregateOffer', lowPrice: '0', highPrice: '49', priceCurrency: 'USD', offerCount: '4' }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Webflow apps', item: `${SITE.url}/webflow-apps/` },
+      { '@type': 'ListItem', position: 3, name: 'Flowdeck', item: `${SITE.url}/webflow-apps/flowdeck/` }
+    ]
+  }
+];
+---
+<Base
+  title="Flowdeck: Webflow site monitoring for agencies"
+  description="Flowdeck watches every Webflow site you manage: uptime every 5 minutes, SSL expiry, unpublished changes, quiet forms, CMS limits and SEO gaps, with white-label client reports. Free for one site."
+  image="/images/og/flowdeck.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/webflow-apps/">Webflow apps</a></li><li aria-current="page">Flowdeck</li></ol>
+      <div class="grid">
+        <div>
+          <span class="kicker">For Webflow agencies and freelancers</span>
+          <h1>Know a client site is down before the client does</h1>
+          <p class="lead">Flowdeck watches every Webflow site you manage and puts the answers on one screen: uptime, SSL, unpublished changes, forms, CMS limits and SEO basics.</p>
+          <div class="actions">
+            <a class="btn" href={SITE.flowdeck} rel="noopener">Start free</a>
+            <a class="btn quiet" href="#pricing">See pricing</a>
+          </div>
+          <ul class="facts"><li>Free for one site</li><li>Read-only access</li><li>Every plan has every feature</li></ul>
+        </div>
+        <div class="figure light"><img src="/images/flowdeck/dashboard.webp" width="1280" height="846" alt="Flowdeck dashboard with several Webflow sites, one marked down and one with unpublished changes" fetchpriority="high" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>What it checks</h2><p>Nobody opens thirty sites every morning. Flowdeck does it for you.</p></div>
+      <div class="checks">
+        {checks.map(([h, p]) => <div><h3>{h}</h3><p class="muted">{p}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <h2>What it sends</h2>
+        <ul class="rows" style="margin-top:22px">
+          <li><span class="row">An email when a site goes down, and another when it is back</span></li>
+          <li><span class="row">One warning per problem for SSL expiry, unpublished changes and quiet forms</span></li>
+          <li><span class="row">A weekly summary every Monday with every site in one table</span></li>
+          <li><span class="row">A white-label report page per site, with your agency name, to send as a link</span></li>
+        </ul>
+      </div>
+      <div class="figure light"><img src="/images/flowdeck/client-report.webp" width="1280" height="846" alt="Flowdeck client report page with uptime, forms and SEO summary" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap split flip">
+      <div>
+        <h2>Built to be trusted with client sites</h2>
+        <ul class="rows" style="margin-top:22px">
+          <li><span class="row">Read-only Webflow access. Flowdeck never writes to your sites.</span></li>
+          <li><span class="row">Connect sites from any number of workspaces.</span></li>
+          <li><span class="row">Counts form submissions only; their content is never read or stored.</span></li>
+          <li><span class="row">Delete your account in Settings and all its data goes with it.</span></li>
+        </ul>
+      </div>
+      <div class="figure light"><img src="/images/flowdeck/site-detail.webp" width="1280" height="846" alt="Flowdeck site detail with uptime bars, forms table and SEO issues" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section" id="pricing">
+    <div class="wrap">
+      <div class="section-head"><h2>Pricing</h2><p>Plans differ only in the number of sites. Yearly plans include two months free. Cancel any time.</p></div>
+      <div class="plans">
+        {plans.map((p) => <div class="plan"><h3>{p.name}</h3><p class="price">{p.price}<small>{p.price === '$0' ? 'forever' : 'per month'}</small></p><p class="muted">{p.sites}</p></div>)}
+      </div>
+      <div class="actions"><a class="btn" href={SITE.flowdeck} rel="noopener">Start free</a></div>
+      <p class="small muted" style="margin-top:18px">Payments are handled by Lemon Squeezy. Flowdeck is not affiliated with Webflow.</p>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Questions about Flowdeck, or need more sites for a trial?</h2>
+      <a class="mail" href={`mailto:${SITE.email}?subject=Flowdeck`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .checks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 40px; }
+  .checks > div { border-top: 2px solid var(--ink); padding-top: 18px; }
+  .checks p { margin-top: 8px; }
+  @media (max-width: 860px) { .checks { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .checks { grid-template-columns: 1fr; } }
+  .plans { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .plan { padding: 26px 22px; }
+  .plan + .plan { border-left: 1px solid var(--line); }
+  .plan .price { margin: 10px 0 4px; }
+  @media (max-width: 760px) { .plans { grid-template-columns: 1fr 1fr; } .plan:nth-child(3) { border-left: 0; } .plan:nth-child(n+3) { border-top: 1px solid var(--line); } }
+</style>

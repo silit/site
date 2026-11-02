@@ -1,0 +1,9 @@
+---
+import KitPage from '../../components/KitPage.astro';
+import { kits } from '../../data/kits.js';
+export function getStaticPaths() {
+  return kits.map((kit) => ({ params: { slug: kit.slug.en }, props: { kit } }));
+}
+const { kit } = Astro.props;
+---
+<KitPage kit={kit} lang="en" />

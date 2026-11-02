@@ -1,0 +1,9 @@
+---
+// The Silit Labs "S" monogram. Paths carry classes so the intro can draw them.
+const { size = 32, class: cls = '' } = Astro.props;
+---
+<svg class={cls} width={size} height={size} viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+  <rect class="m-tile" width="100" height="100" rx="24" fill="#0B2540" />
+  <path class="m-top" d="M63.5 29.5 A15 15 0 1 0 50 50" fill="none" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" pathLength="100" />
+  <path class="m-bot" d="M50 50 A15 15 0 1 1 36.5 70.5" fill="none" stroke="#FF7A59" stroke-width="11" stroke-linecap="round" pathLength="100" />
+</svg>

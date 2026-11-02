@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+import { kits, kitPath, SETUP_PRICE_TRY } from '../../data/kits.js';
+import { SITE } from '../../data/site.js';
+const mail = `mailto:${SITE.email}?subject=Kurulum%20talebi&body=Klinik%20ad%C4%B1%3A%0AKit%20(di%C5%9F%2C%20estetik%2C%20sa%C3%A7%20ekimi)%3A%0ATelefon%3A%0A`;
+const included = [
+  'Diş, estetik ya da saç ekimi kitinden birinin lisansı',
+  'Logo, renk ve iletişim bilgilerinin tüm dokümanlara işlenmesi',
+  'Tedavi ve fiyat bilgilerinizin eklenmesi',
+  'Onam formlarında klinik adınız ve hekim bilgileriniz',
+  '1 tur düzeltme',
+  'Düzenlemeye devam etmeniz için Builder ayar dosyası'
+];
+const jsonld = [
+  {
+    '@type': 'Service',
+    name: 'Kliniğinize özel kurulum',
+    serviceType: 'Klinik hasta dokümanlarının markalanması',
+    provider: { '@id': `${SITE.url}/#org` },
+    areaServed: { '@type': 'Country', name: 'Turkey' },
+    offers: { '@type': 'Offer', price: '3990', priceCurrency: 'TRY', url: `${SITE.url}/tr/kurulum-hizmeti/` }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Ana sayfa', item: `${SITE.url}/tr/` },
+      { '@type': 'ListItem', position: 2, name: 'Kurulum hizmeti', item: `${SITE.url}/tr/kurulum-hizmeti/` }
+    ]
+  }
+];
+---
+<Base
+  title="Kliniğinize özel kurulum: hasta dokümanlarınız markanızla hazır"
+  description="Klinik hasta kitinizi biz hazırlayalım: logonuz, renkleriniz, tedavi ve fiyat listeniz işlenmiş onam formları, tedavi planı ve bakım rehberi. TR ve EN, baskıya hazır PDF, 3 iş günü."
+  lang="tr"
+  image="/images/og/dental.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/tr/">Ana sayfa</a></li><li aria-current="page">Kurulum hizmeti</li></ol>
+      <div class="grid">
+        <div>
+          <span class="kicker">Türkiye'deki klinikler için</span>
+          <h1>Kliniğinize özel kurulum</h1>
+          <p class="lead">Kiti sizin yerinize biz hazırlayalım. Logonuz, renkleriniz, iletişim bilgileriniz, tedavi ve fiyat listeniz işlenmiş dokümanlar; TR ve EN, baskıya hazır PDF olarak 3 iş gününde elinizde.</p>
+          <div class="buy">
+            <span class="price">{SETUP_PRICE_TRY}<small>KDV dahil</small></span>
+            <a class="btn" href={mail}>Kurulum talep edin</a>
+          </div>
+        </div>
+        <div class="figure"><img src="/images/kits/dental/tr-kurulum-hizmeti.webp" width="1500" height="1125" alt="Kliniğinize özel kurulum hizmeti" fetchpriority="high" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap split">
+      <div>
+        <h2>Neler dahil</h2>
+        <ul class="rows" style="margin-top:22px">{included.map((x) => <li><span class="row">{x}</span></li>)}</ul>
+      </div>
+      <div>
+        <h2>Nasıl çalışır</h2>
+        <ol class="steps">
+          <li><div><b>Bize yazın</b><span>Hangi kiti istediğinizi ve klinik adınızı gönderin; size kısa bir bilgi formu iletelim.</span></div></li>
+          <li><div><b>Bilgilerinizi gönderin</b><span>Logonuz, renkleriniz, iletişim bilgileriniz, tedavi ve fiyat listeniz.</span></div></li>
+          <li><div><b>3 iş gününde teslim</b><span>PDF'ler ve düzenlenebilir dosyalar e-postanıza gelir. 1 tur düzeltme dahil.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Hangi kit?</h2><p>Kurulum, aşağıdaki kitlerden biriyle yapılır. Kitlerin içeriğini inceleyin.</p></div>
+      <ul class="rows">
+        {kits.map((k) => <li><a href={kitPath(k, 'tr')}><span>{k.name.tr}<span class="meta"> &nbsp;{k.audience.tr}</span></span><span class="meta">Kiti inceleyin</span></a></li>)}
+      </ul>
+      <p class="small muted" style="margin-top:24px">Onam formlarının hukuki kontrolü hizmete dahil değildir; hekimleriniz ve hukuk danışmanınızla kontrol etmenizi, KVKK'ya göre uyarlamanızı öneririz.</p>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Sorunuz mu var? Kurulumdan önce kitleri birlikte konuşalım.</h2>
+      <a class="mail" href={mail}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>

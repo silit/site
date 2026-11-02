@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site.js';
+---
+<Base title="Privacy policy" description="How Silit Labs handles personal data on silitlabs.com.">
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Privacy</li></ol>
+      <h1>Privacy policy</h1>
+      <p class="muted" style="margin-top:14px">Last updated 2 November 2026</p>
+    </div>
+  </section>
+  <section class="section tight">
+    <div class="wrap article">
+      <p>This policy covers silitlabs.com. Flowdeck has its own <a href="https://flowdeck.silitlabs.com/privacy">privacy policy</a>, and purchases made on Etsy are also covered by Etsy's privacy policy.</p>
+      <h2>Who we are</h2>
+      <p>Silit Labs, Antalya, Turkey. Contact: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+      <h2>What this site collects</h2>
+      <p>This site has no accounts, no contact forms, no advertising trackers and no analytics cookies. Fonts, images and videos are served from this site, not from third parties.</p>
+      <p>Our hosting provider, Vercel, processes technical request data such as IP address, browser type and the page requested, to deliver the site and keep it secure. These logs are kept for a short time and are not used to identify you.</p>
+      <h2>When you email us</h2>
+      <p>If you write to us, we use your email address and message only to reply and, if you buy a service, to deliver it. Email is handled by Google Workspace. We keep correspondence for as long as needed to support you and to meet legal record-keeping duties.</p>
+      <h2>Purchases</h2>
+      <p>Kits are sold through Etsy. Etsy processes your payment and shares with us only what is needed to fulfil the order. Flowdeck payments are handled by Lemon Squeezy as merchant of record.</p>
+      <h2>Your rights</h2>
+      <p>Under the Turkish Personal Data Protection Law (KVKK) and, where it applies, the EU GDPR, you can ask what data we hold about you, ask us to correct or delete it, and object to its use. Write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and we will answer within 30 days.</p>
+      <h2>Changes</h2>
+      <p>If we add analytics or anything else that changes what we collect, we will update this page first and change the date above.</p>
+    </div>
+  </section>
+</Base>

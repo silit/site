@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site.js';
+---
+<Base title="Terms of use" description="Terms for using silitlabs.com and the licence for Silit Labs clinic kits.">
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Terms</li></ol>
+      <h1>Terms of use</h1>
+      <p class="muted" style="margin-top:14px">Last updated 2 November 2026</p>
+    </div>
+  </section>
+  <section class="section tight">
+    <div class="wrap article">
+      <p>These terms cover silitlabs.com and the digital products we sell. Flowdeck has its own <a href="https://flowdeck.silitlabs.com/terms">terms of service</a>. Purchases on Etsy are also subject to Etsy's terms.</p>
+      <h2>Clinic kit licence</h2>
+      <ul>
+        <li>One licence covers one clinic brand, including all of its locations.</li>
+        <li>You may edit, print and share the documents with your own patients, in print or digitally.</li>
+        <li>You may not resell, share or give away the files or templates, alone or as part of another product.</li>
+        <li>Agencies and groups with several brands need one licence per brand. Write to us for multi-brand terms.</li>
+      </ul>
+      <h2>Templates are not advice</h2>
+      <p>Consent forms, health questionnaires, policies and aftercare texts are professional templates written from published clinical guidance. They are not legal or medical advice. Before using them, have them reviewed by your responsible clinicians and a legal advisor, and adapt them to the law in your country, including data protection rules.</p>
+      <h2>Digital delivery and refunds</h2>
+      <p>Kits are digital downloads delivered right after payment. If a file does not open or something is missing, write to us and we will fix it or send a working copy. Refunds follow the rules of the platform you bought on.</p>
+      <h2>Setup service</h2>
+      <p>When we brand a kit for you, you confirm that you have the right to use the logos, photos and texts you send us. Delivery times and the number of revision rounds are stated when you order.</p>
+      <h2>Liability</h2>
+      <p>We make the products with care but provide them as they are. To the extent the law allows, Silit Labs is not liable for indirect losses arising from their use, and our total liability is limited to the amount you paid for the product.</p>
+      <h2>Law</h2>
+      <p>These terms are governed by Turkish law. Questions: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+    </div>
+  </section>
+</Base>

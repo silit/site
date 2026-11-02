@@ -1,0 +1,156 @@
+---
+import '../styles/global.css';
+import Mark from '../components/Mark.astro';
+import Intro from '../components/Intro.astro';
+import { SITE, NAV, alternateOf } from '../data/site.js';
+import { kits, kitPath } from '../data/kits.js';
+
+const {
+  title,
+  description,
+  lang = 'en',
+  image = SITE.ogDefault,
+  jsonld = [],
+  noindex = false,
+  intro = false,
+  type = 'website'
+} = Astro.props;
+
+const path = Astro.url.pathname;
+const canonical = new URL(path, SITE.url).href;
+const alt = alternateOf(path);
+const other = lang === 'en' ? (alt ? alt.tr : '/tr/') : (alt ? alt.en : '/');
+const fullTitle = path === '/' || path === '/tr/' || title.length > 50 ? title : `${title} | Silit Labs`;
+const ogImage = new URL(image, SITE.url).href;
+const nav = NAV[lang];
+const isTr = lang === 'tr';
+const contact = isTr ? { href: `mailto:${SITE.email}?subject=Silit%20Labs`, label: 'Bize yazın' } : { href: '/contact/', label: 'Contact' };
+const current = (href) => href !== '/' && path.startsWith(href) ? 'page' : undefined;
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE.url}/#org`,
+  name: SITE.name,
+  url: SITE.url,
+  logo: `${SITE.url}/apple-touch-icon.png`,
+  email: SITE.email,
+  address: { '@type': 'PostalAddress', addressLocality: SITE.city, addressCountry: SITE.country },
+  sameAs: [SITE.etsy, SITE.pinterest, SITE.instagram]
+};
+const graph = [org, ...jsonld];
+
+const t = isTr
+  ? { skip: 'Ana içeriğe geç', products: 'Ürünler', company: 'Silit Labs', follow: 'Takip edin', allKits: 'Tüm klinik kitleri', setup: 'Kurulum hizmeti', about: 'Hakkımızda (EN)', guides: 'Rehberler (EN)', lab: 'Lab (EN)', contact: 'Bize yazın', privacy: 'Gizlilik', terms: 'Kullanım şartları', blurb: 'Klinikler ve web stüdyoları için hazır araçlar üreten küçük bir ürün stüdyosu. Antalya.', menu: 'Menü', langLabel: 'English' }
+  : { skip: 'Skip to content', products: 'Products', company: 'Silit Labs', follow: 'Follow', allKits: 'All clinic kits', setup: 'Setup service (TR)', about: 'About', guides: 'Guides', lab: 'In the lab', contact: 'Contact', privacy: 'Privacy', terms: 'Terms', blurb: 'A small product studio making ready-to-use tools for clinics and web studios. Antalya, Turkey.', menu: 'Menu', langLabel: 'Türkçe' };
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+  {alt && <link rel="alternate" hreflang="en" href={new URL(alt.en, SITE.url).href} />}
+  {alt && <link rel="alternate" hreflang="tr" href={new URL(alt.tr, SITE.url).href} />}
+  {alt && <link rel="alternate" hreflang="x-default" href={new URL(alt.en, SITE.url).href} />}
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content="Silit Labs" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:locale" content={isTr ? 'tr_TR' : 'en_US'} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#F2F5F9" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <script type="application/ld+json" set:html={JSON.stringify(graph.length === 1 ? graph[0] : { '@context': 'https://schema.org', '@graph': graph.map(({ ['@context']: _, ...rest }) => rest) })} />
+  {intro && (
+    <script is:inline>
+      try {
+        var r = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!r && !sessionStorage.getItem('sl-intro')) { document.documentElement.classList.add('intro'); sessionStorage.setItem('sl-intro', '1'); }
+      } catch (e) {}
+    </script>
+  )}
+</head>
+<body>
+  <a class="skip" href="#main">{t.skip}</a>
+  {intro && <Intro />}
+  <header class="top" id="top">
+    <div class="wrap">
+      <a class="brand" href={isTr ? '/tr/' : '/'} aria-label="Silit Labs"><Mark size={32} class="brand-mark" /><b>Silit</b><span>Labs</span></a>
+      <nav class="nav" aria-label={isTr ? 'Ana menü' : 'Main'}>
+        {nav.map((n) => <a href={n.href} hreflang={n.hreflang} aria-current={current(n.href)}>{n.label}</a>)}
+        <a class="lang" href={other} hreflang={isTr ? 'en' : 'tr'} lang={isTr ? 'en' : 'tr'}>{isTr ? 'EN' : 'TR'}</a>
+        <a class="btn sm" href={contact.href}>{contact.label}</a>
+      </nav>
+      <details class="menu">
+        <summary>{t.menu}</summary>
+        <div class="menu-panel">
+          {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+          <a href={other} lang={isTr ? 'en' : 'tr'}>{t.langLabel}</a>
+          <a href={contact.href}>{contact.label}</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main id="main">
+    <slot />
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <a class="brand" href={isTr ? '/tr/' : '/'}><Mark size={30} /><b>Silit</b><span>Labs</span></a>
+          <p class="muted" style="margin-top:14px;max-width:30em">{t.blurb}</p>
+        </div>
+        <div>
+          <h2>{t.products}</h2>
+          <ul>
+            <li><a href={isTr ? '/tr/klinik-kitleri/' : '/clinic-kits/'}>{t.allKits}</a></li>
+            {kits.map((k) => <li><a href={kitPath(k, lang)}>{k.name[lang]}</a></li>)}
+            <li><a href="/webflow-apps/flowdeck/">Flowdeck</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>{t.company}</h2>
+          <ul>
+            <li><a href="/about/">{t.about}</a></li>
+            <li><a href="/guides/">{t.guides}</a></li>
+            <li><a href="/lab/">{t.lab}</a></li>
+            <li><a href="/tr/kurulum-hizmeti/">{t.setup}</a></li>
+            <li><a href={contact.href}>{t.contact}</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>{t.follow}</h2>
+          <ul>
+            <li><a href={SITE.etsy} rel="me">Etsy</a></li>
+            <li><a href={SITE.pinterest} rel="me">Pinterest</a></li>
+            <li><a href={SITE.instagram} rel="me">Instagram</a></li>
+            <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="legal">
+        <span>© 2026 Silit Labs, Antalya</span>
+        <span><a href="/privacy/">{t.privacy}</a> &nbsp; <a href="/terms/">{t.terms}</a> &nbsp; <a href={other} lang={isTr ? 'en' : 'tr'}>{t.langLabel}</a></span>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const top = document.getElementById('top');
+    const onScroll = () => top && top.classList.toggle('scrolled', window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  </script>
+</body>
+</html>

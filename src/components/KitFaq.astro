@@ -1,0 +1,23 @@
+---
+const { lang = 'en' } = Astro.props;
+const items = lang === 'tr'
+  ? [
+      ['Dosyalara nasıl ulaşırım?', "Ödemeden hemen sonra indirme hazırdır. Etsy'de Satın alınanlar bölümünden dosyayı indirin; Etsy bağlantıyı e-postayla da gönderir. Zip dosyasını açmadan önce bilgisayara kaydedin."],
+      ['Özel bir program ya da abonelik gerekiyor mu?', 'Hayır. Kit Builder tek bir HTML dosyasıdır; bilgisayarda Chrome ya da Edge ile açılır, internetsiz çalışır ve hesap gerektirmez. Word dosyaları Microsoft Word ya da Google Docs ile açılır. Tam kitlerdeki Canva şablonları ücretsiz Canva hesabıyla çalışır.'],
+      ['Logomu, renklerimi ve yazıları değiştirebilir miyim?', 'Evet. Klinik adınızı, logonuzu ve marka renginizi bir kez girin, tüm sayfalar güncellenir. Tüm yazılar düzenlenebilir; tedavileri, fiyatları ve politikaları kliniğinize göre uyarlayabilirsiniz.'],
+      ['Onam formları olduğu gibi kullanılabilir mi?', "Formlar yayınlanmış klinik kaynaklara dayanan profesyonel şablonlardır, hukuki ya da tıbbi tavsiye değildir. Kullanmadan önce sorumlu hekiminize ve bir hukuk danışmanına kontrol ettirin, KVKK'ya göre uyarlayın."],
+      ['Bir kiti birden fazla klinikte kullanabilir miyim?', 'Bir lisans, tüm şubeleriyle tek bir klinik markasını kapsar. Birden fazla marka ya da ajans kullanımı için bize yazın.'],
+      ['Kurulumu sizin yapmanız mümkün mü?', 'Evet. Kliniğinize özel kurulum hizmetimizde logonuz, renkleriniz, tedavi ve fiyat listeniz işlenmiş dokümanları 3 iş gününde teslim ediyoruz.']
+    ]
+  : [
+      ['How do I get my files?', 'Your download is ready right after payment. On Etsy, open Purchases and reviews and click Download files; Etsy also emails you the link. Save the zip on a computer and unzip it before opening.'],
+      ['Do I need special software or a subscription?', 'No. The kit builder is one HTML file that opens in Chrome or Edge on a computer, works offline and needs no account. Word files open in Microsoft Word or Google Docs. The full kits also include Canva templates that work with a free Canva account.'],
+      ['Can I add my logo, colours and texts?', 'Yes. Enter your clinic name, logo and brand colour once and every page updates. Every text can be edited, so treatments, prices and policies can match your clinic.'],
+      ['Are the consent forms ready to use as they are?', 'They are professional templates based on published clinical guidance, not legal or medical advice. Have them reviewed by your responsible clinician and a legal advisor in your country before use.'],
+      ['Can I use one kit for several clinics?', 'One licence covers one clinic brand with all its locations. For several brands or agency use, write to us.'],
+      ['Can you set the kit up for us?', 'Yes. Write to info@silitlabs.com with your logo and treatment list and we will brand the kit for you. In Turkey this is our setup service.']
+    ];
+---
+<div class="faq">
+  {items.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+</div>

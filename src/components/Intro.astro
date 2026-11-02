@@ -1,0 +1,47 @@
+---
+// First-visit intro: the S monogram draws itself, the wordmark rises, then the screen lifts away.
+// Shown once per browser session, never with reduced motion, and never blocks crawlers:
+// the page content is already in the HTML underneath.
+import Mark from './Mark.astro';
+---
+<div class="intro-screen" aria-hidden="true">
+  <div class="intro-inner">
+    <Mark size={112} class="intro-mark" />
+    <div class="intro-word"><span>Silit</span><span>Labs</span></div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var html = document.documentElement;
+    if (!html.classList.contains('intro')) return;
+    var done = function () { html.classList.remove('intro'); html.classList.add('intro-done'); };
+    var t = setTimeout(done, 2000);
+    var skip = function () { clearTimeout(t); html.classList.add('intro-skip'); setTimeout(done, 260); };
+    addEventListener('keydown', skip, { once: true });
+    addEventListener('pointerdown', skip, { once: true });
+  })();
+</script>
+
+<style is:global>
+  .intro-screen { display: none; }
+  html.intro .intro-screen {
+    display: grid; place-items: center; position: fixed; inset: 0; z-index: 100;
+    background: var(--ink); color: var(--paper); clip-path: inset(0 0 0 0);
+    animation: intro-lift .7s cubic-bezier(.7, 0, .2, 1) 1.25s forwards;
+  }
+  html.intro-skip .intro-screen { animation: intro-fade .25s ease forwards; }
+  html.intro body { overflow: hidden; }
+  .intro-inner { display: flex; align-items: center; gap: 22px; }
+  .intro-mark .m-tile { fill: transparent; }
+  .intro-mark .m-top, .intro-mark .m-bot { stroke-dasharray: 100; animation: intro-draw .55s cubic-bezier(.5, 0, .2, 1) .1s both; }
+  .intro-mark .m-bot { animation-delay: .5s; animation-duration: .45s; }
+  .intro-word { display: flex; gap: 12px; overflow: hidden; font-family: var(--display); font-weight: 700; font-size: 64px; font-stretch: 86%; letter-spacing: -.03em; line-height: 1.1; }
+  .intro-word span { display: inline-block; animation: intro-rise .6s cubic-bezier(.2, .7, .1, 1) .55s both; }
+  .intro-word span + span { color: var(--muted-dark); font-weight: 500; animation-delay: .66s; }
+  @keyframes intro-draw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+  @keyframes intro-rise { from { transform: translateY(105%); } }
+  @keyframes intro-lift { to { clip-path: inset(0 0 100% 0); visibility: hidden; } }
+  @keyframes intro-fade { to { opacity: 0; visibility: hidden; } }
+  @media (max-width: 560px) { .intro-word { font-size: 44px; } .intro-mark { width: 78px; height: 78px; } }
+</style>

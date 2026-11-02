@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../data/site.js';
+const jsonld = [{
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Webflow apps', item: `${SITE.url}/webflow-apps/` }
+  ]
+}];
+---
+<Base
+  title="Webflow apps for agencies and freelancers"
+  description="Silit Labs builds tools for people who look after Webflow sites. Flowdeck monitors uptime, SSL, forms, CMS limits and SEO across every site you manage."
+  image="/images/og/flowdeck.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Webflow apps</li></ol>
+      <span class="kicker">Webflow apps</span>
+      <h1>Tools for people who look after Webflow sites</h1>
+      <p class="lead">We look after Webflow sites ourselves. These are the tools we wanted and could not find.</p>
+    </div>
+  </section>
+
+  <section class="section tight">
+    <div class="wrap">
+      <article class="app dark">
+        <div class="app-copy">
+          <div class="app-head"><img src="/images/flowdeck/logo.svg" width="56" height="56" alt="" /><span class="tag">Live</span></div>
+          <h2><a href="/webflow-apps/flowdeck/">Flowdeck</a></h2>
+          <p class="lead">One screen for every Webflow site you manage. Uptime every 5 minutes, SSL expiry, unpublished changes, quiet forms, CMS limits and SEO gaps, plus a weekly summary and client reports you send as a link.</p>
+          <div class="actions">
+            <a class="btn" href="/webflow-apps/flowdeck/">See Flowdeck</a>
+            <a class="btn quiet" href={SITE.flowdeck} rel="noopener">Start free</a>
+          </div>
+        </div>
+        <img class="app-shot" src="/images/flowdeck/dashboard.webp" width="1280" height="846" alt="Flowdeck dashboard" />
+      </article>
+      <div class="next">
+        <h3>Next on the bench</h3>
+        <p class="muted">A plugin for studios that build on Framer. Follow along on the <a class="link" href="/lab/">lab page</a>.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .app { border-radius: 28px; padding: clamp(24px, 4vw, 48px); display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .app-head { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+  .app h2 a { text-decoration: none; }
+  .app .lead { margin-top: 14px; }
+  .app-shot { border-radius: 16px; }
+  @media (max-width: 900px) { .app { grid-template-columns: 1fr; } }
+  .next { margin-top: 40px; padding: 28px; border: 2px dashed #B8C6D6; border-radius: 22px; max-width: 640px; }
+  .next p { margin-top: 8px; }
+</style>

@@ -1,0 +1,142 @@
+---
+import Base from '../layouts/Base.astro';
+import Bench from '../components/Bench.astro';
+import { getCollection } from 'astro:content';
+import { kits, kitPath } from '../data/kits.js';
+import { SITE } from '../data/site.js';
+
+const guides = (await getCollection('guides')).sort((a, b) => b.data.date - a.data.date).slice(0, 3);
+const jsonld = [{
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#site`,
+  name: 'Silit Labs',
+  url: SITE.url,
+  inLanguage: ['en', 'tr'],
+  publisher: { '@id': `${SITE.url}/#org` }
+}];
+---
+<Base
+  title="Silit Labs: ready-made tools for clinics and Webflow studios"
+  description="Silit Labs makes patient document kits for dental, aesthetic and hair transplant clinics, and Flowdeck, a monitoring panel for Webflow agencies. Built in Antalya."
+  intro={true}
+  jsonld={jsonld}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1 class="hero-in"><span>Ready-made tools</span> <span>for clinics and</span> <span>Webflow studios</span></h1>
+        <p class="lead hero-in" style="--d:.25s">We work in clinic marketing and on Webflow sites every day. Silit Labs turns the documents and dashboards we needed into products you can use today.</p>
+        <div class="actions hero-in" style="--d:.4s">
+          <a class="btn" href="/clinic-kits/">Browse clinic kits</a>
+          <a class="btn quiet" href="/webflow-apps/flowdeck/">See Flowdeck</a>
+        </div>
+      </div>
+      <div class="hero-in" style="--d:.15s"><Bench /></div>
+    </div>
+  </section>
+
+  <section class="section" id="products">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Two product lines, with more on the bench</h2>
+        <p>Each one started as something we built for our own work. Pick the line that fits yours.</p>
+      </div>
+      <div class="shelf">
+        <article class="shelf-kits">
+          <div class="shelf-top"><span class="tag">On sale</span><a class="shelf-link" href="/clinic-kits/">All clinic kits</a></div>
+          <h3><a href="/clinic-kits/">Clinic kits</a></h3>
+          <p class="muted">Patient document kits you brand once and use for every patient: consent forms, treatment plans with clickable maps, aftercare guides and social posts, in English and Turkish.</p>
+          <img src="/images/kits/dental/inside.webp" width="1500" height="1125" alt="Pages from the dental clinic patient kit: welcome guide, treatment plan and patient passport" loading="lazy" />
+          <ul class="rows">
+            {kits.map((k) => <li><a href={kitPath(k, 'en')}><span>{k.name.en}<span class="meta"> &nbsp;{k.audience.en.replace('For ', 'for ')}</span></span><span class="p">${k.price}</span></a></li>)}
+          </ul>
+        </article>
+        <article class="shelf-fd dark">
+          <div class="shelf-top"><span class="tag">Live</span><span class="muted small">Free for one site</span></div>
+          <h3><a href="/webflow-apps/flowdeck/">Flowdeck</a></h3>
+          <p class="muted">One screen for every Webflow site you manage: uptime, SSL, unpublished changes, quiet forms, SEO gaps and a weekly summary, with client reports you can send as a link.</p>
+          <img src="/images/flowdeck/dashboard.webp" width="1280" height="846" alt="Flowdeck dashboard listing several Webflow sites with their status" loading="lazy" />
+        </article>
+        <article class="shelf-lab">
+          <div class="shelf-top"><span class="tag soon">In progress</span></div>
+          <h3><a href="/lab/">In the lab</a></h3>
+          <p class="muted">A treatment plan presenter for clinics, kits for more clinic types, and tools for Framer. See what is on the bench.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>How we make things</h2></div>
+      <div class="principles">
+        <div><h3>Built from daily work</h3><p class="muted">Every product began as a document, checklist or dashboard we needed ourselves. If it did not save us time, it does not ship.</p></div>
+        <div><h3>Priced to be an easy yes</h3><p class="muted">Kits start at $6 and Flowdeck is free for one site. You should be able to try a tool without a meeting or a contract.</p></div>
+        <div><h3>Yours to change</h3><p class="muted">Every text in a kit can be edited, and nothing locks you in. Flowdeck only reads your sites and never writes to them.</p></div>
+      </div>
+    </div>
+  </section>
+
+  {guides.length > 0 && (
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head"><h2>Guides</h2><p>Practical write-ups from the work behind the products.</p></div>
+        <ul class="rows guide-rows">
+          {guides.map((g) => <li><a href={`/guides/${g.id}/`}><span>{g.data.title}<span class="meta block">{g.data.description}</span></span><span class="meta">{g.data.readMinutes} min</span></a></li>)}
+        </ul>
+        <p style="margin-top:22px"><a class="link" href="/guides/">All guides</a></p>
+      </div>
+    </section>
+  )}
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>A question, an idea, or a kit you want set up for your clinic?</h2>
+      <a class="mail" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding: clamp(28px, 4vw, 56px) 0 clamp(24px, 3vw, 40px); }
+  .hero h1 { font-size: clamp(40px, 5.1vw, 72px); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .hero h1 span { display: inline-block; }
+  @media (min-width: 600px) { .hero h1 span { white-space: nowrap; } }
+  .hero .lead { margin-top: 26px; }
+  @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-in { animation: hero-rise .8s var(--ease) both; animation-delay: var(--d, 0s); }
+    h1.hero-in { animation: none; }
+    h1.hero-in span { animation: hero-rise .8s var(--ease) both; }
+    h1.hero-in span:nth-child(2) { animation-delay: .08s; }
+    h1.hero-in span:nth-child(3) { animation-delay: .16s; }
+    :global(html.intro) .hero-in, :global(html.intro) h1.hero-in span { animation-delay: calc(var(--d, 0s) + 1.35s); }
+    :global(html.intro) h1.hero-in span:nth-child(2) { animation-delay: 1.43s; }
+    :global(html.intro) h1.hero-in span:nth-child(3) { animation-delay: 1.51s; }
+  }
+  @keyframes hero-rise { from { opacity: 0; transform: translateY(24px); } }
+
+  .shelf { display: grid; grid-template-columns: 7fr 5fr; grid-template-rows: auto auto; gap: 20px; }
+  .shelf > article { border-radius: 26px; padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .shelf h3 { font-size: clamp(28px, 3vw, 40px); font-stretch: 88%; }
+  .shelf h3 a { text-decoration: none; }
+  .shelf h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  .shelf-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .shelf-link { font-weight: 600; font-size: 15px; }
+  .shelf-kits { grid-row: span 2; background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
+  .shelf-kits img { border-radius: 16px; margin: 8px 0 4px; }
+  .shelf-fd img { border-radius: 14px; margin-top: auto; }
+  .shelf-lab { border: 2px dashed #B8C6D6; }
+  .shelf-lab p { max-width: 30em; }
+  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } }
+
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 48px); }
+  .principles > div { border-top: 2px solid var(--ink); padding-top: 20px; }
+  .principles p { margin-top: 10px; }
+  @media (max-width: 800px) { .principles { grid-template-columns: 1fr; } }
+
+  .guide-rows a { align-items: flex-start; }
+  .guide-rows .block { display: block; margin-top: 4px; font-weight: 500; }
+  .guide-rows a > span:first-child { font-size: 19px; }
+</style>
