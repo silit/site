@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    { "source": "/lander", "destination": "/", "permanent": true }
+  ],
+  "headers": [
+    { "source": "/images/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }] },
+    { "source": "/video/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }] }
+  ]
+}
