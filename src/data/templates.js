@@ -208,27 +208,23 @@ export const templates = [
       tr: 'Curavia: Sağlık Turizmi Klinikleri için Webflow Şablonu'
     },
     seoDesc: {
-      en: 'Curavia is a Webflow template for dental, hair transplant and aesthetic clinics with patients from abroad: 17 pages, 6 CMS collections, prices in GBP, EUR and USD, a trip planner and a treatment finder.',
-      tr: 'Curavia, yurt dışından hasta ağırlayan diş, saç ekimi ve estetik klinikleri için bir Webflow şablonu: 17 sayfa, 6 CMS koleksiyonu, GBP, EUR ve USD fiyatlar, seyahat planı ve tedavi bulucu.'
+      en: 'Webflow template for dental, hair transplant and aesthetic clinics with patients from abroad: four homes, sector colour themes, a smile plan builder, a graft estimator and a face map.',
+      tr: 'Yurt dışından hasta ağırlayan diş, saç ekimi ve estetik klinikleri için Webflow şablonu: dört ana sayfa, sektör renk temaları, gülüş planı, greft hesaplayıcı ve yüz haritası.'
     },
     lead: {
-      en: 'A premium Webflow template for dental, hair transplant and facial aesthetics clinics that treat patients from abroad. It answers what patients ask before they book: what it costs, how many days it takes, what they can do while they heal and what happens if something goes wrong.',
-      tr: 'Yurt dışından hasta ağırlayan diş, saç ekimi ve yüz estetiği klinikleri için premium bir Webflow şablonu. Hastaların karar vermeden önce sorduğu soruları yanıtlar: ne kadar tutar, kaç gün sürer, iyileşirken neler yapılabilir ve bir sorun çıkarsa ne olur.'
+      en: 'A premium Webflow template for dental, hair transplant and facial aesthetics clinics that treat patients from abroad. It answers what patients ask before they book: what it costs, how many days it takes, what they can do while they heal and what happens if something goes wrong. Start from the Hub, or from a Dental, Hair or Aesthetic home with its own colours, content and planning tool.',
+      tr: 'Yurt dışından hasta ağırlayan diş, saç ekimi ve yüz estetiği klinikleri için premium bir Webflow şablonu. Hastaların karar vermeden önce sorduğu soruları yanıtlar: ne kadar tutar, kaç gün sürer, iyileşirken neler yapılabilir ve bir sorun çıkarsa ne olur. Hub ile ya da kendi renkleri, içeriği ve planlama aracı olan Diş, Saç veya Estetik ana sayfasıyla başlayın.'
     },
     facts: {
-      en: ['17 pages', '6 CMS collections', 'Prices in GBP, EUR and USD', 'No custom code'],
-      tr: ['17 sayfa', '6 CMS koleksiyonu', 'GBP, EUR ve USD fiyatlar', 'Özel kod yok']
+      en: ['4 homes and 17 inner pages', '3 sector themes and tools', '6 CMS collections', 'No custom code'],
+      tr: ['4 ana sayfa ve 17 iç sayfa', '3 sektör teması ve aracı', '6 CMS koleksiyonu', 'Özel kod yok']
     },
     highlights: {
-      en: ['Day-by-day trip planner and recovery planner', 'Price tabs in GBP, EUR and USD', 'A treatment finder in three questions', 'Before and after cards that stay blurred until opened'],
-      tr: ['Gün gün seyahat planı ve iyileşme planı', 'GBP, EUR ve USD fiyat sekmeleri', 'Üç soruda tedavi bulucu', 'Açılana kadar bulanık kalan önce ve sonra kartları']
+      en: ['Dental, Hair and Aesthetic homes, each in its own colours', 'Smile plan builder, graft estimator and face map', 'Theme chips that recolour a page in one click', 'Price tabs in GBP, EUR and USD'],
+      tr: ['Kendi renkleriyle Diş, Saç ve Estetik ana sayfaları', 'Gülüş planı, greft hesaplayıcı ve yüz haritası', 'Sayfayı tek tıkla yeniden renklendiren tema çipleri', 'GBP, EUR ve USD fiyat sekmeleri']
     },
     preview: 'https://curavia-56d980.webflow.io',
     statusNote: { en: 'Coming soon to the Webflow Marketplace', tr: "Yakında Webflow Marketplace'te" },
-    next: {
-      en: 'A one-click Dental, Hair or Aesthetic version is being added next.',
-      tr: 'Sırada tek tıkla Diş, Saç ya da Estetik versiyonu var.'
-    },
     previewNote: {
       en: 'Clinic names, doctors, photos, prices, ratings and patient stories in the preview are sample content.',
       tr: 'Önizlemedeki klinik adı, hekimler, fotoğraflar, fiyatlar, puanlar ve hasta hikayeleri örnek içeriktir.'
@@ -236,8 +232,8 @@ export const templates = [
     light: true,
     og: '/images/og/curavia.jpg',
     img: {
-      hero: pic(`${CV}/home.webp`, 760, 500, 'Curavia home page with a day-by-day sample week for treatment abroad', 'Gün gün örnek tedavi haftası gösteren Curavia ana sayfası'),
-      card: pic(`${CV}/treatments.webp`, 760, 420, 'Curavia treatments page with dental, hair and aesthetic categories and starting prices', 'Diş, saç ve estetik kategorileri ve başlangıç fiyatlarıyla Curavia tedaviler sayfası')
+      hero: pic(`${CV}/homes.webp`, 760, 500, 'The four Curavia homes: the Hub, Dental in ocean blue, Hair in forest green and Aesthetic in plum', 'Dört Curavia ana sayfası: Hub, okyanus mavisi Diş, orman yeşili Saç ve mürdüm rengi Estetik'),
+      card: pic(`${CV}/homes-card.webp`, 760, 420, 'The four Curavia homes for multi-specialty, dental, hair and aesthetic clinics', 'Çok branşlı, diş, saç ve estetik klinikleri için dört Curavia ana sayfası')
     },
     overview: {
       h: { en: 'Built around the questions patients ask', tr: 'Hastaların sorduğu sorular üzerine kurulu' },
@@ -247,6 +243,9 @@ export const templates = [
       },
       items: {
         en: [
+          ['Four homes, one template', 'A Hub for clinics with several specialties, plus Dental, Hair and Aesthetic homes, each with its own layout, photos, copy and treatments.'],
+          ['Sector colours in one click', 'Each specialty has its own palette through Webflow variable modes. Theme chips on the Hub recolour the whole page, menu and footer included.'],
+          ['A planning tool per specialty', 'A smile plan builder for dental, a Norwood graft estimator for hair, and a face map with a downtime chart for aesthetics.'],
           ['Prices in three currencies', 'Price tables switch between pounds, euros and dollars, with the typical price at home next to yours.'],
           ['Day-by-day trip planner', 'A sample week from airport pick-up to the flight home, with clinic visits, time in the chair and free days.'],
           ['Recovery planner', 'What patients can do on each day after treatment, from swimming and sunbathing to flying home, for dental work and hair transplants.'],
@@ -258,6 +257,9 @@ export const templates = [
           ['No custom code', 'Every animation uses native Webflow interactions and every colour comes from Webflow variables.']
         ],
         tr: [
+          ['Dört ana sayfa, tek şablon', 'Birden fazla alanda çalışan klinikler için bir Hub; ayrıca her biri kendi düzeni, fotoğrafları, metni ve tedavileriyle Diş, Saç ve Estetik ana sayfaları.'],
+          ['Tek tıkla sektör renkleri', "Her alanın Webflow değişken modlarıyla kendi paleti var. Hub'daki tema çipleri menü ve footer dahil bütün sayfayı yeniden renklendirir."],
+          ['Her alana bir planlama aracı', 'Diş için gülüş planı oluşturucu, saç için Norwood greft hesaplayıcı, estetik için iyileşme süresi grafiğiyle yüz haritası.'],
           ['Üç para biriminde fiyat', 'Fiyat tabloları sterlin, euro ve dolar arasında geçiş yapar; hastanın kendi ülkesindeki tipik fiyat yanında görünür.'],
           ['Gün gün seyahat planı', 'Havalimanı karşılamasından dönüş uçuşuna örnek bir hafta: klinik ziyaretleri, koltukta geçen süre ve serbest günler.'],
           ['İyileşme planı', 'Tedaviden sonraki her gün neler yapılabileceği: yüzmeden güneşlenmeye, eve dönüş uçuşuna kadar; diş tedavisi ve saç ekimi için ayrı ayrı.'],
@@ -271,6 +273,42 @@ export const templates = [
       }
     },
     sections: [
+      {
+        img: pic(`${CV}/hub-themes.webp`, 760, 514, 'Choose your clinic band with dental, hair and aesthetic cards and theme chips', 'Diş, saç ve estetik kartları ve tema çipleriyle Kliniğini seç bandı'),
+        h: { en: 'Pick a specialty and the site follows', tr: 'Alanı seçin, site ona uysun' },
+        p: {
+          en: 'The Hub opens with a Choose your clinic band: three cards in their own colours, each with a starting price and the tools of that specialty. Theme chips recolour the page in one click, and a Homes menu leads to each specialty home.',
+          tr: 'Hub, Kliniğini seç bandıyla açılır: her biri kendi renginde, başlangıç fiyatı ve o alanın araçlarıyla üç kart. Tema çipleri sayfayı tek tıkla yeniden renklendirir, Homes menüsü her alanın ana sayfasına götürür.'
+        },
+        list: {
+          en: ['Hub: petrol and citrine', 'Dental: ocean blue and aqua', 'Hair: forest green and copper', 'Aesthetic: plum and rose gold, with serif headings'],
+          tr: ['Hub: petrol ve citrine', 'Diş: okyanus mavisi ve aqua', 'Saç: orman yeşili ve bakır', 'Estetik: mürdüm ve rose gold, serif başlıklarla']
+        }
+      },
+      {
+        img: pic(`${CV}/smile-builder.webp`, 760, 493, 'Smile plan builder result for 20 emax laminate veneers with price, UK price, saving and stay', '20 emax laminate veneer için fiyat, İngiltere fiyatı, tasarruf ve kalış süresiyle gülüş planı sonucu'),
+        h: { en: 'A smile plan in two taps', tr: 'İki dokunuşta gülüş planı' },
+        p: {
+          en: 'On the Dental home, visitors pick emax laminate veneers, zirconium crowns or emax crowns, then 6, 8, 10, 16 or 20 teeth. The result shows the price next to the typical UK price, the saving, the days in clinic and the hotel nights, with a drawing of the teeth in the plan. A shade and style picker sits next to it.',
+          tr: 'Diş ana sayfasında ziyaretçi emax laminate veneer, zirkonyum kron ya da emax kron seçer, ardından 6, 8, 10, 16 veya 20 diş. Sonuçta fiyat, İngiltere fiyatı, tasarruf, klinikte geçen gün ve otel geceleri, plandaki dişlerin çizimiyle birlikte görünür. Yanında renk ve stil seçici yer alır.'
+        }
+      },
+      {
+        img: pic(`${CV}/graft-estimator.webp`, 760, 534, 'Norwood graft estimator with Norwood 5 selected and its graft range, sessions and price', 'Norwood 5 seçiliyken greft aralığı, seans ve fiyat gösteren Norwood greft hesaplayıcı'),
+        h: { en: 'A graft estimate before the first photo', tr: 'İlk fotoğraftan önce greft tahmini' },
+        p: {
+          en: 'The Hair home has a Norwood estimator: eight stages, each with a typical graft range, sessions, technique, price and a UK comparison. A hairline designer shows four shapes on a face, and a timeline walks through twelve months of growth.',
+          tr: 'Saç ana sayfasında Norwood hesaplayıcı var: her biri tipik greft aralığı, seans, teknik, fiyat ve İngiltere karşılaştırması olan sekiz evre. Saç çizgisi tasarımcısı yüz üzerinde dört şekil gösterir, zaman çizelgesi on iki aylık büyümeyi anlatır.'
+        }
+      },
+      {
+        img: pic(`${CV}/face-map.webp`, 760, 476, 'Face map with the lips zone selected, showing lip filler price, downtime and how long it lasts', 'Dudak bölgesi seçili yüz haritası: dudak dolgusu fiyatı, iyileşme süresi ve kalıcılık'),
+        h: { en: 'A face map for aesthetics', tr: 'Estetik için yüz haritası' },
+        p: {
+          en: 'On the Aesthetic home, visitors tap one of ten zones to see the usual treatment, an estimated price, the downtime, how long results last and the session time. A downtime chart compares eight treatments, so patients can plan photos, flights and events around them.',
+          tr: 'Estetik ana sayfasında ziyaretçi on bölgeden birine dokunur ve olağan tedaviyi, tahmini fiyatı, iyileşme süresini, sonucun ne kadar sürdüğünü ve seans süresini görür. İyileşme süresi grafiği sekiz tedaviyi karşılaştırır; hasta fotoğraf, uçuş ve etkinlik planını buna göre yapar.'
+        }
+      },
       {
         img: pic(`${CV}/finder.webp`, 760, 520, 'Treatment finder results showing three matches with prices and days', 'Fiyat ve gün sayısıyla üç öneri gösteren tedavi bulucu sonuçları'),
         h: { en: 'A treatment finder in three questions', tr: 'Üç soruda tedavi bulucu' },
@@ -321,15 +359,15 @@ export const templates = [
       {
         h: { en: 'What is in the template', tr: 'Şablonda neler var' },
         items: {
-          en: ['17 pages, from Home and Prices to Your Trip, Guarantee and Refer a Friend', '6 CMS collections, each with its template page', 'Style guide, licences and changelog pages', 'A getting started page that lists what to replace before launch'],
-          tr: ['Ana sayfa ve fiyatlardan seyahat planı, garanti ve tavsiye programına 17 sayfa', 'Her biri kendi şablon sayfasıyla 6 CMS koleksiyonu', 'Stil rehberi, lisanslar ve sürüm notları sayfaları', 'Yayına almadan önce değiştirilecekleri listeleyen bir başlangıç sayfası']
+          en: ['4 homes: Hub, Dental, Hair and Aesthetic', '17 inner pages, from Prices and Your Trip to Guarantee and Refer a Friend', '6 CMS collections, each with its template page', 'Style guide, licences and changelog pages', 'An instructions page with a 3-step guide for a one-specialty clinic and what to replace before launch'],
+          tr: ['4 ana sayfa: Hub, Diş, Saç ve Estetik', 'Fiyatlar ve seyahat planından garanti ve tavsiye programına 17 iç sayfa', 'Her biri kendi şablon sayfasıyla 6 CMS koleksiyonu', 'Stil rehberi, lisanslar ve sürüm notları sayfaları', 'Tek alanlı klinik için 3 adımlık rehber ve yayından önce değiştirilecekleri listeleyen talimatlar sayfası']
         }
       },
       {
         h: { en: 'Built to hand over', tr: 'Teslime hazır' },
         items: {
-          en: ['Native Webflow interactions only, with no custom code', 'Every colour from nine Base variables', 'Designed for desktop, tablet and phone', 'Sample content in every collection, ready to replace'],
-          tr: ["Sadece Webflow'un kendi etkileşimleri, özel kod yok", 'Tüm renkler dokuz Base değişkeninden', 'Masaüstü, tablet ve telefon için tasarlandı', 'Her koleksiyonda değiştirmeye hazır örnek içerik']
+          en: ['Native Webflow interactions only, with no custom code', 'Every colour from nine Base variables, with a mode for each specialty', 'A WhatsApp button on every page', 'Designed for desktop, tablet and phone', 'Sample content in every collection, ready to replace'],
+          tr: ["Sadece Webflow'un kendi etkileşimleri, özel kod yok", 'Tüm renkler dokuz Base değişkeninden, her alan için ayrı modla', 'Her sayfada WhatsApp düğmesi', 'Masaüstü, tablet ve telefon için tasarlandı', 'Her koleksiyonda değiştirmeye hazır örnek içerik']
         }
       }
     ],
@@ -337,14 +375,16 @@ export const templates = [
       en: [
         ['When can I get Curavia?', 'Curavia is coming soon to the Webflow Marketplace. You can explore the full live preview today. Write to info@silitlabs.com if you would like to hear when it is listed.'],
         ['Who is it for?', 'Clinics that treat international patients for dental work, hair transplants or facial aesthetics, and the designers and agencies who build their sites.'],
-        ['Can I use it for only one specialty?', 'Yes. Remove the treatments you do not offer from the CMS and the pages follow. A one-click Dental, Hair or Aesthetic version is being added next.'],
+        ['Can I use it for only one specialty?', 'Yes. Make the Dental, Hair or Aesthetic home your home page and follow the three steps on the Instructions page: set the home, apply its theme to every page and remove what you do not offer. Colours, fonts and tools follow.'],
+        ['Can visitors switch between specialties?', 'On the Hub, theme chips recolour the page in one click and the Homes menu links to each specialty home. A clinic with one specialty can remove both.'],
         ['Is the content in the preview real?', 'No. Clinic names, doctors, photos, prices, ratings and patient stories are sample content for you to replace with your own. Have medical and guarantee texts checked by your clinicians before launch.'],
         ['Do I need to write code?', 'No. Everything is built with native Webflow elements, CMS collections and interactions, so you edit it all in the Designer and the Editor.']
       ],
       tr: [
         ["Curavia'yı ne zaman alabilirim?", "Curavia yakında Webflow Marketplace'te. Canlı önizlemenin tamamını bugün inceleyebilirsiniz. Listelendiğinde haber almak isterseniz info@silitlabs.com adresine yazın."],
         ['Kimler için?', 'Diş tedavisi, saç ekimi ya da yüz estetiği için yurt dışından hasta ağırlayan klinikler ve bu kliniklerin sitelerini kuran tasarımcılar ve ajanslar için.'],
-        ['Sadece tek bir alan için kullanabilir miyim?', "Evet. Sunmadığınız tedavileri CMS'ten kaldırın, sayfalar buna göre güncellenir. Sırada tek tıkla Diş, Saç ya da Estetik versiyonu var."],
+        ['Sadece tek bir alan için kullanabilir miyim?', 'Evet. Diş, Saç ya da Estetik ana sayfasını ana sayfanız yapın ve talimatlar sayfasındaki üç adımı izleyin: ana sayfayı ayarlayın, temasını tüm sayfalara uygulayın ve sunmadıklarınızı kaldırın. Renkler, fontlar ve araçlar buna uyar.'],
+        ['Ziyaretçiler alanlar arasında geçiş yapabilir mi?', "Hub'da tema çipleri sayfayı tek tıkla yeniden renklendirir, Homes menüsü her alanın ana sayfasına bağlanır. Tek alanda çalışan klinik ikisini de kaldırabilir."],
         ['Önizlemedeki içerik gerçek mi?', 'Hayır. Klinik adı, hekimler, fotoğraflar, fiyatlar, puanlar ve hasta hikayeleri kendi içeriğinizle değiştireceğiniz örnek içeriktir. Tıbbi ve garanti metinlerini yayına almadan önce hekimlerinize kontrol ettirin.'],
         ['Kod yazmam gerekiyor mu?', "Hayır. Her şey Webflow'un kendi öğeleri, CMS koleksiyonları ve etkileşimleriyle kuruldu; tamamını Designer ve Editor'da düzenlersiniz."]
       ]
