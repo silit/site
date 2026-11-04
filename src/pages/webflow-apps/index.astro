@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { SITE } from '../../data/site.js';
+import { templates, templatePath } from '../../data/templates.js';
+const curavia = templates.find((t) => t.id === 'curavia');
 const jsonld = [{
   '@type': 'BreadcrumbList',
   itemListElement: [
@@ -38,6 +40,17 @@ const jsonld = [{
         </div>
         <img class="app-shot" src="/images/flowdeck/dashboard.webp" width="1280" height="846" alt="Flowdeck dashboard" />
       </article>
+      <article class="tpl">
+        <div>
+          <div class="app-head"><span class="tag soon">{curavia.statusNote.en}</span></div>
+          <h2><a href={templatePath(curavia, 'en')}>Curavia</a></h2>
+          <p class="muted">Building a site for a clinic? Curavia is our Webflow template for dental, hair transplant and aesthetic clinics that treat patients from abroad: 17 pages, 6 CMS collections, prices in three currencies and no custom code.</p>
+        </div>
+        <div class="tpl-cta">
+          <a class="btn" href={templatePath(curavia, 'en')}>See Curavia</a>
+          <a class="link" href={curavia.preview} rel="noopener">Live preview</a>
+        </div>
+      </article>
       <div class="next">
         <h3>Next on the bench</h3>
         <p class="muted">A plugin for studios that build on Framer. Follow along on the <a class="link" href="/lab/">lab page</a>.</p>
@@ -53,6 +66,12 @@ const jsonld = [{
   .app .lead { margin-top: 14px; }
   .app-shot { border-radius: 16px; }
   @media (max-width: 900px) { .app { grid-template-columns: 1fr; } }
+  .tpl { margin-top: 20px; border-radius: 28px; padding: clamp(24px, 4vw, 48px); background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); display: flex; justify-content: space-between; align-items: center; gap: 24px 48px; flex-wrap: wrap; }
+  .tpl > div:first-child { max-width: 660px; }
+  .tpl .app-head { margin-bottom: 12px; }
+  .tpl h2 a { text-decoration: none; }
+  .tpl p { margin-top: 12px; }
+  .tpl-cta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
   .next { margin-top: 40px; padding: 28px; border: 2px dashed #B8C6D6; border-radius: 22px; max-width: 640px; }
   .next p { margin-top: 8px; }
 </style>

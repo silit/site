@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 import { kits, kitPath } from '../../data/kits.js';
+import { templates, templatePath } from '../../data/templates.js';
 import { SITE } from '../../data/site.js';
 
 export async function getStaticPaths() {
@@ -10,7 +11,14 @@ export async function getStaticPaths() {
 }
 const { g } = Astro.props;
 const { Content } = await render(g);
+// The product a guide links to can be a clinic kit or a template.
 const kit = kits.find((k) => k.id === g.data.product);
+const tpl = templates.find((t) => t.id === g.data.product);
+const product = kit
+  ? { name: kit.name.en, lead: kit.lead.en, href: kitPath(kit, 'en'), img: kit.img.hero, og: kit.og, cta: 'See the kit' }
+  : tpl
+    ? { name: tpl.name.en, lead: tpl.lead.en, href: templatePath(tpl, 'en'), img: tpl.img.hero.src, og: tpl.og, cta: 'See the template' }
+    : null;
 const url = `${SITE.url}/guides/${g.id}/`;
 const fmt = (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 const jsonld = [
@@ -23,7 +31,7 @@ const jsonld = [
     author: { '@id': `${SITE.url}/#org` },
     publisher: { '@id': `${SITE.url}/#org` },
     mainEntityOfPage: url,
-    image: kit ? new URL(kit.img.hero, SITE.url).href : undefined
+    image: product ? new URL(product.img, SITE.url).href : undefined
   },
   {
     '@type': 'BreadcrumbList',
@@ -35,7 +43,7 @@ const jsonld = [
   }
 ];
 ---
-<Base title={g.data.title} description={g.data.description} image={kit ? kit.og : undefined} jsonld={jsonld} type="article">
+<Base title={g.data.title} description={g.data.description} image={product ? product.og : undefined} jsonld={jsonld} type="article">
   <section class="page-hero">
     <div class="wrap">
       <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/guides/">Guides</a></li><li aria-current="page">{g.data.category}</li></ol>
@@ -50,11 +58,11 @@ const jsonld = [
     <div class="wrap">
       <article class="article">
         <Content />
-        {kit && (
+        {product && (
           <aside class="callout">
-            <h2 style="margin:0;font-size:26px">{kit.name.en}</h2>
-            <p>{kit.lead.en}</p>
-            <a class="btn" href={kitPath(kit, 'en')}>See the kit</a>
+            <h2 style="margin:0;font-size:26px">{product.name}</h2>
+            <p>{product.lead}</p>
+            <a class="btn" href={product.href}>{product.cta}</a>
           </aside>
         )}
       </article>

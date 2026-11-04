@@ -1,0 +1,135 @@
+---
+// Templates hub, in English or Turkish. Templates are grouped by kind (see KINDS in data/templates.js),
+// so a new spreadsheet or Webflow template appears here as soon as it is added to the data file.
+import Base from '../layouts/Base.astro';
+import { KINDS, templates, templatePath } from '../data/templates.js';
+import { SITE } from '../data/site.js';
+
+const { lang = 'en' } = Astro.props;
+const tr = lang === 'tr';
+const path = tr ? '/tr/sablonlar/' : '/templates/';
+const groups = KINDS.map((k) => ({ ...k, items: templates.filter((t) => t.kind === k.id) })).filter((g) => g.items.length);
+
+const T = tr
+  ? {
+      title: 'Klinikler için Şablonlar: Google Sheets, Excel ve Webflow',
+      desc: 'Silit Labs şablonları: Google Sheets ve Excel için Klinik Lead Takip Tablosu ve yurt dışından hasta ağırlayan klinikler için Webflow şablonu Curavia.',
+      home: 'Ana sayfa', crumb: 'Şablonlar', kicker: 'Şablonlar',
+      h1: 'Kliniğiniz için hazır tablolar ve web siteleri',
+      lead: 'Klinik pazarlamasında her gün yaptığımız işlerden doğan şablonlar: ekibinizin her gün doldurduğu tablolar ve yurt dışından hasta ağırlayan klinikler için hazırlanmış Webflow siteleri.',
+      langNote: 'Şablonların dili İngilizce; tüm metinler düzenlenebilir.',
+      view: 'Şablonu inceleyin', etsy: "Etsy'de", buy: "Etsy'de satın al", preview: 'Canlı önizleme',
+      nextH: 'Sırada ne var',nextP: 'Curavia için tek tıkla Diş, Saç ya da Estetik versiyonu ekleniyor. Üzerinde çalıştığımız diğer işler',
+      nextLink: 'lab sayfasında (EN)',
+      bandH: 'Kliniğinizin her ay yeniden kurduğu bir tablo ya da sayfa mı var? Bize yazın.'
+    }
+  : {
+      title: 'Templates for Clinics: Spreadsheets and Webflow',
+      desc: 'Ready-made templates from Silit Labs: the Clinic Lead Tracker for Google Sheets and Excel, and Curavia, a Webflow template for health tourism clinics.',
+      home: 'Home', crumb: 'Templates', kicker: 'Templates',
+      h1: 'Spreadsheets and websites, ready for your clinic',
+      lead: 'Templates that grew out of daily work in clinic marketing: spreadsheets your team fills in every day, and Webflow sites made for clinics that treat patients from abroad.',
+      langNote: '',
+      view: 'View the template', etsy: 'on Etsy', buy: 'Buy on Etsy', preview: 'Live preview',
+      nextH: 'Next on the bench', nextP: 'A one-click Dental, Hair or Aesthetic version of Curavia is being added next. See what else we are working on in',
+      nextLink: 'the lab',
+      bandH: 'Is there a spreadsheet or page your clinic keeps rebuilding? Tell us.'
+    };
+
+const jsonld = [
+  {
+    '@type': 'CollectionPage',
+    name: T.title,
+    url: new URL(path, SITE.url).href,
+    inLanguage: lang,
+    mainEntity: { '@type': 'ItemList', itemListElement: templates.map((t, n) => ({ '@type': 'ListItem', position: n + 1, url: new URL(templatePath(t, lang), SITE.url).href, name: t.name[lang] })) }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: T.home, item: new URL(tr ? '/tr/' : '/', SITE.url).href },
+      { '@type': 'ListItem', position: 2, name: T.crumb, item: new URL(path, SITE.url).href }
+    ]
+  }
+];
+---
+<Base title={T.title} description={T.desc} lang={lang} image="/images/og/lead-tracker.jpg" jsonld={jsonld}>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href={tr ? '/tr/' : '/'}>{T.home}</a></li><li aria-current="page">{T.crumb}</li></ol>
+      <span class="kicker">{T.kicker}</span>
+      <h1>{T.h1}</h1>
+      <p class="lead">{T.lead}</p>
+      <ul class="jump">{groups.map((g) => <li><a class="btn quiet sm" href={`#${g.anchor}`}>{g.name[lang]}</a></li>)}</ul>
+    </div>
+  </section>
+
+  {groups.map((g, gi) => (
+    <section class={gi % 2 ? 'section' : 'section sheet-bg'} id={g.anchor}>
+      <div class="wrap">
+        <div class="section-head"><h2>{g.name[lang]}</h2><p>{g.line[lang]}</p></div>
+        <div class="tpl-list">
+          {g.items.map((t, n) => (
+            <article class={n % 2 ? 'tplrow flip' : 'tplrow'}>
+              <a class={t.light ? 'figure light' : 'figure'} href={templatePath(t, lang)} tabindex="-1" aria-hidden="true"><img src={t.img.card.src} width={t.img.card.w} height={t.img.card.h} alt="" loading={gi || n ? 'lazy' : 'eager'} /></a>
+              <div>
+                <span class="kicker">{t.audience[lang]}</span>
+                <h3><a href={templatePath(t, lang)}>{t.name[lang]}</a></h3>
+                <ul class="hl">{t.highlights[lang].map((h) => <li>{h}</li>)}</ul>
+                {t.price ? (
+                  <div class="buy">
+                    <span class="price">${t.price}<small>{T.etsy}</small></span>
+                    <a class="btn" href={templatePath(t, lang)}>{T.view}</a>
+                    <a class="link" href={t.etsy} rel="noopener">{T.buy}</a>
+                  </div>
+                ) : (
+                  <div class="buy">
+                    <span class="tag soon">{t.statusNote[lang]}</span>
+                    <a class="btn" href={templatePath(t, lang)}>{T.view}</a>
+                    <a class="link" href={t.preview} rel="noopener">{T.preview}</a>
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section tight">
+    <div class="wrap">
+      <div class="next">
+        <h2>{T.nextH}</h2>
+        <p class="muted">{T.nextP} <a class="link" href="/lab/" hreflang={tr ? 'en' : undefined}>{T.nextLink}</a>.</p>
+        {T.langNote && <p class="small muted">{T.langNote}</p>}
+      </div>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>{T.bandH}</h2>
+      <a class="mail" href={`mailto:${SITE.email}?subject=${tr ? '%C5%9Eablon%20fikri' : 'Template%20idea'}`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .jump { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .tpl-list { display: grid; gap: clamp(48px, 7vw, 96px); }
+  .tplrow { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(24px, 5vw, 64px); align-items: center; }
+  .tplrow > * { min-width: 0; }
+  .tplrow.flip > :first-child { order: 2; }
+  .tplrow h3 { font-size: clamp(30px, 3.7vw, 50px); font-stretch: 90%; letter-spacing: -.025em; line-height: 1.04; }
+  .tplrow h3 a { text-decoration: none; }
+  .tplrow h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .hl { list-style: none; display: grid; gap: 8px; margin-top: 20px; font-weight: 550; }
+  .hl li { display: flex; gap: 12px; }
+  .hl li::before { content: ''; flex: none; width: 8px; height: 8px; margin-top: 9px; border-radius: 50%; background: var(--coral); }
+  .tplrow .buy { margin-top: 26px; }
+  @media (max-width: 860px) { .tplrow { grid-template-columns: 1fr; } .tplrow.flip > :first-child { order: 0; } }
+  .next { padding: 28px; border: 2px dashed #B8C6D6; border-radius: 22px; max-width: 720px; }
+  .next h2 { font-size: clamp(22px, 2.2vw, 26px); }
+  .next p { margin-top: 8px; }
+</style>

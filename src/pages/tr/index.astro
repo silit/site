@@ -2,12 +2,13 @@
 import Base from '../../layouts/Base.astro';
 import Bench from '../../components/Bench.astro';
 import { kits, kitPath, SETUP_PRICE_TRY } from '../../data/kits.js';
+import { templates, templatePath } from '../../data/templates.js';
 import { SITE } from '../../data/site.js';
 const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit Labs', url: SITE.url, inLanguage: ['en', 'tr'], publisher: { '@id': `${SITE.url}/#org` } }];
 ---
 <Base
   title="Silit Labs: klinikler ve web stüdyoları için hazır araçlar"
-  description="Silit Labs diş, estetik ve saç ekimi klinikleri için düzenlenebilir hasta doküman kitleri ve Webflow ajansları için Flowdeck panelini üretir. Kliniğinize özel kurulum hizmeti. Antalya."
+  description="Silit Labs diş, estetik ve saç ekimi klinikleri için hasta doküman kitleri, lead takip tablosu ve Webflow şablonu, Webflow ajansları için de Flowdeck panelini üretir. Kliniğinize özel kurulum hizmeti."
   lang="tr"
   intro={true}
   jsonld={jsonld}
@@ -16,7 +17,7 @@ const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit L
     <div class="wrap hero-grid">
       <div>
         <h1 class="hero-in"><span>Klinikler ve</span> <span>web stüdyoları için</span> <span>hazır araçlar</span></h1>
-        <p class="lead hero-in" style="--d:.25s">Her gün klinik pazarlaması ve Webflow siteleri üzerinde çalışıyoruz. Silit Labs, işimizde ihtiyaç duyduğumuz dokümanları ve panelleri bugün kullanabileceğiniz ürünlere dönüştürüyor.</p>
+        <p class="lead hero-in" style="--d:.25s">Her gün klinik pazarlaması ve Webflow siteleri üzerinde çalışıyoruz. Silit Labs, işimizde ihtiyaç duyduğumuz dokümanları, tabloları ve panelleri bugün kullanabileceğiniz ürünlere dönüştürüyor.</p>
         <div class="actions hero-in" style="--d:.4s">
           <a class="btn" href="/tr/klinik-kitleri/">Klinik kitlerini görün</a>
           <a class="btn quiet" href="/tr/kurulum-hizmeti/">Kurulumu biz yapalım</a>
@@ -48,9 +49,19 @@ const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit L
           <p class="muted">Logonuz, renkleriniz, tedavi ve fiyat listeniz işlenmiş dokümanlar; TR ve EN, baskıya hazır PDF olarak 3 iş gününde elinizde.</p>
           <img src="/images/kits/dental/tr-kurulum-hizmeti.webp" width="1500" height="1125" alt="Kurulum hizmeti" loading="lazy" />
         </article>
+        <article class="shelf-tpl">
+          <div class="shelf-top"><span class="tag">Yeni</span><a class="shelf-link" href="/tr/sablonlar/">Tüm şablonlar</a></div>
+          <h3><a href="/tr/sablonlar/">Şablonlar</a></h3>
+          <p class="muted">Google Sheets ve Excel için lead takip tablosu ve yurt dışından hasta ağırlayan klinikler için Webflow şablonu.</p>
+          <ul class="rows">
+            {templates.map((t) => <li><a href={templatePath(t, 'tr')}><span>{t.name.tr}</span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">Yakında</span>}</a></li>)}
+          </ul>
+        </article>
         <article class="shelf-lab">
-          <div class="shelf-top"><span class="tag">Webflow</span><span class="muted small">Sayfa EN</span></div>
-          <h3><a href="/webflow-apps/flowdeck/" hreflang="en">Flowdeck</a></h3>
+          <div>
+            <div class="shelf-top"><span class="tag">Webflow</span><span class="muted small">Sayfa EN</span></div>
+            <h3><a href="/webflow-apps/flowdeck/" hreflang="en">Flowdeck</a></h3>
+          </div>
           <p class="muted">Webflow ajansları için tek panel: yönettiğiniz tüm sitelerin erişim, SSL, form ve SEO durumu. Tek site için ücretsiz.</p>
         </article>
       </div>
@@ -104,8 +115,13 @@ const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit L
   .shelf-kits { grid-row: span 2; background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
   .shelf-kits img { border-radius: 16px; margin: 8px 0 4px; }
   .shelf-setup img { border-radius: 14px; margin-top: auto; }
-  .shelf-lab { border: 2px dashed #B8C6D6; }
-  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } }
+  .shelf-tpl { background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
+  .shelf-tpl .rows { margin-top: auto; }
+  .shelf-tpl .rows a { padding: 14px 4px; }
+  .shelf > .shelf-lab { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 14px clamp(24px, 4vw, 56px); border: 2px dashed #B8C6D6; }
+  .shelf-lab .shelf-top { margin-bottom: 14px; justify-content: flex-start; }
+  .shelf-lab p { max-width: 36em; }
+  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } .shelf > .shelf-lab { grid-template-columns: 1fr; } }
   .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 48px); }
   .principles > div { border-top: 2px solid var(--ink); padding-top: 20px; }
   .principles p { margin-top: 10px; }

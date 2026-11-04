@@ -1,0 +1,9 @@
+---
+import TemplatePage from '../../components/TemplatePage.astro';
+import { templates } from '../../data/templates.js';
+export function getStaticPaths() {
+  return templates.map((tpl) => ({ params: { slug: tpl.slug.en }, props: { tpl } }));
+}
+const { tpl } = Astro.props;
+---
+<TemplatePage tpl={tpl} lang="en" />

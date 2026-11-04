@@ -4,6 +4,7 @@ import Mark from '../components/Mark.astro';
 import Intro from '../components/Intro.astro';
 import { SITE, NAV, alternateOf } from '../data/site.js';
 import { kits, kitPath } from '../data/kits.js';
+import { templates, templatePath } from '../data/templates.js';
 
 const {
   title,
@@ -118,6 +119,7 @@ const t = isTr
           <ul>
             <li><a href={isTr ? '/tr/klinik-kitleri/' : '/clinic-kits/'}>{t.allKits}</a></li>
             {kits.map((k) => <li><a href={kitPath(k, lang)}>{k.name[lang]}</a></li>)}
+            {templates.map((x) => <li><a href={templatePath(x, lang)}>{x.price ? x.name[lang] : `${x.name[lang]} ${x.tagline[lang]}`}</a></li>)}
             <li><a href="/webflow-apps/flowdeck/">Flowdeck</a></li>
           </ul>
         </div>

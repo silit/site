@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Bench from '../components/Bench.astro';
 import { getCollection } from 'astro:content';
 import { kits, kitPath } from '../data/kits.js';
+import { templates, templatePath } from '../data/templates.js';
 import { SITE } from '../data/site.js';
 
 const guides = (await getCollection('guides')).sort((a, b) => b.data.date - a.data.date).slice(0, 3);
@@ -17,7 +18,7 @@ const jsonld = [{
 ---
 <Base
   title="Silit Labs: ready-made tools for clinics and Webflow studios"
-  description="Silit Labs makes patient document kits for dental, aesthetic and hair transplant clinics, and Flowdeck, a monitoring panel for Webflow agencies. Built in Antalya."
+  description="Silit Labs makes patient document kits and a lead tracker for clinics, Curavia, a Webflow template for health tourism clinics, and Flowdeck, a monitoring panel for Webflow agencies."
   intro={true}
   jsonld={jsonld}
 >
@@ -25,7 +26,7 @@ const jsonld = [{
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <h1 class="hero-in"><span>Ready-made tools</span> <span>for clinics and</span> <span>Webflow studios</span></h1>
-        <p class="lead hero-in" style="--d:.25s">We work in clinic marketing and on Webflow sites every day. Silit Labs turns the documents and dashboards we needed into products you can use today.</p>
+        <p class="lead hero-in" style="--d:.25s">We work in clinic marketing and on Webflow sites every day. Silit Labs turns the documents, spreadsheets and dashboards we needed into products you can use today.</p>
         <div class="actions hero-in" style="--d:.4s">
           <a class="btn" href="/clinic-kits/">Browse clinic kits</a>
           <a class="btn quiet" href="/webflow-apps/flowdeck/">See Flowdeck</a>
@@ -38,7 +39,7 @@ const jsonld = [{
   <section class="section" id="products">
     <div class="wrap">
       <div class="section-head">
-        <h2>Two product lines, with more on the bench</h2>
+        <h2>Three product lines, with more on the bench</h2>
         <p>Each one started as something we built for our own work. Pick the line that fits yours.</p>
       </div>
       <div class="shelf">
@@ -57,10 +58,20 @@ const jsonld = [{
           <p class="muted">One screen for every Webflow site you manage: uptime, SSL, unpublished changes, quiet forms, SEO gaps and a weekly summary, with client reports you can send as a link.</p>
           <img src="/images/flowdeck/dashboard.webp" width="1280" height="846" alt="Flowdeck dashboard listing several Webflow sites with their status" loading="lazy" />
         </article>
+        <article class="shelf-tpl">
+          <div class="shelf-top"><span class="tag">New</span><a class="shelf-link" href="/templates/">All templates</a></div>
+          <h3><a href="/templates/">Templates</a></h3>
+          <p class="muted">A lead tracking spreadsheet for Google Sheets and Excel, and a Webflow template for clinics that treat patients from abroad.</p>
+          <ul class="rows">
+            {templates.map((t) => <li><a href={templatePath(t, 'en')}><span>{t.name.en}<span class="meta"> &nbsp;{t.tagline.en}</span></span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">Soon</span>}</a></li>)}
+          </ul>
+        </article>
         <article class="shelf-lab">
-          <div class="shelf-top"><span class="tag soon">In progress</span></div>
-          <h3><a href="/lab/">In the lab</a></h3>
-          <p class="muted">A treatment plan presenter for clinics, kits for more clinic types, and tools for Framer. See what is on the bench.</p>
+          <div>
+            <div class="shelf-top"><span class="tag soon">In progress</span></div>
+            <h3><a href="/lab/">In the lab</a></h3>
+          </div>
+          <p class="muted">Curavia on the Webflow Marketplace, a treatment plan presenter for clinics, kits for more clinic types and tools for Framer. <a class="link" href="/lab/">See what is on the bench</a>.</p>
         </article>
       </div>
     </div>
@@ -117,7 +128,7 @@ const jsonld = [{
   }
   @keyframes hero-rise { from { opacity: 0; transform: translateY(24px); } }
 
-  .shelf { display: grid; grid-template-columns: 7fr 5fr; grid-template-rows: auto auto; gap: 20px; }
+  .shelf { display: grid; grid-template-columns: 7fr 5fr; grid-template-rows: auto auto auto; gap: 20px; }
   .shelf > article { border-radius: 26px; padding: clamp(22px, 3vw, 36px); display: flex; flex-direction: column; gap: 14px; min-width: 0; }
   .shelf h3 { font-size: clamp(28px, 3vw, 40px); font-stretch: 88%; }
   .shelf h3 a { text-decoration: none; }
@@ -127,9 +138,13 @@ const jsonld = [{
   .shelf-kits { grid-row: span 2; background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
   .shelf-kits img { border-radius: 16px; margin: 8px 0 4px; }
   .shelf-fd img { border-radius: 14px; margin-top: auto; }
-  .shelf-lab { border: 2px dashed #B8C6D6; }
-  .shelf-lab p { max-width: 30em; }
-  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } }
+  .shelf-tpl { background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
+  .shelf-tpl .rows { margin-top: auto; }
+  .shelf-tpl .rows a { padding: 14px 4px; }
+  .shelf > .shelf-lab { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 14px clamp(24px, 4vw, 56px); border: 2px dashed #B8C6D6; }
+  .shelf-lab .shelf-top { margin-bottom: 14px; justify-content: flex-start; }
+  .shelf-lab p { max-width: 36em; }
+  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } .shelf > .shelf-lab { grid-template-columns: 1fr; } }
 
   .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 48px); }
   .principles > div { border-top: 2px solid var(--ink); padding-top: 20px; }

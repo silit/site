@@ -17,12 +17,14 @@ export const SITE = {
 export const NAV = {
   en: [
     { href: '/clinic-kits/', label: 'Clinic kits' },
+    { href: '/templates/', label: 'Templates' },
     { href: '/webflow-apps/', label: 'Webflow apps' },
     { href: '/guides/', label: 'Guides' },
     { href: '/about/', label: 'About' }
   ],
   tr: [
     { href: '/tr/klinik-kitleri/', label: 'Klinik kitleri' },
+    { href: '/tr/sablonlar/', label: 'Şablonlar' },
     { href: '/tr/kurulum-hizmeti/', label: 'Kurulum hizmeti' },
     { href: '/webflow-apps/flowdeck/', label: 'Flowdeck', hreflang: 'en' }
   ]
@@ -34,7 +36,10 @@ export const PAIRS = [
   ['/clinic-kits/', '/tr/klinik-kitleri/'],
   ['/clinic-kits/dental-patient-kit/', '/tr/klinik-kitleri/dis-klinigi-hasta-kiti/'],
   ['/clinic-kits/aesthetic-clinic-kit/', '/tr/klinik-kitleri/estetik-klinik-kiti/'],
-  ['/clinic-kits/hair-transplant-clinic-kit/', '/tr/klinik-kitleri/sac-ekimi-klinik-kiti/']
+  ['/clinic-kits/hair-transplant-clinic-kit/', '/tr/klinik-kitleri/sac-ekimi-klinik-kiti/'],
+  ['/templates/', '/tr/sablonlar/'],
+  ['/templates/clinic-lead-tracker/', '/tr/sablonlar/klinik-lead-takip-tablosu/'],
+  ['/templates/curavia/', '/tr/sablonlar/curavia/']
 ];
 
 export const alternateOf = (path) => {
@@ -52,6 +57,13 @@ export const categories = [
     href: '/clinic-kits/',
     name: 'Clinic kits',
     line: 'Patient document kits for dental, aesthetic and hair transplant clinics.',
+    status: 'live'
+  },
+  {
+    id: 'templates',
+    href: '/templates/',
+    name: 'Templates',
+    line: 'Spreadsheet and Webflow templates for clinics.',
     status: 'live'
   },
   {
