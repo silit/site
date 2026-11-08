@@ -3,11 +3,19 @@
 // and its 1200x630 share image in public/images/og/, then add its EN/TR pair to PAIRS in src/data/site.js.
 // The EN and TR pages, the hub, the home shelf and the footer all read from this file.
 //
-// A template with `price` and `etsy` is on sale. One with `preview` and `statusNote` is not on sale yet:
-// its page shows the live preview and the status instead of a price.
+// A template with `price` and a buy link (`etsy`, or `store` for anywhere else) is on sale. One with
+// `preview` and `statusNote` is not on sale yet: its page shows the live preview and the status instead
+// of a price, and `statusShort` is the short tag used in lists.
 
 const etsy = (id) => `https://www.etsy.com/listing/${id}`;
 const pic = (src, w, h, en, tr) => ({ src, w, h, alt: { en, tr } });
+
+// Where a template is sold. Etsy by default; a template sold somewhere else sets `store: { url, text }`.
+const ETSY_TEXT = { en: { on: 'on Etsy', buy: 'Buy on Etsy' }, tr: { on: "Etsy'de", buy: "Etsy'de satın al" } };
+export const WEBFLOW_TEXT = { en: { on: 'on Webflow', buy: 'Get it on Webflow' }, tr: { on: "Webflow'da", buy: "Webflow'dan alın" } };
+export const buyUrl = (t) => (t.store ? t.store.url : t.etsy);
+export const storeText = (t, lang) => (t.store ? t.store.text : ETSY_TEXT)[lang];
+export const isOnSale = (t) => Boolean(t.price && buyUrl(t));
 
 // Kinds group templates on the hub. Add a kind here before adding the first template of a new kind.
 export const KINDS = [
@@ -216,15 +224,18 @@ export const templates = [
       tr: 'Yurt dışından hasta ağırlayan diş, saç ekimi ve yüz estetiği klinikleri için premium bir Webflow şablonu. Hastaların karar vermeden önce sorduğu soruları yanıtlar: ne kadar tutar, kaç gün sürer, iyileşirken neler yapılabilir ve bir sorun çıkarsa ne olur. Hub ile ya da kendi renkleri, içeriği ve planlama aracı olan Diş, Saç veya Estetik ana sayfasıyla başlayın.'
     },
     facts: {
-      en: ['4 homes and 17 inner pages', '3 sector themes and tools', '6 CMS collections', 'No custom code'],
-      tr: ['4 ana sayfa ve 17 iç sayfa', '3 sektör teması ve aracı', '6 CMS koleksiyonu', 'Özel kod yok']
+      en: ['4 homes and 18 inner pages', '3 sector themes and tools', '6 CMS collections', 'No custom code'],
+      tr: ['4 ana sayfa ve 18 iç sayfa', '3 sektör teması ve aracı', '6 CMS koleksiyonu', 'Özel kod yok']
     },
     highlights: {
       en: ['Dental, Hair and Aesthetic homes, each in its own colours', 'Smile plan builder, graft estimator and face map', 'Theme chips that recolour a page in one click', 'Price tabs in GBP, EUR and USD'],
       tr: ['Kendi renkleriyle Diş, Saç ve Estetik ana sayfaları', 'Gülüş planı, greft hesaplayıcı ve yüz haritası', 'Sayfayı tek tıkla yeniden renklendiren tema çipleri', 'GBP, EUR ve USD fiyat sekmeleri']
     },
     preview: 'https://curavia-56d980.webflow.io',
-    statusNote: { en: 'Coming soon to the Webflow Marketplace', tr: "Yakında Webflow Marketplace'te" },
+    statusNote: { en: 'Submitted to the Webflow Marketplace, in review', tr: "Webflow Marketplace'e gönderildi, onay bekliyor" },
+    statusShort: { en: 'In review', tr: 'Onay bekliyor' },
+    // When Webflow lists Curavia, add `price: 99` and set store.url to the Marketplace page: every page switches to the buy button.
+    store: { url: '', text: WEBFLOW_TEXT },
     previewNote: {
       en: 'Clinic names, doctors, photos, prices, ratings and patient stories in the preview are sample content.',
       tr: 'Önizlemedeki klinik adı, hekimler, fotoğraflar, fiyatlar, puanlar ve hasta hikayeleri örnek içeriktir.'
@@ -359,8 +370,8 @@ export const templates = [
       {
         h: { en: 'What is in the template', tr: 'Şablonda neler var' },
         items: {
-          en: ['4 homes: Hub, Dental, Hair and Aesthetic', '17 inner pages, from Prices and Your Trip to Guarantee and Refer a Friend', '6 CMS collections, each with its template page', 'Style guide, licences and changelog pages', 'An instructions page with a 3-step guide for a one-specialty clinic and what to replace before launch'],
-          tr: ['4 ana sayfa: Hub, Diş, Saç ve Estetik', 'Fiyatlar ve seyahat planından garanti ve tavsiye programına 17 iç sayfa', 'Her biri kendi şablon sayfasıyla 6 CMS koleksiyonu', 'Stil rehberi, lisanslar ve sürüm notları sayfaları', 'Tek alanlı klinik için 3 adımlık rehber ve yayından önce değiştirilecekleri listeleyen talimatlar sayfası']
+          en: ['4 homes: Hub, Dental, Hair and Aesthetic', '18 inner pages, from Prices and Your Trip to Guarantee, Refer a Friend and Privacy Policy', '6 CMS collections, each with its template page', 'Style guide, licences and changelog pages, plus 404 and password pages', 'An instructions page with a 3-step guide for a one-specialty clinic and what to replace before launch'],
+          tr: ['4 ana sayfa: Hub, Diş, Saç ve Estetik', 'Fiyatlar ve seyahat planından garanti, tavsiye programı ve gizlilik politikasına 18 iç sayfa', 'Her biri kendi şablon sayfasıyla 6 CMS koleksiyonu', 'Stil rehberi, lisanslar ve sürüm notları sayfaları; ayrıca 404 ve şifre sayfaları', 'Tek alanlı klinik için 3 adımlık rehber ve yayından önce değiştirilecekleri listeleyen talimatlar sayfası']
         }
       },
       {
@@ -373,7 +384,7 @@ export const templates = [
     ],
     faq: {
       en: [
-        ['When can I get Curavia?', 'Curavia is coming soon to the Webflow Marketplace. You can explore the full live preview today. Write to info@silitlabs.com if you would like to hear when it is listed.'],
+        ['When can I get Curavia?', 'Curavia has been submitted to the Webflow Marketplace and is in review. You can explore the full live preview today. Write to info@silitlabs.com if you would like to hear the day it is listed.'],
         ['Who is it for?', 'Clinics that treat international patients for dental work, hair transplants or facial aesthetics, and the designers and agencies who build their sites.'],
         ['Can I use it for only one specialty?', 'Yes. Make the Dental, Hair or Aesthetic home your home page and follow the three steps on the Instructions page: set the home, apply its theme to every page and remove what you do not offer. Colours, fonts and tools follow.'],
         ['Can visitors switch between specialties?', 'On the Hub, theme chips recolour the page in one click and the Homes menu links to each specialty home. A clinic with one specialty can remove both.'],
@@ -381,7 +392,7 @@ export const templates = [
         ['Do I need to write code?', 'No. Everything is built with native Webflow elements, CMS collections and interactions, so you edit it all in the Designer and the Editor.']
       ],
       tr: [
-        ["Curavia'yı ne zaman alabilirim?", "Curavia yakında Webflow Marketplace'te. Canlı önizlemenin tamamını bugün inceleyebilirsiniz. Listelendiğinde haber almak isterseniz info@silitlabs.com adresine yazın."],
+        ["Curavia'yı ne zaman alabilirim?", "Curavia Webflow Marketplace'e gönderildi ve onay bekliyor. Canlı önizlemenin tamamını bugün inceleyebilirsiniz. Listelendiği gün haber almak isterseniz info@silitlabs.com adresine yazın."],
         ['Kimler için?', 'Diş tedavisi, saç ekimi ya da yüz estetiği için yurt dışından hasta ağırlayan klinikler ve bu kliniklerin sitelerini kuran tasarımcılar ve ajanslar için.'],
         ['Sadece tek bir alan için kullanabilir miyim?', 'Evet. Diş, Saç ya da Estetik ana sayfasını ana sayfanız yapın ve talimatlar sayfasındaki üç adımı izleyin: ana sayfayı ayarlayın, temasını tüm sayfalara uygulayın ve sunmadıklarınızı kaldırın. Renkler, fontlar ve araçlar buna uyar.'],
         ['Ziyaretçiler alanlar arasında geçiş yapabilir mi?', "Hub'da tema çipleri sayfayı tek tıkla yeniden renklendirir, Homes menüsü her alanın ana sayfasına bağlanır. Tek alanda çalışan klinik ikisini de kaldırabilir."],

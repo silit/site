@@ -54,7 +54,7 @@ const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit L
           <h3><a href="/tr/sablonlar/">Şablonlar</a></h3>
           <p class="muted">Google Sheets ve Excel için lead takip tablosu ve yurt dışından hasta ağırlayan klinikler için Webflow şablonu.</p>
           <ul class="rows">
-            {templates.map((t) => <li><a href={templatePath(t, 'tr')}><span>{t.name.tr}</span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">Yakında</span>}</a></li>)}
+            {templates.map((t) => <li><a href={templatePath(t, 'tr')}><span>{t.name.tr}</span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">{t.statusShort ? t.statusShort.tr : 'Yakında'}</span>}</a></li>)}
           </ul>
         </article>
         <article class="shelf-lab">

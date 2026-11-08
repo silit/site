@@ -1,9 +1,9 @@
 ---
 // One page per template, in English or Turkish, generated from src/data/templates.js.
-// A template on sale shows its price and Etsy link; one that is not on sale yet shows its
+// A template on sale shows its price and buy link (Etsy or its own store); one that is not on sale yet shows its
 // live preview and status instead, and gets CreativeWork structured data without a price.
 import Base from '../layouts/Base.astro';
-import { templates, templatePath } from '../data/templates.js';
+import { templates, templatePath, kindOf, buyUrl, storeText, isOnSale } from '../data/templates.js';
 import { SITE } from '../data/site.js';
 
 const { tpl, lang = 'en' } = Astro.props;
@@ -11,15 +11,17 @@ const tr = lang === 'tr';
 const path = templatePath(tpl, lang);
 const hub = tr ? '/tr/sablonlar/' : '/templates/';
 const home = tr ? '/tr/' : '/';
-const onSale = Boolean(tpl.price && tpl.etsy);
+const onSale = isOnSale(tpl);
+const buy = buyUrl(tpl);
+const store = storeText(tpl, lang);
 const others = templates.filter((x) => x.id !== tpl.id);
 const ask = `mailto:${SITE.email}?subject=${encodeURIComponent(tpl.name.en)}`;
 const fig = tpl.light ? 'figure light' : 'figure';
 const List = tpl.overview.numbered ? 'ol' : 'ul';
 
 const T = tr
-  ? { home: 'Ana sayfa', hub: 'Şablonlar', priceNote: "Etsy'de", buy: "Etsy'de satın al", preview: 'Canlı önizlemeyi açın', ask: `${tpl.name.tr} hakkında yazın`, faqH: 'Sık sorulanlar', otherH: 'Diğer şablonlar', relatedH: 'İlgili', soon: 'Yakında' }
-  : { home: 'Home', hub: 'Templates', priceNote: 'on Etsy', buy: 'Buy on Etsy', preview: 'Open the live preview', ask: `Ask about ${tpl.name.en}`, faqH: 'Good to know', otherH: 'Other templates', relatedH: 'Related', soon: 'Soon' };
+  ? { home: 'Ana sayfa', hub: 'Şablonlar', priceNote: store.on, buy: store.buy, preview: 'Canlı önizlemeyi açın', ask: `${tpl.name.tr} hakkında yazın`, faqH: 'Sık sorulanlar', otherH: 'Diğer şablonlar', relatedH: 'İlgili', soon: 'Yakında' }
+  : { home: 'Home', hub: 'Templates', priceNote: store.on, buy: store.buy, preview: 'Open the live preview', ask: `Ask about ${tpl.name.en}`, faqH: 'Good to know', otherH: 'Other templates', relatedH: 'Related', soon: 'Soon' };
 
 // Alternate section backgrounds after the sheet-coloured overview; a dark section breaks the rhythm.
 let sheet = true;
@@ -42,8 +44,8 @@ const main = onSale
       image: images,
       url,
       brand: { '@type': 'Brand', name: 'Silit Labs' },
-      category: tr ? 'Tablo şablonları' : 'Spreadsheet templates',
-      offers: { '@type': 'Offer', price: String(tpl.price), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: tpl.etsy, seller: { '@id': `${SITE.url}/#org` } }
+      category: kindOf(tpl).name[lang],
+      offers: { '@type': 'Offer', price: String(tpl.price), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: buy, seller: { '@id': `${SITE.url}/#org` } }
     }
   : {
       '@type': 'CreativeWork',
@@ -85,7 +87,7 @@ const isExternal = (href) => href.startsWith('http');
           {onSale ? (
             <div class="buy">
               <span class="price">${tpl.price}<small>{T.priceNote}</small></span>
-              <a class="btn" href={tpl.etsy} rel="noopener">{T.buy}</a>
+              <a class="btn" href={buy} rel="noopener">{T.buy}</a>
               <a class="btn quiet" href="#inside">{tpl.jump[lang]}</a>
             </div>
           ) : (
@@ -143,7 +145,7 @@ const isExternal = (href) => href.startsWith('http');
       {onSale ? (
         <div class="buy">
           <span class="price">${tpl.price}<small>{T.priceNote}</small></span>
-          <a class="btn" href={tpl.etsy} rel="noopener">{T.buy}</a>
+          <a class="btn" href={buy} rel="noopener">{T.buy}</a>
         </div>
       ) : (
         <div class="buy">
@@ -165,7 +167,7 @@ const isExternal = (href) => href.startsWith('http');
           <h3>{T.otherH}</h3>
           <ul class="rows">
             {others.map((o) => (
-              <li><a href={templatePath(o, lang)}><span>{o.name[lang]}<span class="meta"> &nbsp;{o.tagline[lang]}</span></span>{o.price ? <span class="p">${o.price}</span> : <span class="tag soon">{T.soon}</span>}</a></li>
+              <li><a href={templatePath(o, lang)}><span>{o.name[lang]}<span class="meta"> &nbsp;{o.tagline[lang]}</span></span>{o.price ? <span class="p">${o.price}</span> : <span class="tag soon">{o.statusShort ? o.statusShort[lang] : T.soon}</span>}</a></li>
             ))}
           </ul>
         </div>

@@ -2,7 +2,7 @@
 // Templates hub, in English or Turkish. Templates are grouped by kind (see KINDS in data/templates.js),
 // so a new spreadsheet or Webflow template appears here as soon as it is added to the data file.
 import Base from '../layouts/Base.astro';
-import { KINDS, templates, templatePath } from '../data/templates.js';
+import { KINDS, templates, templatePath, buyUrl, storeText, isOnSale } from '../data/templates.js';
 import { SITE } from '../data/site.js';
 
 const { lang = 'en' } = Astro.props;
@@ -18,8 +18,8 @@ const T = tr
       h1: 'Kliniğiniz için hazır tablolar ve web siteleri',
       lead: 'Klinik pazarlamasında her gün yaptığımız işlerden doğan şablonlar: ekibinizin her gün doldurduğu tablolar ve yurt dışından hasta ağırlayan klinikler için hazırlanmış Webflow siteleri.',
       langNote: 'Şablonların dili İngilizce; tüm metinler düzenlenebilir.',
-      view: 'Şablonu inceleyin', etsy: "Etsy'de", buy: "Etsy'de satın al", preview: 'Canlı önizleme',
-      nextH: 'Sırada ne var',nextP: 'Curavia, Webflow Marketplace incelemesine hazırlanıyor. Üzerinde çalıştığımız diğer işler',
+      view: 'Şablonu inceleyin', preview: 'Canlı önizleme',
+      nextH: 'Sırada ne var',nextP: "Curavia Webflow Marketplace'e gönderildi, onay bekliyor. Üzerinde çalıştığımız diğer işler",
       nextLink: 'lab sayfasında (EN)',
       bandH: 'Kliniğinizin her ay yeniden kurduğu bir tablo ya da sayfa mı var? Bize yazın.'
     }
@@ -30,8 +30,8 @@ const T = tr
       h1: 'Spreadsheets and websites, ready for your clinic',
       lead: 'Templates that grew out of daily work in clinic marketing: spreadsheets your team fills in every day, and Webflow sites made for clinics that treat patients from abroad.',
       langNote: '',
-      view: 'View the template', etsy: 'on Etsy', buy: 'Buy on Etsy', preview: 'Live preview',
-      nextH: 'Next on the bench', nextP: 'Curavia, now with Dental, Hair and Aesthetic homes, is being prepared for the Webflow Marketplace review. See what else we are working on in',
+      view: 'View the template', preview: 'Live preview',
+      nextH: 'Next on the bench', nextP: 'Curavia, with its Hub and Dental, Hair and Aesthetic homes, has been submitted to the Webflow Marketplace and is in review. See what else we are working on in',
       nextLink: 'the lab',
       bandH: 'Is there a spreadsheet or page your clinic keeps rebuilding? Tell us.'
     };
@@ -76,11 +76,11 @@ const jsonld = [
                 <span class="kicker">{t.audience[lang]}</span>
                 <h3><a href={templatePath(t, lang)}>{t.name[lang]}</a></h3>
                 <ul class="hl">{t.highlights[lang].map((h) => <li>{h}</li>)}</ul>
-                {t.price ? (
+                {isOnSale(t) ? (
                   <div class="buy">
-                    <span class="price">${t.price}<small>{T.etsy}</small></span>
+                    <span class="price">${t.price}<small>{storeText(t, lang).on}</small></span>
                     <a class="btn" href={templatePath(t, lang)}>{T.view}</a>
-                    <a class="link" href={t.etsy} rel="noopener">{T.buy}</a>
+                    <a class="link" href={buyUrl(t)} rel="noopener">{storeText(t, lang).buy}</a>
                   </div>
                 ) : (
                   <div class="buy">

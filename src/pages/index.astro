@@ -63,7 +63,7 @@ const jsonld = [{
           <h3><a href="/templates/">Templates</a></h3>
           <p class="muted">A lead tracking spreadsheet for Google Sheets and Excel, and a Webflow template for clinics that treat patients from abroad.</p>
           <ul class="rows">
-            {templates.map((t) => <li><a href={templatePath(t, 'en')}><span>{t.name.en}<span class="meta"> &nbsp;{t.tagline.en}</span></span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">Soon</span>}</a></li>)}
+            {templates.map((t) => <li><a href={templatePath(t, 'en')}><span>{t.name.en}<span class="meta"> &nbsp;{t.tagline.en}</span></span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">{t.statusShort ? t.statusShort.en : 'Soon'}</span>}</a></li>)}
           </ul>
         </article>
         <article class="shelf-lab">
@@ -71,7 +71,7 @@ const jsonld = [{
             <div class="shelf-top"><span class="tag soon">In progress</span></div>
             <h3><a href="/lab/">In the lab</a></h3>
           </div>
-          <p class="muted">Curavia on the Webflow Marketplace, a treatment plan presenter for clinics, kits for more clinic types and tools for Framer. <a class="link" href="/lab/">See what is on the bench</a>.</p>
+          <p class="muted">A treatment plan presenter for clinics, kits for more clinic types and tools for Framer, while Curavia is in review on the Webflow Marketplace. <a class="link" href="/lab/">See what is on the bench</a>.</p>
         </article>
       </div>
     </div>
