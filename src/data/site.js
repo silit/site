@@ -82,3 +82,25 @@ export const categories = [
     status: 'soon'
   }
 ];
+
+// Webflow apps that guides can link to (guide frontmatter `product: <id>`).
+export const apps = [
+  {
+    id: 'ai-seo-deck',
+    name: 'AI SEO Deck',
+    lead: 'See whether ChatGPT, Google AI Overviews, AI Mode, Gemini, Claude and Grok recommend you for the keywords you track, then fix your Webflow pages in one click. Free for one site.',
+    href: '/webflow-apps/ai-seo-deck/',
+    img: '/images/ai-seo-deck/overview.webp',
+    og: '/images/og/ai-seo-deck.jpg',
+    cta: 'See AI SEO Deck'
+  },
+  {
+    id: 'flowdeck',
+    name: 'Flowdeck',
+    lead: 'One screen for every Webflow site you manage: uptime, SSL, unpublished changes, quiet forms, CMS limits and SEO gaps. Free for one site.',
+    href: '/webflow-apps/flowdeck/',
+    img: '/images/flowdeck/dashboard.webp',
+    og: '/images/og/flowdeck.jpg',
+    cta: 'See Flowdeck'
+  }
+];

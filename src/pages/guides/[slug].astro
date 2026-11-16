@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 import { kits, kitPath } from '../../data/kits.js';
 import { templates, templatePath } from '../../data/templates.js';
-import { SITE } from '../../data/site.js';
+import { SITE, apps } from '../../data/site.js';
 
 export async function getStaticPaths() {
   const guides = await getCollection('guides');
@@ -11,10 +11,13 @@ export async function getStaticPaths() {
 }
 const { g } = Astro.props;
 const { Content } = await render(g);
-// The product a guide links to can be a clinic kit or a template.
+// The product a guide links to can be a clinic kit, a template or a Webflow app.
 const kit = kits.find((k) => k.id === g.data.product);
 const tpl = templates.find((t) => t.id === g.data.product);
-const product = kit
+const app = apps.find((x) => x.id === g.data.product);
+const product = app
+  ? { name: app.name, lead: app.lead, href: app.href, img: app.img, og: app.og, cta: app.cta }
+  : kit
   ? { name: kit.name.en, lead: kit.lead.en, href: kitPath(kit, 'en'), img: kit.img.hero, og: kit.og, cta: 'See the kit' }
   : tpl
     ? { name: tpl.name.en, lead: tpl.lead.en, href: templatePath(tpl, 'en'), img: tpl.img.hero.src, og: tpl.og, cta: 'See the template' }
