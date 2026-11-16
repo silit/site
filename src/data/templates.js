@@ -33,14 +33,15 @@ export const KINDS = [
     anchor: 'webflow',
     name: { en: 'Webflow templates', tr: 'Webflow şablonları' },
     line: {
-      en: 'Complete Webflow sites for clinics that treat patients from abroad, built with native Webflow tools.',
-      tr: "Yurt dışından hasta ağırlayan klinikler için Webflow'un kendi araçlarıyla kurulmuş eksiksiz siteler."
+      en: 'Complete Webflow sites built with native Webflow tools: Curavia for clinics that treat patients from abroad, Sessa for coaches and advisors.',
+      tr: "Webflow'un kendi araçlarıyla kurulmuş eksiksiz siteler: yurt dışından hasta ağırlayan klinikler için Curavia, koçlar ve danışmanlar için Sessa."
     }
   }
 ];
 
 const LT = '/images/templates/lead-tracker';
 const CV = '/images/templates/curavia';
+const SS = '/images/templates/sessa';
 
 export const templates = [
   {
@@ -232,8 +233,8 @@ export const templates = [
       tr: ['Kendi renkleriyle Diş, Saç ve Estetik ana sayfaları', 'Gülüş planı, greft hesaplayıcı ve yüz haritası', 'Sayfayı tek tıkla yeniden renklendiren tema çipleri', 'GBP, EUR ve USD fiyat sekmeleri']
     },
     preview: 'https://curavia-56d980.webflow.io',
-    statusNote: { en: 'Submitted to the Webflow Marketplace, in review', tr: "Webflow Marketplace'e gönderildi, onay bekliyor" },
-    statusShort: { en: 'In review', tr: 'Onay bekliyor' },
+    statusNote: { en: 'Coming soon to the Webflow Marketplace', tr: "Yakında Webflow Marketplace'te" },
+    statusShort: { en: 'Coming soon', tr: 'Yakında' },
     // When Webflow lists Curavia, add `price: 99` and set store.url to the Marketplace page: every page switches to the buy button.
     store: { url: '', text: WEBFLOW_TEXT },
     previewNote: {
@@ -384,7 +385,7 @@ export const templates = [
     ],
     faq: {
       en: [
-        ['When can I get Curavia?', 'Curavia has been submitted to the Webflow Marketplace and is in review. You can explore the full live preview today. Write to info@silitlabs.com if you would like to hear the day it is listed.'],
+        ['When can I get Curavia?', 'Curavia is coming to the Webflow Marketplace soon. You can explore the full live preview today. Write to info@silitlabs.com if you would like to hear the day it is listed.'],
         ['Who is it for?', 'Clinics that treat international patients for dental work, hair transplants or facial aesthetics, and the designers and agencies who build their sites.'],
         ['Can I use it for only one specialty?', 'Yes. Make the Dental, Hair or Aesthetic home your home page and follow the three steps on the Instructions page: set the home, apply its theme to every page and remove what you do not offer. Colours, fonts and tools follow.'],
         ['Can visitors switch between specialties?', 'On the Hub, theme chips recolour the page in one click and the Homes menu links to each specialty home. A clinic with one specialty can remove both.'],
@@ -392,7 +393,7 @@ export const templates = [
         ['Do I need to write code?', 'No. Everything is built with native Webflow elements, CMS collections and interactions, so you edit it all in the Designer and the Editor.']
       ],
       tr: [
-        ["Curavia'yı ne zaman alabilirim?", "Curavia Webflow Marketplace'e gönderildi ve onay bekliyor. Canlı önizlemenin tamamını bugün inceleyebilirsiniz. Listelendiği gün haber almak isterseniz info@silitlabs.com adresine yazın."],
+        ["Curavia'yı ne zaman alabilirim?", "Curavia yakında Webflow Marketplace'te. Canlı önizlemenin tamamını bugün inceleyebilirsiniz. Listelendiği gün haber almak isterseniz info@silitlabs.com adresine yazın."],
         ['Kimler için?', 'Diş tedavisi, saç ekimi ya da yüz estetiği için yurt dışından hasta ağırlayan klinikler ve bu kliniklerin sitelerini kuran tasarımcılar ve ajanslar için.'],
         ['Sadece tek bir alan için kullanabilir miyim?', 'Evet. Diş, Saç ya da Estetik ana sayfasını ana sayfanız yapın ve talimatlar sayfasındaki üç adımı izleyin: ana sayfayı ayarlayın, temasını tüm sayfalara uygulayın ve sunmadıklarınızı kaldırın. Renkler, fontlar ve araçlar buna uyar.'],
         ['Ziyaretçiler alanlar arasında geçiş yapabilir mi?', "Hub'da tema çipleri sayfayı tek tıkla yeniden renklendirir, Homes menüsü her alanın ana sayfasına bağlanır. Tek alanda çalışan klinik ikisini de kaldırabilir."],
@@ -403,6 +404,166 @@ export const templates = [
     related: {
       en: [['Open the live preview', 'https://curavia-56d980.webflow.io'], ['AI SEO Deck: see whether AI recommends your clinic', '/webflow-apps/ai-seo-deck/'], ['All Webflow apps', '/webflow-apps/']],
       tr: [['Canlı önizlemeyi açın', 'https://curavia-56d980.webflow.io'], ['AI SEO Deck: yapay zeka kliniğinizi öneriyor mu? (EN)', '/webflow-apps/ai-seo-deck/', 'en'], ['Klinik kitleri', '/tr/klinik-kitleri/']]
+    }
+  },
+  {
+    id: 'sessa',
+    kind: 'webflow',
+    slug: { en: 'sessa', tr: 'sessa' },
+    name: { en: 'Sessa', tr: 'Sessa' },
+    tagline: { en: 'Webflow template', tr: 'Webflow şablonu' },
+    audience: {
+      en: 'Webflow template for coaches and advisors',
+      tr: 'Koçlar ve danışmanlar için Webflow şablonu'
+    },
+    seoTitle: {
+      en: 'Sessa: Webflow Template for Coaches, Therapists and Advisors',
+      tr: 'Sessa: Koçlar, Terapistler ve Danışmanlar için Webflow Şablonu'
+    },
+    seoDesc: {
+      en: 'Webflow template for coaches, nutritionists, therapists and financial planners: four homes with their own 3D hero, colours and display font, a booking card, and programs and posts in the CMS.',
+      tr: "Koçlar, beslenme uzmanları, terapistler ve finansal planlamacılar için Webflow şablonu: kendi 3D hero sahnesi, renkleri ve başlık fontu olan dört ana sayfa, randevu kartı, CMS'te programlar ve yazılar."
+    },
+    lead: {
+      en: 'A Webflow template for people who sell their time and expertise: coaches, nutritionists, therapists and financial planners. Visitors see who you are, how you work and what it costs, then pick a time for a free intro call. Start from the home closest to your practice, each with its own colours, display font and 3D hero scene.',
+      tr: 'Zamanını ve uzmanlığını satanlar için bir Webflow şablonu: koçlar, beslenme uzmanları, terapistler ve finansal planlamacılar. Ziyaretçi kim olduğunuzu, nasıl çalıştığınızı ve ne kadar tuttuğunu görür, ardından ücretsiz bir tanışma görüşmesi için saat seçer. Pratiğinize en yakın ana sayfadan başlayın; her birinin kendi renkleri, başlık fontu ve 3D hero sahnesi var.'
+    },
+    facts: {
+      en: ['4 homes and 7 inner pages', '4 colour and font themes', '2 CMS collections', 'Calm for reduced motion'],
+      tr: ['4 ana sayfa ve 7 iç sayfa', '4 renk ve font teması', '2 CMS koleksiyonu', 'Hareket azaltma ayarına uyar']
+    },
+    highlights: {
+      en: ['Business, Nutrition, Therapy and Finance homes', 'A looping 3D hero scene for every niche', 'A booking card and an intake form', 'Programs and posts from the CMS'],
+      tr: ['İş koçluğu, Beslenme, Terapi ve Finans ana sayfaları', 'Her alan için döngüde oynayan 3D hero sahnesi', 'Randevu kartı ve ön görüşme formu', "CMS'ten programlar ve yazılar"]
+    },
+    preview: 'https://sessa.webflow.io',
+    statusNote: { en: 'Coming soon to the Webflow Marketplace', tr: "Yakında Webflow Marketplace'te" },
+    statusShort: { en: 'Coming soon', tr: 'Yakında' },
+    // When Webflow lists Sessa, add `price` and set store.url to the Marketplace page: every page switches to the buy button.
+    store: { url: '', text: WEBFLOW_TEXT },
+    previewNote: {
+      en: 'Names, photos, programs, prices and reviews in the preview are sample content.',
+      tr: 'Önizlemedeki isimler, fotoğraflar, programlar, fiyatlar ve yorumlar örnek içeriktir.'
+    },
+    light: true,
+    og: '/images/og/sessa.jpg',
+    img: {
+      hero: pic(`${SS}/homes.webp`, 760, 500, 'The four Sessa homes: Business coaching in navy and brass, Nutrition in sage, Therapy in lavender and Finance in deep green', 'Dört Sessa ana sayfası: lacivert ve pirinç İş koçluğu, adaçayı yeşili Beslenme, lavanta Terapi ve koyu yeşil Finans'),
+      card: pic(`${SS}/homes-card.webp`, 760, 420, 'The four Sessa homes for coaches, nutritionists, therapists and financial planners', 'Koçlar, beslenme uzmanları, terapistler ve finansal planlamacılar için dört Sessa ana sayfası')
+    },
+    overview: {
+      h: { en: 'Made for people who sell their time', tr: 'Zamanını satanlar için' },
+      p: {
+        en: 'A coaching or therapy site has one job: help a visitor trust you enough to book a first call. Sessa shows who you are, how you work and what it costs, and keeps the booking one tap away on every page.',
+        tr: 'Koçluk ya da terapi sitesinin tek bir işi var: ziyaretçinin ilk görüşmeyi ayırtacak kadar size güvenmesini sağlamak. Sessa kim olduğunuzu, nasıl çalıştığınızı ve ne kadar tuttuğunu gösterir; randevu her sayfada bir dokunuş uzakta kalır.'
+      },
+      items: {
+        en: [
+          ['Four homes, one system', 'Business coaching, Nutrition, Therapy and Finance homes, each with its own copy, hero scene and programs, all built from the same components.'],
+          ['A theme in one place', 'Colours and the display font come from one Theme variable collection with a mode per home, so a rebrand is a few edits in the Variables panel.'],
+          ['A 3D hero for every niche', 'Each home opens with a looping 3D scene in an arch, with its own play and pause button, next to a three slide hero you can swipe on touch.'],
+          ['Booking in a minute', 'The Book page pairs a booking card that shows the flow with an intake form. On your site, the card becomes your scheduler embed.'],
+          ['Programs from the CMS', 'Each program has its price, format, sessions, who it is for and what is included, with its own designed page.'],
+          ['Posts with their own covers', 'Articles carry a topic, practice, author and read time, with twelve unique 3D covers. Each home shows the newest posts for its practice.'],
+          ['Icons that draw themselves', 'Line icons draw on scroll and again on hover, statements reveal word by word and photos move with a light parallax.'],
+          ['A Homes menu everywhere', 'The navbar, the floating nav and the footer link all four homes, each name set in its own display font.'],
+          ['Back to top with progress', 'A Back to top button with a reading progress ring returns keyboard focus to the navigation.'],
+          ['Pages that do the selling', 'About, Programs, Pricing, FAQ, Resources and Contact, plus a full screen 404 and a styled password page.'],
+          ['Calm for reduced motion', 'Animations stop for visitors who ask their device for less motion, and the hero slider and video start paused for them.'],
+          ['Built the Webflow way', 'Variables for colours, fonts, sizes and radii, components for the navbar, floating nav, footer, booking card and buttons, and fonts uploaded in Site settings.']
+        ],
+        tr: [
+          ['Dört ana sayfa, tek sistem', 'Her biri kendi metni, hero sahnesi ve programlarıyla İş koçluğu, Beslenme, Terapi ve Finans ana sayfaları; hepsi aynı bileşenlerle kurulu.'],
+          ['Tema tek bir yerde', 'Renkler ve başlık fontu, her ana sayfa için bir modu olan tek bir Theme değişken koleksiyonundan gelir; marka değişikliği Variables panelinde birkaç düzenlemedir.'],
+          ['Her alana bir 3D hero', 'Her ana sayfa, kendi oynat ve duraklat düğmesiyle kemer içinde döngüde oynayan bir 3D sahneyle açılır; yanında dokunmatik ekranda kaydırılabilen üç slaytlık bir hero var.'],
+          ['Bir dakikada randevu', 'Book sayfası akışı gösteren bir randevu kartını ön görüşme formuyla eşleştirir. Kendi sitenizde kartın yerine randevu aracınızın kodu gelir.'],
+          ["CMS'ten programlar", 'Her programın fiyatı, formatı, seansları, kime uygun olduğu ve neleri kapsadığı yazar; her birinin kendi tasarlanmış sayfası var.'],
+          ['Kendi kapaklarıyla yazılar', 'Yazılarda konu, alan, yazar ve okuma süresi yer alır; on iki özgün 3D kapakla gelir. Her ana sayfa kendi alanının en yeni yazılarını gösterir.'],
+          ['Kendini çizen ikonlar', 'Çizgi ikonlar kaydırınca ve üzerine gelince yeniden çizilir, cümleler kelime kelime belirir, fotoğraflar hafif bir paralaksla hareket eder.'],
+          ['Her yerde Homes menüsü', 'Navbar, kayan menü ve footer dört ana sayfaya da bağlanır; her ad kendi başlık fontuyla yazılır.'],
+          ['İlerlemeli başa dön', 'Okuma ilerlemesi halkası olan Başa dön düğmesi, klavye odağını menüye geri getirir.'],
+          ['Satışı yapan sayfalar', 'Hakkında, Programlar, Fiyatlar, SSS, Kaynaklar ve İletişim; ayrıca tam ekran 404 ve tasarlanmış şifre sayfası.'],
+          ['Hareket azaltma ayarına saygı', 'Cihazından daha az hareket isteyen ziyaretçide animasyonlar durur; hero slaytı ve videosu da duraklatılmış açılır.'],
+          ["Webflow'a uygun kurulum", "Renkler, fontlar, boyutlar ve köşe yarıçapları için değişkenler; navbar, kayan menü, footer, randevu kartı ve düğmeler için bileşenler; fontlar Site settings'e yüklü."]
+        ]
+      }
+    },
+    sections: [
+      {
+        img: pic(`${SS}/display-fonts.webp`, 760, 475, 'Display fonts for the four Sessa homes: Newsreader, Fraunces, Petrona and Bodoni Moda', 'Dört Sessa ana sayfasının başlık fontları: Newsreader, Fraunces, Petrona ve Bodoni Moda'),
+        h: { en: 'One theme, a voice for each home', tr: 'Tek tema, her ana sayfaya bir ses' },
+        p: {
+          en: 'Each home takes its colours and display font from its own mode of one Theme collection: Newsreader for business coaching, Fraunces for nutrition, Petrona for therapy and Bodoni Moda for finance. Body text stays in Google Sans everywhere.',
+          tr: 'Her ana sayfa renklerini ve başlık fontunu tek bir Theme koleksiyonundaki kendi modundan alır: iş koçluğu için Newsreader, beslenme için Fraunces, terapi için Petrona, finans için Bodoni Moda. Gövde metni her yerde Google Sans olarak kalır.'
+        },
+        list: {
+          en: ['Business coaching: navy and brass', 'Nutrition: sage and terracotta', 'Therapy: lavender', 'Finance: deep green'],
+          tr: ['İş koçluğu: lacivert ve pirinç', 'Beslenme: adaçayı yeşili ve kiremit', 'Terapi: lavanta', 'Finans: koyu yeşil']
+        }
+      },
+      {
+        img: pic(`${SS}/business-home.webp`, 760, 475, 'Sessa business coaching home with the 3D hero scene in an arch, slide tabs and a pause button', 'Kemer içindeki 3D hero sahnesi, slayt sekmeleri ve duraklat düğmesiyle Sessa iş koçluğu ana sayfası'),
+        h: { en: 'A hero that moves', tr: 'Hareket eden bir hero' },
+        p: {
+          en: 'The home hero is a three slide slider with tabs, a progress bar, a pause button and swipe on touch. Next to it, a 3D scene loops inside an arch, with its own play and pause button and two chips that float above it.',
+          tr: 'Ana sayfa herosu sekmeleri, ilerleme çubuğu, duraklat düğmesi ve dokunmatik kaydırması olan üç slaytlık bir slider. Yanında kemer içinde döngüde oynayan bir 3D sahne var; kendi oynat ve duraklat düğmesi ve üstünde süzülen iki çiple.'
+        }
+      },
+      {
+        img: pic(`${SS}/programs.webp`, 760, 475, 'Three Sessa program cards with session length, what is included and the price', 'Seans süresi, kapsam ve fiyatla üç Sessa program kartı'),
+        h: { en: 'Programs people can compare', tr: 'Karşılaştırılabilen programlar' },
+        p: {
+          en: 'Program cards show the session length, the rhythm, what is included and the price, with the most chosen program in the middle. Every card opens its own program page from the CMS.',
+          tr: "Program kartları seans süresini, sıklığı, kapsamı ve fiyatı gösterir; en çok tercih edilen program ortada durur. Her kart CMS'ten gelen kendi program sayfasını açar."
+        }
+      },
+      {
+        dark: true,
+        img: pic(`${SS}/booking.webp`, 760, 475, 'Sessa booking card with a December calendar, time slots and a confirm button', 'Aralık takvimi, saatler ve onay düğmesiyle Sessa randevu kartı'),
+        h: { en: 'Book in a minute', tr: 'Bir dakikada randevu' },
+        p: {
+          en: 'A booking card walks through picking a day and a time, and three steps say what happens after the call. On your site, the card becomes your scheduler embed, with the intake form next to it.',
+          tr: 'Randevu kartı gün ve saat seçimini gösterir, üç adım da görüşmeden sonra ne olacağını anlatır. Kendi sitenizde kartın yerine randevu aracınızın kodu gelir, ön görüşme formu yanında kalır.'
+        }
+      }
+    ],
+    included: [
+      {
+        h: { en: 'What is in the template', tr: 'Şablonda neler var' },
+        items: {
+          en: ['4 homes: Business coaching, Nutrition, Therapy and Finance', '7 inner pages: About, Programs, Pricing, FAQ, Book, Resources and Contact', '2 CMS collections, Programs and Posts, each with its template page', 'Style guide, instructions, licenses and changelog pages, plus 404 and password pages', '4 looping 3D hero videos and 12 unique 3D article covers'],
+          tr: ['4 ana sayfa: İş koçluğu, Beslenme, Terapi ve Finans', '7 iç sayfa: Hakkında, Programlar, Fiyatlar, SSS, Randevu, Kaynaklar ve İletişim', 'Her biri kendi şablon sayfasıyla 2 CMS koleksiyonu: Programlar ve Yazılar', 'Stil rehberi, talimatlar, lisanslar ve sürüm notları sayfaları; ayrıca 404 ve şifre sayfaları', '4 döngülü 3D hero videosu ve 12 özgün 3D yazı kapağı']
+        }
+      },
+      {
+        h: { en: 'Built to hand over', tr: 'Teslime hazır' },
+        items: {
+          en: ['Colours, fonts, sizes and radii as Webflow variables', 'Navbar, floating nav, footer, booking card and buttons as components', 'Forms with labels, real placeholders and custom success and error messages', 'Motion with GSAP from the Webflow CDN, documented on the Instructions page', 'Designed for desktop, tablet and phone'],
+          tr: ['Renkler, fontlar, boyutlar ve köşe yarıçapları Webflow değişkenlerinde', 'Navbar, kayan menü, footer, randevu kartı ve düğmeler bileşen olarak', 'Etiketli, gerçek örnek metinli ve özel başarı ve hata mesajlı formlar', "Webflow CDN'inden GSAP ile hareket, talimatlar sayfasında anlatılıyor", 'Masaüstü, tablet ve telefon için tasarlandı']
+        }
+      }
+    ],
+    faq: {
+      en: [
+        ['When can I get Sessa?', 'Sessa is coming to the Webflow Marketplace soon. You can explore the full live preview today. Write to info@silitlabs.com if you would like to hear the day it is listed.'],
+        ['Who is it for?', 'Coaches, nutritionists, therapists, financial planners and other advisors who sell their time, and the designers who build their sites.'],
+        ['Can I use only one home?', 'Yes. Make the home closest to your practice your home page, apply its theme to every page and remove the homes you do not need. The Instructions page walks through themes, fonts, video, booking and the CMS.'],
+        ['Does it work with my booking tool?', 'The Book page has a booking card that shows how booking will feel. Replace it with the embed from your scheduler and keep the intake form next to it.'],
+        ['Is the content in the preview real?', 'No. Names, photos, programs, prices and reviews are sample content for you to replace with your own.'],
+        ['Do I need to write code?', 'No. Pages, CMS, forms and menus are native Webflow. The motion comes from a documented GSAP script in the site footer code, which you can keep as it is.']
+      ],
+      tr: [
+        ["Sessa'yı ne zaman alabilirim?", "Sessa yakında Webflow Marketplace'te. Canlı önizlemenin tamamını bugün inceleyebilirsiniz. Listelendiği gün haber almak isterseniz info@silitlabs.com adresine yazın."],
+        ['Kimler için?', 'Zamanını satan koçlar, beslenme uzmanları, terapistler, finansal planlamacılar ve diğer danışmanlar ile onların sitelerini kuran tasarımcılar için.'],
+        ['Sadece bir ana sayfa kullanabilir miyim?', 'Evet. Pratiğinize en yakın ana sayfayı ana sayfanız yapın, temasını tüm sayfalara uygulayın ve gerek duymadığınız ana sayfaları kaldırın. Talimatlar sayfası temaları, fontları, videoyu, randevuyu ve CMS\'i adım adım anlatır.'],
+        ['Kendi randevu aracımla çalışır mı?', 'Book sayfasındaki randevu kartı, randevunun nasıl görüneceğini gösterir. Yerine randevu aracınızın kodunu koyun, ön görüşme formu yanında kalsın.'],
+        ['Önizlemedeki içerik gerçek mi?', 'Hayır. İsimler, fotoğraflar, programlar, fiyatlar ve yorumlar kendi içeriğinizle değiştireceğiniz örnek içeriktir.'],
+        ['Kod yazmam gerekiyor mu?', 'Hayır. Sayfalar, CMS, formlar ve menüler Webflow\'un kendi öğeleriyle kurulu. Hareketler, site footer kodundaki açıklamalı bir GSAP betiğinden gelir; olduğu gibi bırakabilirsiniz.']
+      ]
+    },
+    related: {
+      en: [['Open the live preview', 'https://sessa.webflow.io'], ['Curavia: Webflow template for clinics', '/templates/curavia/'], ['All Webflow apps', '/webflow-apps/']],
+      tr: [['Canlı önizlemeyi açın', 'https://sessa.webflow.io'], ['Curavia: klinikler için Webflow şablonu', '/tr/sablonlar/curavia/'], ['Webflow uygulamaları (EN)', '/webflow-apps/', 'en']]
     }
   }
 ];

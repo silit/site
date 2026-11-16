@@ -13,25 +13,25 @@ const groups = KINDS.map((k) => ({ ...k, items: templates.filter((t) => t.kind =
 const T = tr
   ? {
       title: 'Klinikler için Şablonlar: Google Sheets, Excel ve Webflow',
-      desc: 'Silit Labs şablonları: Google Sheets ve Excel için Klinik Lead Takip Tablosu ve yurt dışından hasta ağırlayan klinikler için Webflow şablonu Curavia.',
+      desc: 'Silit Labs şablonları: Google Sheets ve Excel için Klinik Lead Takip Tablosu, yurt dışından hasta ağırlayan klinikler için Webflow şablonu Curavia ve koçlar ve danışmanlar için Webflow şablonu Sessa.',
       home: 'Ana sayfa', crumb: 'Şablonlar', kicker: 'Şablonlar',
       h1: 'Kliniğiniz için hazır tablolar ve web siteleri',
       lead: 'Klinik pazarlamasında her gün yaptığımız işlerden doğan şablonlar: ekibinizin her gün doldurduğu tablolar ve yurt dışından hasta ağırlayan klinikler için hazırlanmış Webflow siteleri.',
       langNote: 'Şablonların dili İngilizce; tüm metinler düzenlenebilir.',
       view: 'Şablonu inceleyin', preview: 'Canlı önizleme',
-      nextH: 'Sırada ne var',nextP: "Curavia Webflow Marketplace'e gönderildi, onay bekliyor; koçlar ve danışmanlar için Sessa da sırada. Üzerinde çalıştığımız diğer işler",
+      nextH: 'Sırada ne var',nextP: "Curavia ve Sessa yakında Webflow Marketplace'te. Üzerinde çalıştığımız diğer işler",
       nextLink: 'lab sayfasında (EN)',
       bandH: 'Kliniğinizin her ay yeniden kurduğu bir tablo ya da sayfa mı var? Bize yazın.'
     }
   : {
       title: 'Templates for Clinics: Spreadsheets and Webflow',
-      desc: 'Ready-made templates from Silit Labs: the Clinic Lead Tracker for Google Sheets and Excel, and Curavia, a Webflow template for health tourism clinics.',
+      desc: 'Ready-made templates from Silit Labs: the Clinic Lead Tracker for Google Sheets and Excel, Curavia, a Webflow template for health tourism clinics, and Sessa, a Webflow template for coaches and advisors.',
       home: 'Home', crumb: 'Templates', kicker: 'Templates',
       h1: 'Spreadsheets and websites, ready for your clinic',
       lead: 'Templates that grew out of daily work in clinic marketing: spreadsheets your team fills in every day, and Webflow sites made for clinics that treat patients from abroad.',
       langNote: '',
       view: 'View the template', preview: 'Live preview',
-      nextH: 'Next on the bench', nextP: 'Curavia, with its Hub and Dental, Hair and Aesthetic homes, is in review on the Webflow Marketplace, and Sessa, a template for coaches and advisors, is next. See what else we are working on in',
+      nextH: 'Next on the bench', nextP: 'Curavia and Sessa are on their way to the Webflow Marketplace. See what else we are working on in',
       nextLink: 'the lab',
       bandH: 'Is there a spreadsheet or page your clinic keeps rebuilding? Tell us.'
     };
@@ -83,10 +83,12 @@ const jsonld = [
                     <a class="link" href={buyUrl(t)} rel="noopener">{storeText(t, lang).buy}</a>
                   </div>
                 ) : (
-                  <div class="buy">
+                  <div class="soon-block">
                     <span class="tag soon">{t.statusNote[lang]}</span>
-                    <a class="btn" href={templatePath(t, lang)}>{T.view}</a>
-                    <a class="link" href={t.preview} rel="noopener">{T.preview}</a>
+                    <div class="buy">
+                      <a class="btn" href={templatePath(t, lang)}>{T.view}</a>
+                      <a class="link" href={t.preview} rel="noopener">{T.preview}</a>
+                    </div>
                   </div>
                 )}
               </div>
@@ -128,6 +130,8 @@ const jsonld = [
   .hl li { display: flex; gap: 12px; }
   .hl li::before { content: ''; flex: none; width: 8px; height: 8px; margin-top: 9px; border-radius: 50%; background: var(--coral); }
   .tplrow .buy { margin-top: 26px; }
+  .tplrow .soon-block { margin-top: 26px; }
+  .tplrow .soon-block .buy { margin-top: 16px; }
   @media (max-width: 860px) { .tplrow { grid-template-columns: 1fr; } .tplrow.flip > :first-child { order: 0; } }
   .next { padding: 28px; border: 2px dashed #B8C6D6; border-radius: 22px; max-width: 720px; }
   .next h2 { font-size: clamp(22px, 2.2vw, 26px); }

@@ -40,7 +40,8 @@ export const PAIRS = [
   ['/clinic-kits/hair-transplant-clinic-kit/', '/tr/klinik-kitleri/sac-ekimi-klinik-kiti/'],
   ['/templates/', '/tr/sablonlar/'],
   ['/templates/clinic-lead-tracker/', '/tr/sablonlar/klinik-lead-takip-tablosu/'],
-  ['/templates/curavia/', '/tr/sablonlar/curavia/']
+  ['/templates/curavia/', '/tr/sablonlar/curavia/'],
+  ['/templates/sessa/', '/tr/sablonlar/sessa/']
 ];
 
 export const alternateOf = (path) => {
