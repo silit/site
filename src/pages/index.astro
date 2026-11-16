@@ -18,7 +18,7 @@ const jsonld = [{
 ---
 <Base
   title="Silit Labs: ready-made tools for clinics and Webflow studios"
-  description="Silit Labs makes patient document kits and a lead tracker for clinics, Curavia, a Webflow template for health tourism clinics, and Flowdeck, a monitoring panel for Webflow agencies."
+  description="Patient document kits and a lead tracker for clinics, the Curavia Webflow template, and two Webflow apps: Flowdeck for monitoring and AI SEO Deck for AI search."
   intro={true}
   jsonld={jsonld}
 >
@@ -29,7 +29,7 @@ const jsonld = [{
         <p class="lead hero-in" style="--d:.25s">We work in clinic marketing and on Webflow sites every day. Silit Labs turns the documents, spreadsheets and dashboards we needed into products you can use today.</p>
         <div class="actions hero-in" style="--d:.4s">
           <a class="btn" href="/clinic-kits/">Browse clinic kits</a>
-          <a class="btn quiet" href="/webflow-apps/flowdeck/">See Flowdeck</a>
+          <a class="btn quiet" href="/webflow-apps/">See Webflow apps</a>
         </div>
       </div>
       <div class="hero-in" style="--d:.15s"><Bench /></div>
@@ -66,12 +66,21 @@ const jsonld = [{
             {templates.map((t) => <li><a href={templatePath(t, 'en')}><span>{t.name.en}<span class="meta"> &nbsp;{t.tagline.en}</span></span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">{t.statusShort ? t.statusShort.en : 'Soon'}</span>}</a></li>)}
           </ul>
         </article>
+        <article class="shelf-ai">
+          <div class="shelf-ai-copy">
+            <div class="shelf-top"><span class="tag">New</span><span class="muted small">Free for one site</span></div>
+            <h3><a href="/webflow-apps/ai-seo-deck/">AI SEO Deck</a></h3>
+            <p class="muted">Find out whether ChatGPT, Google AI Overviews, AI Mode, Gemini, Claude and Grok recommend you for the searches that matter. Where they skip you, it writes the fix from your own pages and applies it to your Webflow site.</p>
+            <a class="shelf-link" href="/webflow-apps/ai-seo-deck/">See AI SEO Deck</a>
+          </div>
+          <img src="/images/ai-seo-deck/overview.webp" width="1280" height="846" alt="AI SEO Deck overview with the AI visibility score, the engines that name the brand and the keywords to fix next" loading="lazy" />
+        </article>
         <article class="shelf-lab">
           <div>
             <div class="shelf-top"><span class="tag soon">In progress</span></div>
             <h3><a href="/lab/">In the lab</a></h3>
           </div>
-          <p class="muted">A treatment plan presenter for clinics, kits for more clinic types and tools for Framer, while Curavia is in review on the Webflow Marketplace. <a class="link" href="/lab/">See what is on the bench</a>.</p>
+          <p class="muted">Sessa, our Webflow template for coaches and advisors, is next, then a treatment plan presenter for clinics, kits for more clinic types and tools for Framer. <a class="link" href="/lab/">See what is on the bench</a>.</p>
         </article>
       </div>
     </div>
@@ -82,8 +91,8 @@ const jsonld = [{
       <div class="section-head"><h2>How we make things</h2></div>
       <div class="principles">
         <div><h3>Built from daily work</h3><p class="muted">Every product began as a document, checklist or dashboard we needed ourselves. If it did not save us time, it does not ship.</p></div>
-        <div><h3>Priced to be an easy yes</h3><p class="muted">Kits start at $6 and Flowdeck is free for one site. You should be able to try a tool without a meeting or a contract.</p></div>
-        <div><h3>Yours to change</h3><p class="muted">Every text in a kit can be edited, and nothing locks you in. Flowdeck only reads your sites and never writes to them.</p></div>
+        <div><h3>Priced to be an easy yes</h3><p class="muted">Kits start at $6, and Flowdeck and AI SEO Deck are free for one site. You should be able to try a tool without a meeting or a contract.</p></div>
+        <div><h3>Yours to change</h3><p class="muted">Every text in a kit can be edited, and nothing locks you in. Flowdeck only reads your sites, and AI SEO Deck changes a page only when you press Apply.</p></div>
       </div>
     </div>
   </section>
@@ -141,10 +150,14 @@ const jsonld = [{
   .shelf-tpl { background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
   .shelf-tpl .rows { margin-top: auto; }
   .shelf-tpl .rows a { padding: 14px 4px; }
+  .shelf > .shelf-ai { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 22px clamp(24px, 4vw, 56px); background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
+  .shelf-ai-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .shelf-ai-copy .shelf-top { align-self: stretch; }
+  .shelf-ai img { border-radius: 14px; box-shadow: 0 0 0 1px var(--line); }
   .shelf > .shelf-lab { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 14px clamp(24px, 4vw, 56px); border: 2px dashed #B8C6D6; }
   .shelf-lab .shelf-top { margin-bottom: 14px; justify-content: flex-start; }
   .shelf-lab p { max-width: 36em; }
-  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } .shelf > .shelf-lab { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } .shelf > .shelf-lab, .shelf > .shelf-ai { grid-template-columns: 1fr; } }
 
   .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 48px); }
   .principles > div { border-top: 2px solid var(--ink); padding-top: 20px; }

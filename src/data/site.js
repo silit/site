@@ -11,6 +11,7 @@ export const SITE = {
   pinterest: 'https://www.pinterest.com/silitlabs/',
   instagram: 'https://www.instagram.com/silitlabs/',
   flowdeck: 'https://flowdeck.silitlabs.com',
+  aiseodeck: 'https://aiseodeck.silitlabs.com',
   ogDefault: '/images/og/default.jpg'
 };
 
@@ -26,7 +27,7 @@ export const NAV = {
     { href: '/tr/klinik-kitleri/', label: 'Klinik kitleri' },
     { href: '/tr/sablonlar/', label: 'Şablonlar' },
     { href: '/tr/kurulum-hizmeti/', label: 'Kurulum hizmeti' },
-    { href: '/webflow-apps/flowdeck/', label: 'Flowdeck', hreflang: 'en' }
+    { href: '/webflow-apps/', label: 'Webflow uygulamaları', hreflang: 'en' }
   ]
 };
 
@@ -70,7 +71,7 @@ export const categories = [
     id: 'webflow-apps',
     href: '/webflow-apps/',
     name: 'Webflow apps',
-    line: 'Tools for agencies and freelancers who look after Webflow sites.',
+    line: 'Flowdeck for site monitoring and AI SEO Deck for AI search visibility.',
     status: 'live'
   },
   {

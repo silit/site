@@ -1,0 +1,155 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../data/site.js';
+
+const plans = [
+  { name: 'Free', price: '$0', lines: ['1 site, 3 keywords', 'ChatGPT, Google AI Overviews and Gemini, checked monthly', 'Fixes written for you to copy'] },
+  { name: 'Solo', price: '$19', lines: ['1 site, 10 keywords', 'All six engines, checked weekly', 'Fixes applied to Webflow'] },
+  { name: 'Studio', price: '$49', lines: ['5 sites, 30 keywords', 'All six engines, checked weekly', 'Client reports with your agency name'] },
+  { name: 'Agency', price: '$149', lines: ['20 sites, 100 keywords', 'All six engines, checked weekly', 'Client reports with your agency name'] }
+];
+const checks = [
+  ['Six AI engines', 'ChatGPT, Gemini, Claude and Grok with live web search, plus Google AI Overviews and AI Mode.'],
+  ['Questions people really ask', 'ChatGPT, Gemini, Claude and Grok get two real customer questions per keyword, and Google gets the search itself: 10 answers per keyword in every check.'],
+  ['Named, linked or skipped', 'Whether each answer names you, links to your site, or recommends a rival instead.'],
+  ['Rivals and sources', 'Which rivals the engines pick, the searches they run and the sites they read before they answer.'],
+  ['Search demand', 'Monthly searches for every keyword, ideas to track, and the keywords where Google AI already cites you.'],
+  ['Site health', 'Titles, descriptions, structured data, FAQ schema, Open Graph, alt text, llms.txt and AI crawler access.']
+];
+const jsonld = [
+  {
+    '@type': 'SoftwareApplication',
+    name: 'AI SEO Deck',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: SITE.aiseodeck,
+    description: 'Shows whether ChatGPT, Google AI Overviews, AI Mode, Gemini, Claude and Grok recommend your brand for the keywords you track, then fixes your Webflow pages.',
+    image: `${SITE.url}/images/ai-seo-deck/overview.webp`,
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'AggregateOffer', lowPrice: '0', highPrice: '149', priceCurrency: 'USD', offerCount: '4' }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Webflow apps', item: `${SITE.url}/webflow-apps/` },
+      { '@type': 'ListItem', position: 3, name: 'AI SEO Deck', item: `${SITE.url}/webflow-apps/ai-seo-deck/` }
+    ]
+  }
+];
+---
+<Base
+  title="AI SEO Deck: AI search visibility for Webflow sites"
+  description="See whether ChatGPT, Google AI Overviews, AI Mode, Gemini, Claude and Grok recommend your brand for the keywords you track, then fix your Webflow pages in one click. Free for one site."
+  image="/images/og/ai-seo-deck.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/webflow-apps/">Webflow apps</a></li><li aria-current="page">AI SEO Deck</li></ol>
+      <div class="grid">
+        <div>
+          <span class="kicker">For Webflow site owners, marketers and agencies</span>
+          <h1>Find out if AI recommends you, then fix your Webflow site</h1>
+          <p class="lead">AI SEO Deck asks ChatGPT, Google AI Overviews, AI Mode, Gemini, Claude and Grok what your customers ask, keyword by keyword. Then it writes the fix from your own pages and applies it to Webflow when you say so.</p>
+          <div class="actions">
+            <a class="btn" href={SITE.aiseodeck} rel="noopener">Start free</a>
+            <a class="btn quiet" href="#pricing">See pricing</a>
+          </div>
+          <ul class="facts"><li>Free for one site</li><li>Six AI engines</li><li>Writes only when you press Apply</li></ul>
+          <p class="small muted status">In review for the Webflow Marketplace. You can start today at aiseodeck.silitlabs.com.</p>
+        </div>
+        <div class="figure light"><img src="/images/ai-seo-deck/overview.webp" width="1280" height="846" alt="AI SEO Deck overview: a 47 percent AI visibility score, how many keywords each AI engine names the brand for, and the keywords to fix next" fetchpriority="high" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>What it checks</h2><p>People now ask AI which product or studio to choose. These are the answers you need to see.</p></div>
+      <div class="checks">
+        {checks.map(([h, p]) => <div><h3>{h}</h3><p class="muted">{p}</p></div>)}
+      </div>
+      <div class="figure light wide"><img src="/images/ai-seo-deck/keywords.webp" width="1280" height="846" alt="Keyword table with one column per AI engine, marks for the engines that name the brand, search volume and a four-week trend" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <h2>What it fixes</h2>
+        <ul class="rows" style="margin-top:22px">
+          <li><span class="row">A fix plan for every keyword: the page that should win it, a new title and description, and FAQ answers written from your own content</span></li>
+          <li><span class="row">The current value next to the new one, read live from Webflow</span></li>
+          <li><span class="row">One click applies the fixes as unpublished changes. Nothing goes live until you publish</span></li>
+          <li><span class="row">CMS drafts for FAQ items, or a new page for a keyword you do not cover yet</span></li>
+        </ul>
+      </div>
+      <div class="figure light"><img src="/images/ai-seo-deck/fix-plan.webp" width="1280" height="846" alt="Fix plan with the current page title and description next to the suggested ones, FAQ answers and the Apply to Webflow button" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap split flip">
+      <div>
+        <h2>Right inside the Designer</h2>
+        <ul class="rows" style="margin-top:22px">
+          <li><span class="row">Open AI SEO Deck from the Apps panel on any page of a connected site</span></li>
+          <li><span class="row">See the keyword that belongs to the page and which AI engines name you for it</span></li>
+          <li><span class="row">Write a new title and description from the page and apply it in one click</span></li>
+          <li><span class="row">Add FAQ schema written from the page itself</span></li>
+        </ul>
+      </div>
+      <div class="figure light"><img src="/images/ai-seo-deck/designer.webp" width="1280" height="846" alt="The AI SEO Deck panel in the Webflow Designer with a title and description written from the page and a search preview" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <h2>Read exactly what each AI said</h2>
+        <ul class="rows" style="margin-top:22px">
+          <li><span class="row">Every answer, with your brand and your rivals marked</span></li>
+          <li><span class="row">The searches each engine ran before it answered</span></li>
+          <li><span class="row">The sites it cited, so you know where a listing or a review moves you into the answer</span></li>
+        </ul>
+      </div>
+      <div class="figure light"><img src="/images/ai-seo-deck/answers.webp" width="1280" height="846" alt="One keyword in detail: one of six engines names the brand, two rivals are named instead, and the ChatGPT answers with their searches and cited sites" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" id="pricing">
+    <div class="wrap">
+      <div class="section-head"><h2>Pricing</h2><p>Start free with one site. Every paid plan starts with a 7-day free trial, and yearly plans include two months free.</p></div>
+      <div class="plans">
+        {plans.map((p) => <div class="plan"><h3>{p.name}</h3><p class="price">{p.price}<small>{p.price === '$0' ? 'forever' : 'per month'}</small></p><ul class="pl">{p.lines.map((l) => <li class="muted">{l}</li>)}</ul></div>)}
+      </div>
+      <div class="actions"><a class="btn" href={SITE.aiseodeck} rel="noopener">Start free</a></div>
+      <p class="small muted" style="margin-top:18px">Payments are handled by Polar. Cancel any time. AI SEO Deck is not affiliated with or endorsed by OpenAI, Google, Anthropic, xAI or Webflow.</p>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Questions about AI SEO Deck, or want a longer trial for your agency?</h2>
+      <a class="mail" href={`mailto:${SITE.email}?subject=AI%20SEO%20Deck`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .status { margin-top: 16px; }
+  .checks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 40px; }
+  .checks > div { border-top: 2px solid var(--ink); padding-top: 18px; }
+  .checks p { margin-top: 8px; }
+  .figure.wide { margin-top: clamp(32px, 4vw, 48px); }
+  @media (max-width: 860px) { .checks { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .checks { grid-template-columns: 1fr; } }
+  .plans { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .plan { padding: 26px 22px; }
+  .plan + .plan { border-left: 1px solid var(--line); }
+  .plan .price { margin: 10px 0 4px; }
+  .pl { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; }
+  @media (max-width: 760px) { .plans { grid-template-columns: 1fr 1fr; } .plan:nth-child(3) { border-left: 0; } .plan:nth-child(n+3) { border-top: 1px solid var(--line); } }
+  @media (max-width: 420px) { .plans { grid-template-columns: 1fr; } .plan + .plan { border-left: 0; border-top: 1px solid var(--line); } }
+</style>

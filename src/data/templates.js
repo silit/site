@@ -232,8 +232,8 @@ export const templates = [
       tr: ['Kendi renkleriyle Diş, Saç ve Estetik ana sayfaları', 'Gülüş planı, greft hesaplayıcı ve yüz haritası', 'Sayfayı tek tıkla yeniden renklendiren tema çipleri', 'GBP, EUR ve USD fiyat sekmeleri']
     },
     preview: 'https://curavia-56d980.webflow.io',
-    statusNote: { en: 'Submitted to the Webflow Marketplace, in review', tr: "Webflow Marketplace'e gönderildi, onay bekliyor" },
-    statusShort: { en: 'In review', tr: 'Onay bekliyor' },
+    statusNote: { en: 'Coming soon to the Webflow Marketplace', tr: "Yakında Webflow Marketplace'te" },
+    statusShort: { en: 'Soon', tr: 'Yakında' },
     // When Webflow lists Curavia, add `price: 99` and set store.url to the Marketplace page: every page switches to the buy button.
     store: { url: '', text: WEBFLOW_TEXT },
     previewNote: {
@@ -384,7 +384,7 @@ export const templates = [
     ],
     faq: {
       en: [
-        ['When can I get Curavia?', 'Curavia has been submitted to the Webflow Marketplace and is in review. You can explore the full live preview today. Write to info@silitlabs.com if you would like to hear the day it is listed.'],
+        ['When can I get Curavia?', 'We are preparing Curavia for the Webflow Marketplace. You can explore the full live preview today. Write to info@silitlabs.com if you would like to hear the day it is listed.'],
         ['Who is it for?', 'Clinics that treat international patients for dental work, hair transplants or facial aesthetics, and the designers and agencies who build their sites.'],
         ['Can I use it for only one specialty?', 'Yes. Make the Dental, Hair or Aesthetic home your home page and follow the three steps on the Instructions page: set the home, apply its theme to every page and remove what you do not offer. Colours, fonts and tools follow.'],
         ['Can visitors switch between specialties?', 'On the Hub, theme chips recolour the page in one click and the Homes menu links to each specialty home. A clinic with one specialty can remove both.'],
@@ -392,7 +392,7 @@ export const templates = [
         ['Do I need to write code?', 'No. Everything is built with native Webflow elements, CMS collections and interactions, so you edit it all in the Designer and the Editor.']
       ],
       tr: [
-        ["Curavia'yı ne zaman alabilirim?", "Curavia Webflow Marketplace'e gönderildi ve onay bekliyor. Canlı önizlemenin tamamını bugün inceleyebilirsiniz. Listelendiği gün haber almak isterseniz info@silitlabs.com adresine yazın."],
+        ["Curavia'yı ne zaman alabilirim?", "Curavia'yı Webflow Marketplace için hazırlıyoruz. Canlı önizlemenin tamamını bugün inceleyebilirsiniz. Listelendiği gün haber almak isterseniz info@silitlabs.com adresine yazın."],
         ['Kimler için?', 'Diş tedavisi, saç ekimi ya da yüz estetiği için yurt dışından hasta ağırlayan klinikler ve bu kliniklerin sitelerini kuran tasarımcılar ve ajanslar için.'],
         ['Sadece tek bir alan için kullanabilir miyim?', 'Evet. Diş, Saç ya da Estetik ana sayfasını ana sayfanız yapın ve talimatlar sayfasındaki üç adımı izleyin: ana sayfayı ayarlayın, temasını tüm sayfalara uygulayın ve sunmadıklarınızı kaldırın. Renkler, fontlar ve araçlar buna uyar.'],
         ['Ziyaretçiler alanlar arasında geçiş yapabilir mi?', "Hub'da tema çipleri sayfayı tek tıkla yeniden renklendirir, Homes menüsü her alanın ana sayfasına bağlanır. Tek alanda çalışan klinik ikisini de kaldırabilir."],
@@ -401,8 +401,8 @@ export const templates = [
       ]
     },
     related: {
-      en: [['Open the live preview', 'https://curavia-56d980.webflow.io'], ['Flowdeck: monitoring for Webflow sites', '/webflow-apps/flowdeck/'], ['All Webflow apps', '/webflow-apps/']],
-      tr: [['Canlı önizlemeyi açın', 'https://curavia-56d980.webflow.io'], ['Flowdeck: Webflow site takibi (EN)', '/webflow-apps/flowdeck/', 'en'], ['Klinik kitleri', '/tr/klinik-kitleri/']]
+      en: [['Open the live preview', 'https://curavia-56d980.webflow.io'], ['AI SEO Deck: see whether AI recommends your clinic', '/webflow-apps/ai-seo-deck/'], ['All Webflow apps', '/webflow-apps/']],
+      tr: [['Canlı önizlemeyi açın', 'https://curavia-56d980.webflow.io'], ['AI SEO Deck: yapay zeka kliniğinizi öneriyor mu? (EN)', '/webflow-apps/ai-seo-deck/', 'en'], ['Klinik kitleri', '/tr/klinik-kitleri/']]
     }
   }
 ];

@@ -12,8 +12,8 @@ const jsonld = [{
 }];
 ---
 <Base
-  title="Webflow apps for agencies and freelancers"
-  description="Silit Labs builds tools for people who look after Webflow sites. Flowdeck monitors uptime, SSL, forms, CMS limits and SEO across every site you manage."
+  title="Webflow apps: AI SEO Deck and Flowdeck"
+  description="Webflow apps from Silit Labs: AI SEO Deck checks whether AI search recommends you and fixes your pages, and Flowdeck monitors every Webflow site you manage."
   image="/images/og/flowdeck.jpg"
   jsonld={jsonld}
 >
@@ -28,6 +28,18 @@ const jsonld = [{
 
   <section class="section tight">
     <div class="wrap">
+      <article class="app light">
+        <div class="app-copy">
+          <div class="app-head"><img src="/images/ai-seo-deck/logo.svg" width="56" height="56" alt="" /><span class="tag">New</span></div>
+          <h2><a href="/webflow-apps/ai-seo-deck/">AI SEO Deck</a></h2>
+          <p class="lead">See whether ChatGPT, Google AI Overviews, AI Mode, Gemini, Claude and Grok recommend you for the searches that matter. Where they skip you, AI SEO Deck writes the fix from your own pages and applies it to Webflow when you say so.</p>
+          <div class="actions">
+            <a class="btn" href="/webflow-apps/ai-seo-deck/">See AI SEO Deck</a>
+            <a class="btn quiet" href={SITE.aiseodeck} rel="noopener">Start free</a>
+          </div>
+        </div>
+        <img class="app-shot" src="/images/ai-seo-deck/overview.webp" width="1280" height="846" alt="AI SEO Deck overview with the AI visibility score and the keywords to fix next" />
+      </article>
       <article class="app dark">
         <div class="app-copy">
           <div class="app-head"><img src="/images/flowdeck/logo.svg" width="56" height="56" alt="" /><span class="tag">Live</span></div>
@@ -65,6 +77,9 @@ const jsonld = [{
   .app h2 a { text-decoration: none; }
   .app .lead { margin-top: 14px; }
   .app-shot { border-radius: 16px; }
+  .app + .app { margin-top: 20px; }
+  .app.light { background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
+  .app.light .app-shot { box-shadow: 0 0 0 1px var(--line); }
   @media (max-width: 900px) { .app { grid-template-columns: 1fr; } }
   .tpl { margin-top: 20px; border-radius: 28px; padding: clamp(24px, 4vw, 48px); background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); display: flex; justify-content: space-between; align-items: center; gap: 24px 48px; flex-wrap: wrap; }
   .tpl > div:first-child { max-width: 660px; }

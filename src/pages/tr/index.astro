@@ -8,7 +8,7 @@ const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit L
 ---
 <Base
   title="Silit Labs: klinikler ve web stüdyoları için hazır araçlar"
-  description="Silit Labs diş, estetik ve saç ekimi klinikleri için hasta doküman kitleri, lead takip tablosu ve Webflow şablonu, Webflow ajansları için de Flowdeck panelini üretir. Kliniğinize özel kurulum hizmeti."
+  description="Silit Labs diş, estetik ve saç ekimi klinikleri için hasta doküman kitleri, lead takip tablosu ve Webflow şablonu, Webflow siteleri için de Flowdeck ve AI SEO Deck uygulamalarını üretir. Kliniğinize özel kurulum hizmeti."
   lang="tr"
   intro={true}
   jsonld={jsonld}
@@ -57,12 +57,16 @@ const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit L
             {templates.map((t) => <li><a href={templatePath(t, 'tr')}><span>{t.name.tr}</span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">{t.statusShort ? t.statusShort.tr : 'Yakında'}</span>}</a></li>)}
           </ul>
         </article>
-        <article class="shelf-lab">
+        <article class="shelf-apps">
           <div>
-            <div class="shelf-top"><span class="tag">Webflow</span><span class="muted small">Sayfa EN</span></div>
-            <h3><a href="/webflow-apps/flowdeck/" hreflang="en">Flowdeck</a></h3>
+            <div class="shelf-top"><span class="tag">Webflow</span><span class="muted small">Sayfalar EN</span></div>
+            <h3><a href="/webflow-apps/" hreflang="en">Webflow uygulamaları</a></h3>
+            <p class="muted">Webflow siteleri için kendi işimizde kullandığımız iki araç, ikisi de tek site için ücretsiz.</p>
           </div>
-          <p class="muted">Webflow ajansları için tek panel: yönettiğiniz tüm sitelerin erişim, SSL, form ve SEO durumu. Tek site için ücretsiz.</p>
+          <ul class="rows">
+            <li><a href="/webflow-apps/ai-seo-deck/" hreflang="en"><span>AI SEO Deck<span class="meta block">ChatGPT, Google AI Overviews ve Gemini sizi öneriyor mu? Önermiyorsa Webflow sayfanızı sizin onayınızla düzeltir.</span></span><span class="tag">Yeni</span></a></li>
+            <li><a href="/webflow-apps/flowdeck/" hreflang="en"><span>Flowdeck<span class="meta block">Yönettiğiniz tüm Webflow sitelerinin erişim, SSL, form ve SEO durumu tek panelde.</span></span></a></li>
+          </ul>
         </article>
       </div>
     </div>
@@ -73,8 +77,8 @@ const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit L
       <div class="section-head"><h2>Nasıl çalışıyoruz</h2></div>
       <div class="principles">
         <div><h3>Gerçek işten doğdu</h3><p class="muted">Her ürün, kendi işimizde ihtiyaç duyduğumuz bir doküman ya da panel olarak başladı. Bize zaman kazandırmıyorsa satışa çıkmıyor.</p></div>
-        <div><h3>Kolay karar verilen fiyat</h3><p class="muted">Tek şablonlar $6'dan başlıyor, Flowdeck tek site için ücretsiz. Bir aracı denemek için toplantıya ya da sözleşmeye gerek yok.</p></div>
-        <div><h3>Tamamen sizin</h3><p class="muted">Kitteki her yazı düzenlenebilir, hiçbir şeye bağlı kalmazsınız. Flowdeck sitelerinizi sadece okur, hiçbir şey yazmaz.</p></div>
+        <div><h3>Kolay karar verilen fiyat</h3><p class="muted">Tek şablonlar $6'dan başlıyor, Flowdeck ve AI SEO Deck tek site için ücretsiz. Bir aracı denemek için toplantıya ya da sözleşmeye gerek yok.</p></div>
+        <div><h3>Tamamen sizin</h3><p class="muted">Kitteki her yazı düzenlenebilir, hiçbir şeye bağlı kalmazsınız. Flowdeck sitelerinizi sadece okur, AI SEO Deck ise yalnızca siz onay verdiğinizde değişiklik yapar.</p></div>
       </div>
     </div>
   </section>
@@ -118,10 +122,12 @@ const jsonld = [{ '@type': 'WebSite', '@id': `${SITE.url}/#site`, name: 'Silit L
   .shelf-tpl { background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
   .shelf-tpl .rows { margin-top: auto; }
   .shelf-tpl .rows a { padding: 14px 4px; }
-  .shelf > .shelf-lab { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 14px clamp(24px, 4vw, 56px); border: 2px dashed #B8C6D6; }
-  .shelf-lab .shelf-top { margin-bottom: 14px; justify-content: flex-start; }
-  .shelf-lab p { max-width: 36em; }
-  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } .shelf > .shelf-lab { grid-template-columns: 1fr; } }
+  .shelf > .shelf-apps { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 18px clamp(24px, 4vw, 56px); background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
+  .shelf-apps .shelf-top { margin-bottom: 14px; justify-content: flex-start; }
+  .shelf-apps p { margin-top: 12px; max-width: 30em; }
+  .shelf-apps .rows a { align-items: flex-start; }
+  .shelf-apps .block { display: block; margin-top: 4px; font-weight: 500; }
+  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } .shelf > .shelf-apps { grid-template-columns: 1fr; } }
   .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 48px); }
   .principles > div { border-top: 2px solid var(--ink); padding-top: 20px; }
   .principles p { margin-top: 10px; }
