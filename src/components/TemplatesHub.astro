@@ -4,6 +4,7 @@
 import Base from '../layouts/Base.astro';
 import { KINDS, templates, templatePath, buyUrl, storeText, isOnSale } from '../data/templates.js';
 import { SITE } from '../data/site.js';
+import { SHOP_LINES, money } from '../data/shop.js';
 
 const { lang = 'en' } = Astro.props;
 const tr = lang === 'tr';
@@ -24,16 +25,16 @@ const T = tr
       bandH: 'Kliniğinizin her ay yeniden kurduğu bir tablo ya da sayfa mı var? Bize yazın.'
     }
   : {
-      title: 'Templates for Clinics: Spreadsheets and Webflow',
-      desc: 'Ready-made templates from Silit Labs: the Clinic Lead Tracker for Google Sheets and Excel, Curavia, a Webflow template for health tourism clinics, and Sessa, a Webflow template for coaches and advisors.',
+      title: 'Templates: Booking Sites, Canva Kits, Spreadsheets and Webflow',
+      desc: 'Ready-made templates from Silit Labs: booking site templates and Instagram kits for beauty pros, Airbnb welcome books, cleaning business forms, the Clinic Lead Tracker and the Curavia and Sessa Webflow templates.',
       home: 'Home', crumb: 'Templates', kicker: 'Templates',
-      h1: 'Spreadsheets and websites, ready for your clinic',
-      lead: 'Templates that grew out of daily work in clinic marketing: spreadsheets your team fills in every day, and Webflow sites made for clinics that treat patients from abroad.',
+      h1: 'Templates you can put to work today',
+      lead: 'Canva, Google Sheets, Excel and Webflow templates for businesses that book clients or host guests: beauty pros, Airbnb hosts, cleaning businesses, clinics and coaches.',
       langNote: '',
       view: 'View the template', preview: 'Live preview',
       nextH: 'Next on the bench', nextP: 'Curavia and Sessa are on their way to the Webflow Marketplace. See what else we are working on in',
       nextLink: 'the lab',
-      bandH: 'Is there a spreadsheet or page your clinic keeps rebuilding? Tell us.'
+      bandH: 'Is there a template your business keeps rebuilding by hand? Tell us.'
     };
 
 const jsonld = [
@@ -60,12 +61,39 @@ const jsonld = [
       <span class="kicker">{T.kicker}</span>
       <h1>{T.h1}</h1>
       <p class="lead">{T.lead}</p>
-      <ul class="jump">{groups.map((g) => <li><a class="btn quiet sm" href={`#${g.anchor}`}>{g.name[lang]}</a></li>)}</ul>
+      <ul class="jump">
+        {!tr && <li><a class="btn quiet sm" href="#small-business">Small business templates</a></li>}
+        {groups.map((g) => <li><a class="btn quiet sm" href={`#${g.anchor}`}>{g.name[lang]}</a></li>)}
+      </ul>
     </div>
   </section>
 
+  {!tr && (
+    <section class="section sheet-bg" id="small-business">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Small business templates</h2>
+          <p>Canva, Google Sheets and Excel templates for businesses that book clients or host guests. Sold on Etsy, ready right after payment.</p>
+        </div>
+        <ul class="pgrid">
+          {SHOP_LINES.map((l) => (
+            <li class="pcard">
+              <a class="pimg" href={l.href} tabindex="-1" aria-hidden="true"><img src={l.img} width="900" height="900" alt="" loading="eager" /></a>
+              <div class="pbody">
+                <span class="kicker">{l.count}</span>
+                <h3><a href={l.href}>{l.name}</a></h3>
+                <p>{l.line}</p>
+                <div class="pfoot"><span class="pprice"><small style="margin:0 6px 0 0">from</small>{money(l.from)}</span><a class="link" href={l.href} aria-label={`See all ${l.name.toLowerCase()}`}>See all</a></div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
   {groups.map((g, gi) => (
-    <section class={gi % 2 ? 'section' : 'section sheet-bg'} id={g.anchor}>
+    <section class={(gi + (tr ? 0 : 1)) % 2 ? 'section' : 'section sheet-bg'} id={g.anchor}>
       <div class="wrap">
         <div class="section-head"><h2>{g.name[lang]}</h2><p>{g.line[lang]}</p></div>
         <div class="tpl-list">

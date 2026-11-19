@@ -1,0 +1,116 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site.js';
+import { cleaningProducts, cleaningForms, money } from '../data/shop.js';
+
+const path = '/cleaning-business-templates/';
+
+const faq = [
+  ['Can I print the forms as they are?', 'Yes. Every form works as a printable PDF to fill in by hand, or you can type into it in Canva first. A free Canva account is enough.'],
+  ['Which spreadsheet program do I need?', 'The bookkeeping spreadsheet works in Google Sheets (free) and in Excel. It is set up for the US: expenses map to Schedule C lines and mileage uses the IRS standard rate, which you can update on the Settings sheet.'],
+  ['Is the service agreement legal advice?', 'No. It is a template to start from. Have it checked for your state and your business before you use it.'],
+  ['How do I get the files?', 'Right after payment, open Purchases on Etsy and download the files. The quick start guide has your Canva and Google Sheets links. Nothing is shipped.']
+];
+
+const jsonld = [
+  {
+    '@type': 'CollectionPage',
+    name: 'Cleaning business templates',
+    url: new URL(path, SITE.url).href,
+    inLanguage: 'en',
+    mainEntity: { '@type': 'ItemList', itemListElement: cleaningProducts.map((x, n) => ({ '@type': 'ListItem', position: n + 1, name: x.name, url: x.url })) }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', SITE.url).href },
+      { '@type': 'ListItem', position: 2, name: 'Cleaning business templates', item: new URL(path, SITE.url).href }
+    ]
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  }
+];
+---
+<Base
+  title="Cleaning Business Templates: Forms, Checklists and Bookkeeping"
+  description="Templates for house cleaners and maid services: cleaning checklists, walkthrough and estimate form, service agreement, client intake, invoice and a bookkeeping spreadsheet. Canva, Google Sheets and Excel."
+  image="/images/og/cleaning-business-templates.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Cleaning business templates</li></ol>
+      <div class="grid">
+        <div>
+          <span class="kicker">Cleaning business templates</span>
+          <h1>The paperwork of a cleaning business, done</h1>
+          <p class="lead">Ten matching forms for residential cleaners and maid services, from the first walkthrough to the invoice, and a bookkeeping spreadsheet that shows what each job really earns. Edit in Canva or print as they are.</p>
+          <ul class="facts">
+            <li>10 forms, 17 pages</li>
+            <li>Google Sheets and Excel bookkeeping</li>
+            <li>From {money(Math.min(...cleaningProducts.map((x) => x.price)))} on Etsy</li>
+          </ul>
+          <div class="actions">
+            <a class="btn" href="#products">See the templates</a>
+          </div>
+        </div>
+        <div class="figure light"><img src="/images/shop/cleaning/hero.webp" width="1100" height="1100" alt="The ten forms of the cleaning business forms kit, from the cleaning checklist to the cleaner job sheet" fetchpriority="high" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" id="products">
+    <div class="wrap">
+      <div class="section-head"><h2>Pick what you need</h2><p>The kit has everything; the spreadsheet and the checklist are also sold on their own.</p></div>
+      <ul class="pgrid">
+        {cleaningProducts.map((x) => (
+          <li class="pcard">
+            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt="" loading="lazy" /></a>
+            <div class="pbody">
+              <span class="kicker">{x.who}</span>
+              <h3><a href={x.url} rel="noopener">{x.name}</a></h3>
+              <p>{x.line}</p>
+              <div class="pfoot"><span class="pprice">{money(x.price)}<small>on Etsy</small></span><a class="btn sm" href={x.url} rel="noopener">Buy on Etsy</a></div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>The ten forms in the kit</h2><p>Numbered as they are in the kit, in the order a new client goes through them.</p></div>
+      <ol class="formrows">
+        {cleaningForms.map(([h, p], n) => <li><b>{String(n + 1).padStart(2, '0')}</b><div><h3>{h}</h3><p class="muted">{p}</p></div></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Good to know</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Run a different kind of home service? Tell us what you need.</h2>
+      <a class="mail" href={`mailto:${SITE.email}?subject=Cleaning%20business%20template`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .formrows { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .formrows li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .formrows b { font-family: var(--display); font-size: 20px; color: var(--blue); }
+  .formrows h3 { font-size: 19px; }
+  .formrows p { margin-top: 4px; font-size: 15.5px; }
+  @media (max-width: 760px) { .formrows { grid-template-columns: 1fr; } }
+</style>

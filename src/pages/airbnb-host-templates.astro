@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site.js';
+import { airbnbStyles, welcomeBookPages, welcomeSigns, money } from '../data/shop.js';
+
+const path = '/airbnb-host-templates/';
+
+const faq = [
+  ['What size is it?', 'The welcome book comes in US Letter (8.5 x 11 in) and A4 (210 x 297 mm). The signs are 5 x 7 in.'],
+  ['Do I need Canva Pro?', 'No. The book and the signs open in a free Canva account, in the browser or in the Canva app on a phone or tablet. The fonts are free inside Canva.'],
+  ['Can I send it to guests before they arrive?', 'Yes. Download it from Canva as a PDF and send it with your check-in message, or print it for the home. Many hosts do both.'],
+  ['How do I get the files?', 'Right after payment, open Purchases on Etsy and download the quick start PDF. It has your three Canva template links and the setup steps. Nothing is shipped.']
+];
+
+const jsonld = [
+  {
+    '@type': 'CollectionPage',
+    name: 'Airbnb welcome book templates',
+    url: new URL(path, SITE.url).href,
+    inLanguage: 'en',
+    mainEntity: { '@type': 'ItemList', itemListElement: airbnbStyles.map((x, n) => ({ '@type': 'ListItem', position: n + 1, name: `Airbnb welcome book template, ${x.name}`, url: x.url })) }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', SITE.url).href },
+      { '@type': 'ListItem', position: 2, name: 'Airbnb host templates', item: new URL(path, SITE.url).href }
+    ]
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  }
+];
+---
+<Base
+  title="Airbnb Welcome Book Templates: 24 Page House Manual and 8 Signs"
+  description="Airbnb welcome book templates for vacation rental hosts: a 24 page house manual and 8 matching signs in three styles, US Letter and A4, edited in a free Canva account. $8.99 on Etsy."
+  image="/images/og/airbnb-host-templates.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Airbnb host templates</li></ol>
+      <div class="grid">
+        <div>
+          <span class="kicker">Airbnb host templates</span>
+          <h1>Answer guest questions before they ask</h1>
+          <p class="lead">A 24 page welcome book and 8 matching signs for Airbnb and vacation rental hosts. Add your WiFi, house rules, check-in steps and favourite local places in Canva, then print it for the home or send it as a PDF.</p>
+          <ul class="facts">
+            <li>24 pages and 8 signs</li>
+            <li>US Letter and A4</li>
+            <li>{money(airbnbStyles[0].price)} on Etsy</li>
+          </ul>
+          <div class="actions">
+            <a class="btn" href="#styles">Choose a style</a>
+          </div>
+        </div>
+        <div class="figure light"><img src="/images/shop/airbnb/hero.webp" width="1100" height="1100" alt="All 24 pages of the neutral modern Airbnb welcome book" fetchpriority="high" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" id="styles">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three styles, the same 24 pages</h2>
+        <p>Pick the look that fits your place. Every style has the same pages and signs.</p>
+      </div>
+      <ul class="pgrid">
+        {airbnbStyles.map((x) => (
+          <li class="pcard">
+            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt="" loading="lazy" /></a>
+            <div class="pbody">
+              <span class="kicker">{x.look}</span>
+              <h3><a href={x.url} rel="noopener">{x.name}</a></h3>
+              <div class="pfoot"><span class="pprice">{money(x.price)}<small>on Etsy</small></span><a class="btn sm" href={x.url} rel="noopener">Buy on Etsy</a></div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The 24 pages, in order</h2>
+        <p>From the first note to the review request, each page answers one thing guests usually message you about.</p>
+      </div>
+      <ol class="doclist">{welcomeBookPages.map((p) => <li>{p}</li>)}</ol>
+    </div>
+  </section>
+
+  <section class="section dark">
+    <div class="wrap split">
+      <div>
+        <h2>Plus 8 matching signs</h2>
+        <p class="lead" style="margin-top:18px">Small 5 x 7 in signs for the places guests look: {welcomeSigns.map((s) => s.toLowerCase()).join(', ')}.</p>
+      </div>
+      <div class="figure light"><img src="/images/shop/airbnb/signs.webp" width="1000" height="1000" alt="Eight matching signs in the mountain cabin style: welcome, WiFi, house rules, check-out, trash, do not flush, review QR and quiet hours" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Good to know</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+      <p class="note" style="margin-top:28px">Silit Labs is not affiliated with Airbnb. Names, addresses and places in the templates are samples for you to replace.</p>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Want a style for your kind of place? Tell us about it.</h2>
+      <a class="mail" href={`mailto:${SITE.email}?subject=Welcome%20book`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>

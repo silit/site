@@ -5,6 +5,7 @@ import Intro from '../components/Intro.astro';
 import { SITE, NAV, alternateOf } from '../data/site.js';
 import { kits, kitPath } from '../data/kits.js';
 import { templates, templatePath } from '../data/templates.js';
+import { SHOP_LINES } from '../data/shop.js';
 
 const {
   title,
@@ -42,8 +43,8 @@ const org = {
 const graph = [org, ...jsonld];
 
 const t = isTr
-  ? { skip: 'Ana içeriğe geç', products: 'Ürünler', company: 'Silit Labs', follow: 'Takip edin', allKits: 'Tüm klinik kitleri', setup: 'Kurulum hizmeti', about: 'Hakkımızda (EN)', guides: 'Rehberler (EN)', lab: 'Lab (EN)', contact: 'Bize yazın', privacy: 'Gizlilik', terms: 'Kullanım şartları', blurb: 'Klinikler ve web stüdyoları için hazır araçlar üreten küçük bir ürün stüdyosu. Antalya.', menu: 'Menü', langLabel: 'English' }
-  : { skip: 'Skip to content', products: 'Products', company: 'Silit Labs', follow: 'Follow', allKits: 'All clinic kits', setup: 'Setup service (TR)', about: 'About', guides: 'Guides', lab: 'In the lab', contact: 'Contact', privacy: 'Privacy', terms: 'Terms', blurb: 'A small product studio making ready-to-use tools for clinics and web studios. Antalya, Turkey.', menu: 'Menu', langLabel: 'Türkçe' };
+  ? { skip: 'Ana içeriğe geç', products: 'Ürünler', company: 'Silit Labs', follow: 'Takip edin', allKits: 'Tüm klinik kitleri', setup: 'Kurulum hizmeti', about: 'Hakkımızda (EN)', guides: 'Rehberler (EN)', lab: 'Lab (EN)', contact: 'Bize yazın', privacy: 'Gizlilik', terms: 'Kullanım şartları', blurb: 'Küçük işletmeler, klinikler ve web stüdyoları için hazır şablonlar ve araçlar üreten küçük bir ürün stüdyosu. Antalya.', menu: 'Menü', langLabel: 'English' }
+  : { skip: 'Skip to content', products: 'Products', company: 'Silit Labs', follow: 'Follow', allKits: 'All clinic kits', setup: 'Setup service (TR)', about: 'About', guides: 'Guides', lab: 'In the lab', contact: 'Contact', privacy: 'Privacy', terms: 'Terms', blurb: 'A small product studio making ready-to-use templates and tools for small businesses, clinics and web studios. Antalya, Turkey.', menu: 'Menu', langLabel: 'Türkçe' };
 ---
 <!doctype html>
 <html lang={lang}>
@@ -117,6 +118,7 @@ const t = isTr
         <div>
           <h2>{t.products}</h2>
           <ul>
+            {SHOP_LINES.map((l) => <li><a href={l.href} hreflang={isTr ? 'en' : undefined}>{isTr ? `${l.name} (EN)` : l.name}</a></li>)}
             <li><a href={isTr ? '/tr/klinik-kitleri/' : '/clinic-kits/'}>{t.allKits}</a></li>
             {kits.map((k) => <li><a href={kitPath(k, lang)}>{k.name[lang]}</a></li>)}
             {templates.map((x) => <li><a href={templatePath(x, lang)}>{x.price ? x.name[lang] : `${x.name[lang]} ${x.tagline[lang]}`}</a></li>)}

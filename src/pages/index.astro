@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import { kits, kitPath } from '../data/kits.js';
 import { templates, templatePath } from '../data/templates.js';
 import { SITE } from '../data/site.js';
+import { SHOP_LINES, designs, money } from '../data/shop.js';
 
 const guides = (await getCollection('guides')).sort((a, b) => b.data.date - a.data.date).slice(0, 3);
 const jsonld = [{
@@ -17,19 +18,19 @@ const jsonld = [{
 }];
 ---
 <Base
-  title="Silit Labs: ready-made tools for clinics and Webflow studios"
-  description="Patient document kits and a lead tracker for clinics, the Curavia and Sessa Webflow templates, and two Webflow apps: Flowdeck for monitoring and AI SEO Deck for AI search."
+  title="Silit Labs: ready-made templates and tools for small businesses"
+  description="Booking site templates and Instagram kits for beauty pros, Airbnb welcome books, cleaning business forms, clinic patient kits, Webflow templates and Webflow apps."
   intro={true}
   jsonld={jsonld}
 >
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <h1 class="hero-in"><span>Ready-made tools</span> <span>for clinics and</span> <span>Webflow studios</span></h1>
-        <p class="lead hero-in" style="--d:.25s">We work in clinic marketing and on Webflow sites every day. Silit Labs turns the documents, spreadsheets and dashboards we needed into products you can use today.</p>
+        <h1 class="hero-in"><span>Ready-made tools</span> <span>for small</span> <span>businesses</span></h1>
+        <p class="lead hero-in" style="--d:.25s">Booking sites and Instagram kits for beauty pros, welcome books for Airbnb hosts, patient kits for clinics and apps for Webflow studios. We turn what real businesses use every day into templates you can put to work today.</p>
         <div class="actions hero-in" style="--d:.4s">
-          <a class="btn" href="/clinic-kits/">Browse clinic kits</a>
-          <a class="btn quiet" href="/webflow-apps/">See Webflow apps</a>
+          <a class="btn" href="/templates/">Browse templates</a>
+          <a class="btn quiet" href="/clinic-kits/">Clinic kits</a>
         </div>
       </div>
       <div class="hero-in" style="--d:.15s"><Bench /></div>
@@ -39,10 +40,19 @@ const jsonld = [{
   <section class="section" id="products">
     <div class="wrap">
       <div class="section-head">
-        <h2>Three product lines, with more on the bench</h2>
-        <p>Each one started as something we built for our own work. Pick the line that fits yours.</p>
+        <h2>Everything on the shelf, with more on the bench</h2>
+        <p>Templates for businesses that book clients or host guests, kits for clinics and apps for Webflow studios. Pick the line that fits yours.</p>
       </div>
       <div class="shelf">
+        <article class="shelf-bk">
+          <div class="shelf-bk-copy">
+            <div class="shelf-top"><span class="tag">On sale</span><span class="muted small">From {money(Math.min(...designs.map((x) => x.acuity.price)))} on Etsy</span></div>
+            <h3><a href="/booking-site-templates/">Booking site templates</a></h3>
+            <p class="muted">{designs.length} designs for hair stylists, lash techs, nail techs, estheticians, barbers, tattoo artists and more. Each one turns a Square or Acuity booking page into a polished mini site, with 20 Instagram posts and 10 stories to match.</p>
+            <a class="shelf-link" href="/booking-site-templates/">See all {designs.length} designs</a>
+          </div>
+          <img src="/images/shop/lines/home-booking.webp" width="1200" height="900" alt="Nine booking site designs on laptops and phones, from black gold hair stylist to lymphatic drainage" loading="lazy" />
+        </article>
         <article class="shelf-kits">
           <div class="shelf-top"><span class="tag">On sale</span><a class="shelf-link" href="/clinic-kits/">All clinic kits</a></div>
           <h3><a href="/clinic-kits/">Clinic kits</a></h3>
@@ -61,8 +71,9 @@ const jsonld = [{
         <article class="shelf-tpl">
           <div class="shelf-top"><span class="tag">New</span><a class="shelf-link" href="/templates/">All templates</a></div>
           <h3><a href="/templates/">Templates</a></h3>
-          <p class="muted">A lead tracking spreadsheet for Google Sheets and Excel, and a Webflow template for clinics that treat patients from abroad.</p>
+          <p class="muted">Canva, Sheets and Excel templates for beauty pros, Airbnb hosts and cleaning businesses, a lead tracker for clinics and Webflow sites.</p>
           <ul class="rows">
+            {SHOP_LINES.filter((l) => l.id !== 'booking').map((l) => <li><a href={l.href}><span>{l.name}<span class="meta"> &nbsp;{l.count}</span></span><span class="p">{money(l.from)}+</span></a></li>)}
             {templates.map((t) => <li><a href={templatePath(t, 'en')}><span>{t.name.en}<span class="meta"> &nbsp;{t.tagline.en}</span></span>{t.price ? <span class="p">${t.price}</span> : <span class="tag soon">{t.statusShort ? t.statusShort.en : 'Soon'}</span>}</a></li>)}
           </ul>
         </article>
@@ -90,9 +101,9 @@ const jsonld = [{
     <div class="wrap">
       <div class="section-head"><h2>How we make things</h2></div>
       <div class="principles">
-        <div><h3>Built from daily work</h3><p class="muted">Every product began as a document, checklist or dashboard we needed ourselves. If it did not save us time, it does not ship.</p></div>
-        <div><h3>Priced to be an easy yes</h3><p class="muted">Kits start at $6, and Flowdeck and AI SEO Deck are free for one site. You should be able to try a tool without a meeting or a contract.</p></div>
-        <div><h3>Yours to change</h3><p class="muted">Every text in a kit can be edited, and nothing locks you in. Flowdeck only reads your sites, and AI SEO Deck changes a page only when you press Apply.</p></div>
+        <div><h3>Built from real work</h3><p class="muted">Every product starts from a document, checklist or dashboard a real business uses every day. If it would not save that business time, it does not ship.</p></div>
+        <div><h3>Priced to be an easy yes</h3><p class="muted">Templates start at $1.99, clinic kits at $6, and Flowdeck and AI SEO Deck are free for one site. You should be able to try a tool without a meeting or a contract.</p></div>
+        <div><h3>Yours to change</h3><p class="muted">Every text in a kit or template can be edited, and nothing locks you in. Flowdeck only reads your sites, and AI SEO Deck changes a page only when you press Apply.</p></div>
       </div>
     </div>
   </section>
@@ -150,6 +161,10 @@ const jsonld = [{
   .shelf-tpl { background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
   .shelf-tpl .rows { margin-top: auto; }
   .shelf-tpl .rows a { padding: 14px 4px; }
+  .shelf > .shelf-bk { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 22px clamp(24px, 4vw, 56px); background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
+  .shelf-bk-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .shelf-bk-copy .shelf-top { align-self: stretch; }
+  .shelf-bk img { border-radius: 14px; }
   .shelf > .shelf-ai { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 22px clamp(24px, 4vw, 56px); background: var(--sheet); box-shadow: inset 0 0 0 1px var(--line); }
   .shelf-ai-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
   .shelf-ai-copy .shelf-top { align-self: stretch; }
@@ -157,7 +172,7 @@ const jsonld = [{
   .shelf > .shelf-lab { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 14px clamp(24px, 4vw, 56px); border: 2px dashed #B8C6D6; }
   .shelf-lab .shelf-top { margin-bottom: 14px; justify-content: flex-start; }
   .shelf-lab p { max-width: 36em; }
-  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } .shelf > .shelf-lab, .shelf > .shelf-ai { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) { .shelf { grid-template-columns: 1fr; } .shelf-kits { grid-row: auto; } .shelf > .shelf-lab, .shelf > .shelf-ai, .shelf > .shelf-bk { grid-template-columns: 1fr; } }
 
   .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 48px); }
   .principles > div { border-top: 2px solid var(--ink); padding-top: 20px; }

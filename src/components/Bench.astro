@@ -1,7 +1,8 @@
 ---
-// Home hero stage. Three short scenes show what each product line actually does:
-// 1. a kit page being branded, 2. Flowdeck catching a site going down, 3. what is next.
-// Scenes cycle on their own until someone picks one. Reduced motion shows scene 1, still.
+// Home hero stage. Short scenes show what each product line actually does:
+// (English only) a booking page getting its banners, then 1. a kit page being branded,
+// 2. Flowdeck catching a site going down, 3. what is next. Each scene's length is its data-dur.
+// Scenes cycle on their own until someone picks one. Reduced motion shows the first scene, still.
 const { lang = 'en' } = Astro.props;
 const tr = lang === 'tr';
 const L = tr
@@ -18,7 +19,8 @@ const L = tr
       label: 'Silit Labs ürünlerini gösteren kısa animasyonlar'
     }
   : {
-      tabs: ['Clinic kits', 'Webflow apps', 'In the lab'],
+      tabs: ['Booking sites', 'Clinic kits', 'Webflow apps', 'In the lab'],
+      book: ['Booking sites', 'Your booking page, dressed as a real website.'],
       caps: [
         ['Clinic kits', 'Brand once. Every page updates.'],
         ['Webflow apps', 'Every client site on one screen.'],
@@ -33,8 +35,27 @@ const domains = ['northpeak.studio', 'lumen-dental.co', 'harborlegal.com', 'atel
 ---
 <div class="bench-wrap">
   <div class="bench" role="img" aria-label={L.label}>
+    {!tr && (
+      <div class="scene s-book" data-dur="6200" aria-hidden="true">
+        <div class="lap">
+          <div class="lap-scr">
+            <div class="url"><i></i><i></i><i></i><span>yourbusiness.square.site</span></div>
+            <div class="bk-hero">
+              <div class="bk-copy"><em class="w">Welcome to</em><b>HAIR</b><em class="by">by Nia</em></div>
+              <i class="bk-photo"></i>
+            </div>
+            <div class="bk-row"><i class="bk-card"></i><i class="bk-card"></i><i class="bk-card"></i></div>
+          </div>
+          <i class="lap-base"></i>
+        </div>
+        <div class="ph"><i class="ph-hero"></i><i class="ph-l"></i><i class="ph-l s"></i><i class="ph-l"></i><i class="ph-btn"></i></div>
+        <div class="bk-toast"><b>New booking</b><span>Silk press, Friday 10:00</span></div>
+        <p class="cap"><b>{L.book[0]}</b>{L.book[1]}</p>
+      </div>
+    )}
+
     <!-- Scene 1: clinic kits -->
-    <div class="scene s-kits" aria-hidden="true">
+    <div class="scene s-kits" data-dur="6400" aria-hidden="true">
       <div class="sheet sh-c"><i class="hd"></i><i class="ln"></i><i class="ln s"></i><i class="ln"></i></div>
       <div class="sheet sh-b"><i class="hd"></i><i class="ln"></i><i class="ln s"></i><i class="ln"></i></div>
       <div class="sheet sh-a">
@@ -52,7 +73,7 @@ const domains = ['northpeak.studio', 'lumen-dental.co', 'harborlegal.com', 'atel
     </div>
 
     <!-- Scene 2: Flowdeck -->
-    <div class="scene s-fd" aria-hidden="true">
+    <div class="scene s-fd" data-dur="6600" aria-hidden="true">
       <div class="panel">
         <div class="pn-h"><img src="/images/flowdeck/logo.svg" alt="" width="24" height="24" /><b>Flowdeck</b><span>{L.sites}</span></div>
         <ul>
@@ -70,7 +91,7 @@ const domains = ['northpeak.studio', 'lumen-dental.co', 'harborlegal.com', 'atel
     </div>
 
     <!-- Scene 3: lab -->
-    <div class="scene s-lab" aria-hidden="true">
+    <div class="scene s-lab" data-dur="5200" aria-hidden="true">
       <svg class="sketch" viewBox="0 0 400 260" fill="none">
         <rect class="d d1" x="6" y="6" width="388" height="248" rx="14" pathLength="100" />
         <rect class="d d2" x="26" y="26" width="160" height="22" rx="6" pathLength="100" />
@@ -97,7 +118,7 @@ const domains = ['northpeak.studio', 'lumen-dental.co', 'harborlegal.com', 'atel
     const bench = wrap.querySelector('.bench');
     const scenes = [...wrap.querySelectorAll('.scene')];
     const tabs = [...wrap.querySelectorAll('.bench-tabs button')];
-    const DUR = [6400, 6600, 5200];
+    const DUR = scenes.map((s) => Number(s.dataset.dur) || 6000);
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let cur = 0, timer = 0, auto = !still, visible = true;
     bench.classList.add('js');
@@ -141,13 +162,45 @@ const domains = ['northpeak.studio', 'lumen-dental.co', 'harborlegal.com', 'atel
     color: var(--paper);
   }
   .scene { position: absolute; inset: 0; opacity: 0; transition: opacity .45s ease; }
-  .bench:not(.js) .s-kits, .scene.on { opacity: 1; }
+  .bench:not(.js) .scene:first-child, .scene.on { opacity: 1; }
   .bench.paused * { animation-play-state: paused !important; }
   .scene i, .scene em { display: block; font-style: normal; }
 
   .cap { position: absolute; left: 6cqw; bottom: 5.5cqw; right: 6cqw; font-family: var(--display); font-weight: 650; font-size: max(17px, 4.4cqw); font-stretch: 90%; letter-spacing: -.02em; line-height: 1.1; }
   .cap b { display: block; font-family: var(--text); font-weight: 650; font-size: max(13px, 2.5cqw); color: var(--coral-2); letter-spacing: 0; margin-bottom: .5em; font-stretch: 100%; }
   .on .cap { animation: rise .6s var(--ease) both; }
+
+  /* Scene 0 (English home): a booking page gets its banners */
+  .lap { position: absolute; left: 7cqw; top: 8cqw; width: 64cqw; }
+  .lap-scr { display: grid; grid-template-rows: auto auto 1fr; aspect-ratio: 16 / 10; overflow: hidden; background: #FBF8F4; border: 1.2cqw solid #1B1B1D; border-bottom-width: 1.6cqw; border-radius: 2cqw 2cqw 0 0; box-shadow: 0 3cqw 6cqw -2cqw rgba(0, 0, 0, .45); }
+  .url { display: flex; align-items: center; gap: .8cqw; padding: 1cqw 1.6cqw; background: #EFEAE3; color: #8A8075; font-size: max(8px, 1.7cqw); }
+  .url i { width: 1.2cqw; height: 1.2cqw; border-radius: 50%; background: #D6CEC4; }
+  .url span { margin-left: 1cqw; }
+  .bk-hero { display: grid; grid-template-columns: 1.2fr 1fr; margin: 1.6cqw 1.6cqw 1.2cqw; border-radius: .8cqw; overflow: hidden; background: #2A1F1A; transform-origin: left; }
+  .bk-copy { display: grid; align-content: center; padding: 2.2cqw 2.4cqw; color: #E8C98F; }
+  .bk-copy .w, .bk-copy .by { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: max(9px, 2.1cqw); }
+  .bk-copy b { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: max(17px, 6cqw); letter-spacing: .08em; line-height: 1; color: #F6EBDD; }
+  .bk-photo { background: radial-gradient(circle at 50% 38%, #D2A585 0 15%, transparent 16%), radial-gradient(ellipse 34% 30% at 50% 100%, #8C5E46 0 99%, transparent 100%), linear-gradient(180deg, #4A352B, #2E211B); }
+  .bk-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2cqw; margin: 0 1.6cqw 1.6cqw; }
+  .bk-card { border-radius: .8cqw; background: #EFE6DA; box-shadow: inset 0 0 0 .2cqw #E2D6C6; }
+  .bk-card:nth-child(2) { background: #2A1F1A; box-shadow: none; }
+  .lap-base { height: 2cqw; margin: 0 -4cqw; border-radius: 0 0 2cqw 2cqw; background: linear-gradient(#D9DDE3, #B4BBC4); }
+  .ph { position: absolute; right: 8cqw; top: 14cqw; width: 18cqw; aspect-ratio: 9 / 19; display: grid; align-content: start; gap: 1.2cqw; overflow: hidden; background: #FBF8F4; border: 1cqw solid #1B1B1D; border-radius: 3cqw; box-shadow: 0 3cqw 6cqw -2cqw rgba(0, 0, 0, .5); }
+  .ph-hero { height: 14cqw; background: #2A1F1A; box-shadow: inset 0 -1cqw 0 #3A2B23; }
+  .ph-l { height: 1.2cqw; margin: 0 1.6cqw; border-radius: 1cqw; background: #E2D6C6; }
+  .ph-l.s { width: 50%; }
+  .ph-btn { height: 3.4cqw; margin: .6cqw 1.6cqw 0; border-radius: 999px; background: #C9A15F; }
+  .bk-toast { position: absolute; left: 9cqw; bottom: 22cqw; display: grid; gap: .4cqw; padding: 2cqw 2.6cqw; border-radius: 2cqw; border-left: 1.2cqw solid #2BB37C; background: #fff; color: var(--ink); font-size: max(11px, 2.5cqw); box-shadow: 0 3cqw 6cqw -2cqw rgba(0, 0, 0, .55); opacity: 0; }
+  .bk-toast span { color: var(--muted); }
+  .on .lap { animation: sheet-in .7s var(--ease) both; }
+  .on .bk-hero { animation: sweep .6s var(--ease) .7s both; }
+  .on .bk-copy > * { animation: fade .4s ease both; }
+  .on .bk-copy .w { animation-delay: 1.2s; } .on .bk-copy b { animation-delay: 1.35s; } .on .bk-copy .by { animation-delay: 1.5s; }
+  .on .bk-photo { animation: fade .5s ease 1.4s both; }
+  .on .bk-card { animation: pop .45s var(--ease) both; }
+  .on .bk-card:nth-child(1) { animation-delay: 1.9s; } .on .bk-card:nth-child(2) { animation-delay: 2.05s; } .on .bk-card:nth-child(3) { animation-delay: 2.2s; }
+  .on .ph { animation: pop .5s var(--ease) 2.6s both; }
+  .on .bk-toast { animation: toast 6.2s var(--ease) both; }
 
   /* Scene 1: a kit page gets branded */
   .sheet { position: absolute; left: 12cqw; top: 7cqw; width: 40cqw; aspect-ratio: 210 / 297; background: #fff; border-radius: 1.6cqw; padding: 0 0 2cqw; box-shadow: 0 3cqw 6cqw -2cqw rgba(0, 0, 0, .45); overflow: hidden; }
@@ -261,13 +314,14 @@ const domains = ['northpeak.studio', 'lumen-dental.co', 'harborlegal.com', 'atel
   @keyframes pen { 0% { opacity: 1; transform: translate(20px, 6px); } 25% { transform: translate(394px, 6px); } 50% { transform: translate(394px, 254px); } 75% { transform: translate(6px, 254px); } 99% { opacity: 1; transform: translate(6px, 30px); } 100% { opacity: 0; } }
 
   /* Tabs */
-  .bench-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .bench-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 8px; margin-top: 14px; }
   .bench-tabs button { position: relative; text-align: left; padding: 12px 4px 14px; font-weight: 600; font-size: 15px; color: var(--muted); border-top: 2px solid var(--line); }
   .bench-tabs button[aria-pressed='true'] { color: var(--ink); }
   .bench-tabs .prog { position: absolute; left: 0; right: 0; top: -2px; height: 2px; background: var(--ink); transform: scaleX(0); transform-origin: left; }
   .bench-tabs button[aria-pressed='true'] .prog { transform: scaleX(1); }
   .bench-tabs button.run .prog { animation: prog var(--dur, 6s) linear both; }
   @keyframes prog { from { transform: scaleX(0); } }
+  @media (max-width: 480px) { .bench-tabs button { font-size: 13px; } }
 
   @media (prefers-reduced-motion: reduce) {
     .bench *, .bench-tabs * { animation: none !important; transition: none !important; }

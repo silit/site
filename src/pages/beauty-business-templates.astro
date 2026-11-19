@@ -1,0 +1,147 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site.js';
+import { beautyBundles, instagramKits, beautyExtras, money } from '../data/shop.js';
+
+const path = '/beauty-business-templates/';
+const all = [...beautyBundles, ...instagramKits, ...beautyExtras];
+
+const faq = [
+  ['What do I need to edit them?', 'A free Canva account for the booking sites, Instagram posts, stories and highlight covers. The bookkeeping spreadsheets work in Google Sheets (free) and in Excel. The booking policies come as a PDF and a Word file too.'],
+  ['How do I get the files?', 'Right after payment, open Purchases on Etsy and download the PDF guide. It has your Canva template links and the Google Sheets copy links. Nothing is shipped.'],
+  ['Are the photos and texts included?', 'The sample photos come from the free Canva library, and every post comes with ready to post wording you can keep or change. Names, prices and reviews are placeholders: put in your own.'],
+  ['Can I share the templates with my team?', 'A purchase covers your own business and the artists who work in it. Please do not resell the templates or share the links outside your business.']
+];
+
+const jsonld = [
+  {
+    '@type': 'CollectionPage',
+    name: 'Beauty business templates',
+    url: new URL(path, SITE.url).href,
+    inLanguage: 'en',
+    mainEntity: { '@type': 'ItemList', itemListElement: all.map((x, n) => ({ '@type': 'ListItem', position: n + 1, name: x.name, url: x.url })) }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', SITE.url).href },
+      { '@type': 'ListItem', position: 2, name: 'Beauty business templates', item: new URL(path, SITE.url).href }
+    ]
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  }
+];
+---
+<Base
+  title="Beauty Business Templates: Bundles, Instagram Kits, Policies, Bookkeeping"
+  description="Templates for lash techs, estheticians, nail techs, hair stylists and med spas: business bundles, Instagram kits, booking policies and bookkeeping spreadsheets. Canva, Google Sheets and Excel."
+  image="/images/og/beauty-business-templates.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Beauty business templates</li></ol>
+      <div class="grid">
+        <div>
+          <span class="kicker">Beauty business templates</span>
+          <h1>Book, post and keep the books with one look</h1>
+          <p class="lead">Business bundles for lash techs, estheticians, nail techs and hair stylists, Instagram kits for lash studios and med spas, booking policy wording and bookkeeping spreadsheets. Made for Canva, Google Sheets and Excel.</p>
+          <ul class="facts">
+            <li>12 products</li>
+            <li>From {money(Math.min(...all.map((x) => x.price)))} on Etsy</li>
+            <li>Free Canva account is enough</li>
+          </ul>
+          <div class="actions">
+            <a class="btn" href="#bundles">See the bundles</a>
+            <a class="btn quiet" href="/booking-site-templates/">Booking site templates</a>
+          </div>
+        </div>
+        <div class="figure light"><img src="/images/shop/beauty/hero.webp" width="1100" height="1100" alt="All 100 posts of the lash tech Instagram kit in cream, sand, blush and espresso" fetchpriority="high" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" id="bundles">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Business bundles</h2>
+        <p>Booking site designs for Square and Acuity, a full Instagram kit, booking policies and a bookkeeping spreadsheet, in one download for your niche.</p>
+      </div>
+      <ul class="pgrid">
+        {beautyBundles.map((x) => (
+          <li class="pcard">
+            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt="" loading="lazy" /></a>
+            <div class="pbody">
+              <span class="kicker">{x.who}</span>
+              <h3><a href={x.url} rel="noopener">{x.name}</a></h3>
+              <ul>{x.items.map((i) => <li>{i}</li>)}</ul>
+              <div class="pfoot"><span class="pprice">{money(x.price)}<small>on Etsy</small></span><a class="btn sm" href={x.url} rel="noopener">Buy on Etsy</a></div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="instagram">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Instagram templates</h2>
+        <p>Feeds that look planned, with wording you can post as it is. Every post is 1080 x 1350 px and opens in Canva.</p>
+      </div>
+      <ul class="pgrid">
+        {instagramKits.map((x) => (
+          <li class="pcard">
+            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt="" loading="lazy" /></a>
+            <div class="pbody">
+              <span class="kicker">{x.who}</span>
+              <h3><a href={x.url} rel="noopener">{x.name}</a></h3>
+              <p>{x.line}</p>
+              <div class="pfoot"><span class="pprice">{money(x.price)}<small>on Etsy</small></span><a class="btn sm" href={x.url} rel="noopener">Buy on Etsy</a></div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" id="policies-bookkeeping">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Policies and bookkeeping</h2>
+        <p>Clear rules before anyone books, and numbers you can hand to your accountant.</p>
+      </div>
+      <ul class="pgrid">
+        {beautyExtras.map((x) => (
+          <li class="pcard">
+            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt="" loading="lazy" /></a>
+            <div class="pbody">
+              <span class="kicker">{x.who}</span>
+              <h3><a href={x.url} rel="noopener">{x.name}</a></h3>
+              <p>{x.line}</p>
+              <div class="pfoot"><span class="pprice">{money(x.price)}<small>on Etsy</small></span><a class="btn sm" href={x.url} rel="noopener">Buy on Etsy</a></div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Good to know</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Need a kit for a niche we have not covered yet? Tell us.</h2>
+      <a class="mail" href={`mailto:${SITE.email}?subject=Beauty%20template`}>{SITE.email}</a>
+    </div>
+  </section>
+</Base>

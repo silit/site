@@ -17,8 +17,9 @@ export const SITE = {
 
 export const NAV = {
   en: [
-    { href: '/clinic-kits/', label: 'Clinic kits' },
+    { href: '/booking-site-templates/', label: 'Booking sites' },
     { href: '/templates/', label: 'Templates' },
+    { href: '/clinic-kits/', label: 'Clinic kits' },
     { href: '/webflow-apps/', label: 'Webflow apps' },
     { href: '/guides/', label: 'Guides' },
     { href: '/about/', label: 'About' }
@@ -62,10 +63,17 @@ export const categories = [
     status: 'live'
   },
   {
+    id: 'booking-site-templates',
+    href: '/booking-site-templates/',
+    name: 'Booking site templates',
+    line: '27 booking site designs for Square and Acuity, with Instagram posts and stories.',
+    status: 'live'
+  },
+  {
     id: 'templates',
     href: '/templates/',
     name: 'Templates',
-    line: 'Spreadsheet and Webflow templates for clinics.',
+    line: 'Templates for beauty pros, Airbnb hosts and cleaning businesses, a clinic lead tracker and Webflow sites.',
     status: 'live'
   },
   {
