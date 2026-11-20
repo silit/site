@@ -46,6 +46,11 @@ public/                 images, videos, favicon, robots.txt
 
 **Change prices or Etsy links.** Kits live in `src/data/kits.js`, templates in `src/data/templates.js`. Never put the Google Sheets copy link for the lead tracker on the site; it is for buyers only.
 
+## Search engines
+
+- **Google:** the URL-prefix property `https://silitlabs.com/` in Search Console (info@silitlabs.com). The sitemap is `/sitemap-index.xml`.
+- **IndexNow** (Bing, Yandex, Naver, Seznam, Yep and the other IndexNow engines; Google does not use it): after every production deploy, `.github/workflows/indexnow.yml` runs `scripts/indexnow.mjs`. It submits only the pages whose HTML changed since the last run, plus removed pages, because IndexNow asks not to resubmit unchanged ones. The key file is `public/2a0f480c411a530423ba08e4a4bbdcfc.txt`; keep it. To submit by hand, open the IndexNow workflow in the Actions tab and choose "Run workflow".
+
 ## House rules for copy
 
 - Never write a capital dotted I (the Turkish capital of i). Rephrase or start the word in lowercase.
