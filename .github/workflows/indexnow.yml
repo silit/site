@@ -1,0 +1,50 @@
+# Tells the IndexNow search engines (Bing, Yandex, Naver, Seznam, Yep and the others) which pages
+# changed, right after each production deploy on Vercel. Google does not use IndexNow; Search Console
+# covers Google. Run it by hand from the Actions tab with "Run workflow".
+name: IndexNow
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       startsWith(github.event.deployment.environment, 'Production'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Restore page fingerprints from the last run
+        uses: actions/cache/restore@v4
+        with:
+          path: .indexnow
+          key: indexnow-${{ github.run_id }}
+          restore-keys: indexnow-
+
+      - name: Wait for the deploy to reach silitlabs.com
+        if: github.event_name == 'deployment_status'
+        run: sleep 30
+
+      - name: Submit new, changed and removed pages
+        run: node scripts/indexnow.mjs
+
+      - name: Save page fingerprints for the next run
+        uses: actions/cache/save@v4
+        with:
+          path: .indexnow
+          key: indexnow-${{ github.run_id }}
