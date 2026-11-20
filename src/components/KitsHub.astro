@@ -77,7 +77,7 @@ const jsonld = [
     <div class="wrap kitlist">
       {kits.map((k, n) => (
         <article class={n % 2 ? 'kitrow flip' : 'kitrow'}>
-          <a class="figure" href={kitPath(k, lang)} tabindex="-1" aria-hidden="true"><img src={tr ? k.img.trHero : k.img.hero} width="1500" height="1125" alt="" loading={n ? 'lazy' : 'eager'} /></a>
+          <a class="figure" href={kitPath(k, lang)} tabindex="-1" aria-hidden="true"><img src={tr ? k.img.trHero : k.img.hero} width="1500" height="1125" alt={`${k.name[lang]}: ${k.highlights[lang][0]}`} loading={n ? 'lazy' : 'eager'} /></a>
           <div>
             <span class="kicker">{k.audience[lang]}</span>
             <h2><a href={kitPath(k, lang)}>{k.name[lang]}</a></h2>

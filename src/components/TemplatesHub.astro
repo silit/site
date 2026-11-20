@@ -78,7 +78,7 @@ const jsonld = [
         <ul class="pgrid">
           {SHOP_LINES.map((l) => (
             <li class="pcard">
-              <a class="pimg" href={l.href} tabindex="-1" aria-hidden="true"><img src={l.img} width="900" height="900" alt="" loading="eager" /></a>
+              <a class="pimg" href={l.href} tabindex="-1" aria-hidden="true"><img src={l.img} width="900" height="900" alt={l.alt} loading="eager" /></a>
               <div class="pbody">
                 <span class="kicker">{l.count}</span>
                 <h3><a href={l.href}>{l.name}</a></h3>
@@ -99,7 +99,7 @@ const jsonld = [
         <div class="tpl-list">
           {g.items.map((t, n) => (
             <article class={n % 2 ? 'tplrow flip' : 'tplrow'}>
-              <a class={t.light ? 'figure light' : 'figure'} href={templatePath(t, lang)} tabindex="-1" aria-hidden="true"><img src={t.img.card.src} width={t.img.card.w} height={t.img.card.h} alt="" loading={gi || n ? 'lazy' : 'eager'} /></a>
+              <a class={t.light ? 'figure light' : 'figure'} href={templatePath(t, lang)} tabindex="-1" aria-hidden="true"><img src={t.img.card.src} width={t.img.card.w} height={t.img.card.h} alt={t.img.card.alt[lang]} loading={gi || n ? 'lazy' : 'eager'} /></a>
               <div>
                 <span class="kicker">{t.audience[lang]}</span>
                 <h3><a href={templatePath(t, lang)}>{t.name[lang]}</a></h3>

@@ -7,7 +7,7 @@
 // `preview` and `statusNote` is not on sale yet: its page shows the live preview and the status instead
 // of a price, and `statusShort` is the short tag used in lists.
 
-const etsy = (id) => `https://www.etsy.com/listing/${id}`;
+const etsy = (id) => `https://silitlabs.etsy.com/listing/${id}`; // Share & Save link, see data/shop.js
 const pic = (src, w, h, en, tr) => ({ src, w, h, alt: { en, tr } });
 
 // Where a template is sold. Etsy by default; a template sold somewhere else sets `store: { url, text }`.

@@ -88,7 +88,7 @@ const jsonld = [
           <ul class="pgrid">
             {g.items.map((x) => (
               <li class="pcard wide">
-                <a class="pimg" href={x.square.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="600" alt="" loading="lazy" /></a>
+                <a class="pimg" href={x.square.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="600" alt={`${x.name} booking site template for Square and Acuity in ${x.look.toLowerCase()}`} loading="lazy" /></a>
                 <div class="pbody">
                   <h4 class="dname">{x.name}</h4>
                   <p class="small">{x.look}</p>
@@ -114,7 +114,7 @@ const jsonld = [
       <div class="bundles">
         {bookingBundles.map((b) => (
           <article class="bundle">
-            <a class="figure light" href={b.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={b.img} width="1000" height="1000" alt="" loading="lazy" /></a>
+            <a class="figure light" href={b.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={b.img} width="1000" height="1000" alt={b.alt} loading="lazy" /></a>
             <div>
               <span class="kicker">{b.platform}</span>
               <h3><a href={b.url} rel="noopener">{b.name}</a></h3>
