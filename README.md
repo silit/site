@@ -49,7 +49,7 @@ public/                 images, videos, favicon, robots.txt
 ## Search engines
 
 - **Google:** the URL-prefix property `https://silitlabs.com/` in Search Console (info@silitlabs.com). The sitemap is `/sitemap-index.xml`.
-- **IndexNow** (Bing, Yandex, Naver, Seznam, Yep and the other IndexNow engines; Google does not use it): after every production deploy, `.github/workflows/indexnow.yml` runs `scripts/indexnow.mjs`. It submits only the pages whose HTML changed since the last run, plus removed pages, because IndexNow asks not to resubmit unchanged ones. The key file is `public/2a0f480c411a530423ba08e4a4bbdcfc.txt`; keep it. To submit by hand, open the IndexNow workflow in the Actions tab and choose "Run workflow".
+- **IndexNow** (Bing, Yandex, Naver, Seznam, Yep and the other IndexNow engines; Google does not use it): after every production deploy (when the Vercel commit status on `main` turns to success), `.github/workflows/indexnow.yml` runs `scripts/indexnow.mjs`. It submits only the pages whose HTML changed since the last run, plus removed pages, because IndexNow asks not to resubmit unchanged ones. The key file is `public/2a0f480c411a530423ba08e4a4bbdcfc.txt`; keep it. To submit by hand, open the IndexNow workflow in the Actions tab and choose "Run workflow".
 
 ## House rules for copy
 
