@@ -4,7 +4,9 @@
 // Prices are the regular Etsy prices; Etsy sales lower them for a few days. Images: public/images/shop/,
 // made by /home/claude/site-shop/make_images.py from the Etsy listing images.
 
-export const etsy = (id) => `https://www.etsy.com/listing/${id}`;
+// Listing links use the shop subdomain: Etsy counts orders that come through silitlabs.etsy.com links for
+// Share & Save (a refund on Etsy fees). The subdomain redirects to the normal listing page.
+export const etsy = (id) => `https://silitlabs.etsy.com/listing/${id}`;
 const B = '/images/shop/booking';
 
 // Booking site templates: every design has a Square version and an Acuity version (separate Etsy listings).

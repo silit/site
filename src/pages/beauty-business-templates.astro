@@ -72,7 +72,7 @@ const jsonld = [
       <ul class="pgrid">
         {beautyBundles.map((x) => (
           <li class="pcard">
-            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt="" loading="lazy" /></a>
+            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt={x.alt} loading="lazy" /></a>
             <div class="pbody">
               <span class="kicker">{x.who}</span>
               <h3><a href={x.url} rel="noopener">{x.name}</a></h3>
@@ -94,7 +94,7 @@ const jsonld = [
       <ul class="pgrid">
         {instagramKits.map((x) => (
           <li class="pcard">
-            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt="" loading="lazy" /></a>
+            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt={x.alt} loading="lazy" /></a>
             <div class="pbody">
               <span class="kicker">{x.who}</span>
               <h3><a href={x.url} rel="noopener">{x.name}</a></h3>
@@ -116,7 +116,7 @@ const jsonld = [
       <ul class="pgrid">
         {beautyExtras.map((x) => (
           <li class="pcard">
-            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt="" loading="lazy" /></a>
+            <a class="pimg" href={x.url} rel="noopener" tabindex="-1" aria-hidden="true"><img src={x.img} width="900" height="900" alt={x.alt} loading="lazy" /></a>
             <div class="pbody">
               <span class="kicker">{x.who}</span>
               <h3><a href={x.url} rel="noopener">{x.name}</a></h3>

@@ -7,7 +7,8 @@ export const SITE = {
   email: 'info@silitlabs.com',
   city: 'Antalya',
   country: 'TR',
-  etsy: 'https://www.etsy.com/shop/SilitLabs',
+  etsy: 'https://www.etsy.com/shop/SilitLabs', // profile URL for structured data (sameAs)
+  etsyLink: 'https://silitlabs.etsy.com', // clickable shop link, counts for Etsy Share & Save
   pinterest: 'https://www.pinterest.com/silitlabs/',
   instagram: 'https://www.instagram.com/silitlabs/',
   flowdeck: 'https://flowdeck.silitlabs.com',

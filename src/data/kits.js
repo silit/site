@@ -2,9 +2,9 @@
 // Adding a kit: add a record here, drop its images in public/images/kits/<id>/ and
 // its builder videos in public/video/. The EN and TR pages are generated from this file.
 
-const etsy = (id) => `https://www.etsy.com/listing/${id}`;
+const etsy = (id) => `https://silitlabs.etsy.com/listing/${id}`; // Share & Save link, see data/shop.js
 
-export const SHOP = 'https://www.etsy.com/shop/SilitLabs';
+export const SHOP = 'https://silitlabs.etsy.com';
 
 export const kits = [
   {
