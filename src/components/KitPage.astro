@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import KitFaq from './KitFaq.astro';
 import { kits, kitPath, SHOP } from '../data/kits.js';
 import { SITE } from '../data/site.js';
+import { digitalOffer } from '../data/offer.js';
 
 const { kit, lang = 'en' } = Astro.props;
 const tr = lang === 'tr';
@@ -59,7 +60,7 @@ const jsonld = [
     image: [new URL(kit.img.hero, SITE.url).href, new URL(kit.img.inside, SITE.url).href],
     brand: { '@type': 'Brand', name: 'Silit Labs' },
     category: tr ? 'Klinik doküman şablonları' : 'Clinic document templates',
-    offers: { '@type': 'Offer', price: String(kit.price), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: kit.etsy, seller: { '@id': `${SITE.url}/#org` } }
+    offers: digitalOffer({ price: kit.price, url: kit.etsy, returns: false })
   },
   {
     '@type': 'BreadcrumbList',
