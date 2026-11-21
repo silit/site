@@ -1,0 +1,49 @@
+/* Cookie notice (src/components/Consent.astro). Base.astro adds these styles to a page only when
+   PUBLIC_GA_ID is set, ahead of the site stylesheet, so each rule here is specific enough to win.
+   Buttons, link and focus ring are the site's own (.btn.quiet.sm, .link, :focus-visible). */
+
+.consent { display: none; font-size: 15px; line-height: 1.45; }
+.consent [hidden] { display: none; }
+.consent .consent-box { display: flex; align-items: center; gap: 12px 32px; }
+.consent .consent-text { flex: 1; min-width: 0; }
+.consent .consent-text a { white-space: nowrap; }
+.consent .consent-status { font-weight: 650; color: var(--blue); }
+.consent .consent-actions { display: flex; gap: 8px; }
+.consent .consent-actions .btn { min-width: 108px; }
+.consent .consent-actions .btn:hover { background: var(--paper-2); }
+.consent[data-state='gpc'] .consent-ask, .consent[data-state='gpc'] [data-choice], .consent:not([data-state='gpc']) [data-close] { display: none; }
+.consent[data-state='gpc'] .consent-status { font-weight: inherit; color: inherit; }
+
+/* First visit: a strip at the top of the page. It is part of the page flow, so it never sits on top of a
+   button or a headline, and the flag that shows it is set before the first paint, so nothing jumps. */
+[data-consent='new'] .consent { display: block; background: var(--sheet); border-bottom: 1px solid var(--line); }
+[data-consent='new'] .consent .consent-box { padding: 12px 0; }
+
+/* Opened from a "Cookie settings" button: a floating box. The script places it just above the button
+   that opened it; the bottom of the screen is the fallback when there is no room there. */
+[data-consent='open'] .consent { display: block; position: fixed; z-index: 40; left: 0; right: 0; bottom: max(16px, env(safe-area-inset-bottom)); pointer-events: none; }
+[data-consent='open'] .consent .consent-box {
+  pointer-events: auto;
+  padding: 14px 14px 14px 24px;
+  border: 1px solid var(--line); border-radius: 22px;
+  background: var(--sheet);
+  box-shadow: 0 24px 60px -20px rgba(11, 37, 64, .35), 0 2px 10px rgba(11, 37, 64, .08);
+}
+
+/* The settings button reads as a link: like its neighbours in the footer, and like a text link on the privacy page. */
+.foot [data-consent-open]:hover { text-decoration: underline; }
+.article [data-consent-open] { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .consent { font-size: 14.5px; }
+  .consent .consent-box { flex-direction: column; align-items: stretch; }
+  .consent .consent-actions .btn { flex: 1; min-height: 44px; }
+  [data-consent='new'] .consent .consent-box { padding: 14px 0 16px; }
+  [data-consent='open'] .consent { bottom: max(12px, env(safe-area-inset-bottom)); }
+  [data-consent='open'] .consent .consent-box { padding: 16px; border-radius: 20px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-consent='open'] .consent .consent-box { animation: consent-in .4s var(--ease) both; }
+}
+@keyframes consent-in { from { opacity: 0; transform: translateY(14px); } }
+@media print { [data-consent] .consent { display: none; } }

@@ -1,0 +1,237 @@
+---
+// Cookie notice and Google Analytics 4. Base.astro renders this only when PUBLIC_GA_ID is set
+// (src/data/analytics.js), together with its styles (src/styles/consent.css).
+//
+// Nothing from Google is requested and no cookie is set until the visitor chooses Accept. Declining,
+// or a Global Privacy Control signal from the browser, keeps it that way. Accept and Decline look the
+// same on purpose.
+//
+// On a first visit the notice is a strip at the top of the page, in the page flow, so it never covers a
+// button. The "Cookie settings" button in the footer opens it again as a box just above that button.
+import { GA_ID, CONSENT_DAYS, CONSENT_KEY } from '../data/analytics.js';
+
+const { lang = 'en' } = Astro.props;
+const tr = lang === 'tr';
+const T = tr
+  ? {
+      label: 'Çerez bildirimi',
+      ask: 'Ziyaretleri Google Analytics ile yalnızca kabul ederseniz sayarız. Çerez kullanır, reklam için kullanılmaz.',
+      more: 'Gizlilik politikası (EN)',
+      accept: 'Kabul et', decline: 'Reddet', close: 'Kapat',
+      granted: 'Analitik şu an açık.', denied: 'Analitik şu an kapalı.',
+      gpc: 'Tarayıcınız Global Privacy Control sinyali gönderiyor, bu yüzden analitik kapalı kalır.'
+    }
+  : {
+      label: 'Cookie notice',
+      ask: 'We count visits with Google Analytics only if you accept. It sets cookies, and we do not use it for ads.',
+      more: 'Privacy policy',
+      accept: 'Accept', decline: 'Decline', close: 'Close',
+      granted: 'Analytics is on.', denied: 'Analytics is off.',
+      gpc: 'Your browser sends a Global Privacy Control signal, so analytics stays off.'
+    };
+---
+<div class="consent" id="consent" data-ga-id={GA_ID} data-days={CONSENT_DAYS} data-key={CONSENT_KEY}>
+  <div class="wrap">
+    <div class="consent-box" role="region" aria-label={T.label} aria-describedby="consent-text" tabindex="-1">
+      <p class="consent-text" id="consent-text">
+        <span class="consent-status" data-granted={T.granted} data-denied={T.denied} data-gpc={T.gpc} hidden></span>
+        <span class="consent-ask">{T.ask}</span>
+        <a class="link" href="/privacy/#analytics" hreflang={tr ? 'en' : undefined}>{T.more}</a>
+      </p>
+      <div class="consent-actions">
+        <button type="button" class="btn quiet sm" data-choice="granted">{T.accept}</button>
+        <button type="button" class="btn quiet sm" data-choice="denied">{T.decline}</button>
+        <button type="button" class="btn quiet sm" data-close>{T.close}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // The notice and the Google tag. The click events are in a second script below: each stays under 4 KB,
+  // so Astro writes both into the page (no extra request, and no file at all while analytics is off).
+  const wrap = document.getElementById('consent');
+  if (wrap) {
+    const ID = wrap.dataset.gaId;
+    const KEY = wrap.dataset.key;
+    const MAX_AGE = Number(wrap.dataset.days) * 864e5;
+    const html = document.documentElement;
+    const box = wrap.querySelector('.consent-box');
+    const status = wrap.querySelector('.consent-status');
+    const gpc = navigator.globalPrivacyControl === true;
+    let memory = null; // the choice, for this page only, when localStorage is blocked
+    let opener = null; // the "Cookie settings" button that opened the notice
+    let loaded = false; // the Google tag has been added to this page
+    let on = false; // analytics is running (the click script below reads this as data-on on the notice)
+
+    // The choice: { c: 'granted' | 'denied', t: time it was made }. Too old counts as no choice.
+    // The small script in the head of Base.astro applies the same rule before the first paint.
+    const read = () => {
+      let rec = memory;
+      try { rec = JSON.parse(localStorage.getItem(KEY)) || memory; } catch (e) {}
+      return rec && (rec.c === 'granted' || rec.c === 'denied') && Date.now() - rec.t < MAX_AGE ? rec.c : null;
+    };
+    const write = (c) => {
+      memory = { c, t: Date.now() };
+      try { localStorage.setItem(KEY, JSON.stringify(memory)); } catch (e) {}
+    };
+
+    // gtag.js only understands the arguments object, so this cannot be an arrow function.
+    const gtag = function () { window.dataLayer.push(arguments); };
+
+    // Removes the Analytics cookies this site set. They are host-only (cookie_domain 'none' below), and so
+    // is this removal: a cookie of the same name set for all of silitlabs.com by another app is left alone.
+    const clearCookies = () => {
+      try {
+        for (const c of document.cookie.split(';')) {
+          const name = c.split('=')[0].trim();
+          if (/^_ga(_|$)/.test(name)) document.cookie = name + '=; Max-Age=0; path=/';
+        }
+      } catch (e) {}
+    };
+
+    const start = () => {
+      if (on) return;
+      on = true;
+      wrap.toggleAttribute('data-on', true);
+      if (loaded) {
+        window['ga-disable-' + ID] = false;
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+        return;
+      }
+      loaded = true;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = gtag;
+      // Consent Mode v2. The site runs no ads, so the three advertising signals stay denied.
+      gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      // Google's tag sets itself up as soon as it loads and ignores settings passed to config, so they are
+      // set for the whole page, before 'js': no advertising features, and cookies that stay on this host
+      // (not the app subdomains) and expire with the choice.
+      gtag('set', {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        cookie_domain: 'none',
+        cookie_expires: MAX_AGE / 1000,
+        cookie_flags: 'SameSite=Lax' + (location.protocol === 'https:' ? ';Secure' : '')
+      });
+      gtag('js', new Date());
+      gtag('config', ID); // the tag sends the page view once it has loaded
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+      document.head.append(s);
+    };
+
+    const stop = () => {
+      if (on) {
+        on = false;
+        wrap.toggleAttribute('data-on', false);
+        window['ga-disable-' + ID] = true; // gtag.js sends nothing and writes no cookie while this is set
+        gtag('consent', 'update', { analytics_storage: 'denied' });
+      }
+      clearCookies();
+    };
+
+    // The notice. html[data-consent] is 'new' for the strip at the top and 'open' for the floating box.
+    const show = (asBox) => {
+      const state = gpc ? 'gpc' : read();
+      wrap.dataset.state = state || 'new';
+      status.textContent = state ? status.dataset[state] : '';
+      status.hidden = !state;
+      html.dataset.consent = asBox ? 'open' : 'new';
+      wrap.style.bottom = '';
+      if (asBox) {
+        // Sit just above the button that opened it, so the choices never appear under the pointer.
+        const top = opener ? opener.getBoundingClientRect().top : 0;
+        if (top - box.offsetHeight > 24) wrap.style.bottom = innerHeight - top + 12 + 'px';
+        box.focus();
+      }
+    };
+    const apply = () => {
+      const c = gpc ? 'denied' : read();
+      if (c === 'granted') start(); else stop();
+      return c;
+    };
+    // No choice yet: ask. Otherwise follow the stored choice, also when another tab changes it.
+    const sync = () => {
+      if (apply()) delete html.dataset.consent; else show(false);
+    };
+    const close = () => {
+      const back = opener;
+      opener = null;
+      sync();
+      if (back) back.focus();
+    };
+
+    wrap.addEventListener('click', (e) => {
+      const b = e.target instanceof Element && e.target.closest('button');
+      if (!b) return;
+      if (b.dataset.choice) write(b.dataset.choice);
+      close();
+    });
+    wrap.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && html.dataset.consent === 'open') close();
+    });
+    document.querySelectorAll('[data-consent-open]').forEach((b) => {
+      b.parentElement.hidden = false;
+      b.addEventListener('click', () => { opener = b; show(true); });
+    });
+    addEventListener('storage', (e) => { if (!e.key || e.key === KEY) sync(); });
+    addEventListener('pageshow', (e) => { if (e.persisted) sync(); });
+    sync();
+  }
+</script>
+
+<script>
+  // Clicks that mean business, named by where the link goes. One listener for the whole site, so a new
+  // product page needs no extra code. Add data-ga-product to a link to name its product by hand.
+  // Nothing is sent unless the visitor accepted: the script above marks the notice with data-on while
+  // analytics is running, and takes the mark away when the choice is withdrawn.
+  const notice = document.getElementById('consent');
+  const APPS = { 'flowdeck.silitlabs.com': 'Flowdeck', 'aiseodeck.silitlabs.com': 'AI SEO Deck' };
+  const clean = (s) => (s || '').replace(/\s+/g, ' ').trim().slice(0, 100);
+  const productOf = (a) => {
+    if (a.dataset.gaProduct) return a.dataset.gaProduct;
+    const card = a.closest('article, li');
+    const head = card && card.querySelector('h2, h3, h4');
+    if (head) return head.textContent;
+    if (a.querySelector('.p')) return a.firstElementChild.textContent; // a price row: name, then price
+    const h1 = document.querySelector('h1');
+    return h1 ? h1.textContent : '';
+  };
+  const describe = (a) => {
+    let u;
+    try { u = new URL(a.href); } catch (e) { return null; }
+    const text = clean(a.innerText) || clean(a.getAttribute('aria-label')) || (a.querySelector('img') ? 'image' : '');
+    if (u.protocol === 'mailto:') {
+      const subject = clean(u.searchParams.get('subject'));
+      return ['contact_click', { method: 'email', ...(subject ? { subject } : {}), link_text: text }];
+    }
+    if (!/^https?:$/.test(u.protocol) || u.hostname === location.hostname) return null;
+    const host = u.hostname.replace(/^www\./, '');
+    const path = u.pathname;
+    const link = { link_url: u.origin + path, link_domain: u.hostname, link_text: text };
+    const store = /(^|\.)etsy\.com$/.test(host) ? 'etsy'
+      : host === 'webflow.com' && /^\/(templates|apps)\//.test(path) ? 'webflow'
+      : host === 'framer.com' && path.startsWith('/marketplace/') ? 'framer'
+      : /(^|\.)polar\.sh$/.test(host) ? 'polar'
+      : '';
+    if (store) {
+      const listing = store === 'etsy' ? (path.match(/\/listing\/(\d+)/) || [])[1] : '';
+      if (store === 'etsy' && !listing) return ['shop_click', { store, ...link }];
+      return ['buy_click', { store, product_name: clean(productOf(a)), ...(listing ? { product_id: listing } : {}), ...link }];
+    }
+    if (APPS[u.hostname] && !/^\/(privacy|terms)/.test(path)) return ['app_click', { product_name: APPS[u.hostname], ...link }];
+    if (/\.(webflow\.io|framer\.(website|app|ai))$/.test(host)) return ['demo_click', { product_name: clean(productOf(a)), ...link }];
+    return null;
+  };
+  const track = (e) => {
+    if (!notice || !notice.hasAttribute('data-on') || (e.type === 'auxclick' && e.button !== 1)) return;
+    const a = e.target instanceof Element && e.target.closest('a[href]');
+    const hit = a && describe(a);
+    if (hit) window.gtag('event', hit[0], hit[1]);
+  };
+  document.addEventListener('click', track);
+  document.addEventListener('auxclick', track);
+</script>
