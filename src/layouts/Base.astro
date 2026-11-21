@@ -2,7 +2,10 @@
 import '../styles/global.css';
 import Mark from '../components/Mark.astro';
 import Intro from '../components/Intro.astro';
+import Consent from '../components/Consent.astro';
+import consentCss from '../styles/consent.css?inline';
 import { SITE, NAV, alternateOf } from '../data/site.js';
+import { GA_ID, CONSENT_DAYS, CONSENT_KEY } from '../data/analytics.js';
 import { kits, kitPath } from '../data/kits.js';
 import { templates, templatePath } from '../data/templates.js';
 import { SHOP_LINES } from '../data/shop.js';
@@ -45,6 +48,9 @@ const graph = [org, ...jsonld];
 const t = isTr
   ? { skip: 'Ana içeriğe geç', products: 'Ürünler', company: 'Silit Labs', follow: 'Takip edin', allKits: 'Tüm klinik kitleri', setup: 'Kurulum hizmeti', about: 'Hakkımızda (EN)', guides: 'Rehberler (EN)', lab: 'Lab (EN)', contact: 'Bize yazın', privacy: 'Gizlilik', terms: 'Kullanım şartları', blurb: 'Küçük işletmeler, klinikler ve web stüdyoları için hazır şablonlar ve araçlar üreten küçük bir ürün stüdyosu. Antalya.', menu: 'Menü', langLabel: 'English' }
   : { skip: 'Skip to content', products: 'Products', company: 'Silit Labs', follow: 'Follow', allKits: 'All clinic kits', setup: 'Setup service (TR)', about: 'About', guides: 'Guides', lab: 'In the lab', contact: 'Contact', privacy: 'Privacy', terms: 'Terms', blurb: 'A small product studio making ready-to-use templates and tools for small businesses, clinics and web studios. Antalya, Turkey.', menu: 'Menu', langLabel: 'Türkçe' };
+
+// Footer button that opens the cookie notice again. Rendered only when analytics is on.
+const cookieSettings = isTr ? 'Çerez ayarları' : 'Cookie settings';
 ---
 <!doctype html>
 <html lang={lang}>
@@ -82,10 +88,22 @@ const t = isTr
       } catch (e) {}
     </script>
   )}
+  {/* Analytics, only when PUBLIC_GA_ID is set. The script puts the cookie notice in the first paint for a visitor who has not chosen yet, so the page does not jump (same rule as read() in Consent.astro). Without the variable none of this is rendered and every page stays byte for byte as it was, which is why Consent shares a line with Intro below. */}
+  {GA_ID && <style is:inline set:html={consentCss}></style>}
+  {GA_ID && (
+    <script is:inline define:vars={{ consentKey: CONSENT_KEY, consentAge: CONSENT_DAYS * 864e5 }}>
+      try {
+        var c = null;
+        try { c = JSON.parse(localStorage.getItem(consentKey)); } catch (e) {}
+        var chosen = c && (c.c === 'granted' || c.c === 'denied') && Date.now() - c.t < consentAge;
+        if (!chosen && navigator.globalPrivacyControl !== true && 'noModule' in HTMLScriptElement.prototype) document.documentElement.setAttribute('data-consent', 'new');
+      } catch (e) {}
+    </script>
+  )}
 </head>
 <body>
   <a class="skip" href="#main">{t.skip}</a>
-  {intro && <Intro />}
+  {GA_ID && <Consent lang={lang} />}{intro && <Intro />}
   <header class="top" id="top">
     <div class="wrap">
       <a class="brand" href={isTr ? '/tr/' : '/'} aria-label="Silit Labs"><Mark size={32} class="brand-mark" /><b>Silit</b><span>Labs</span></a>
@@ -149,7 +167,7 @@ const t = isTr
       </div>
       <div class="legal">
         <span>© 2026 Silit Labs, Antalya</span>
-        <span><a href="/privacy/">{t.privacy}</a> &nbsp; <a href="/terms/">{t.terms}</a> &nbsp; <a href={other} lang={isTr ? 'en' : 'tr'}>{t.langLabel}</a></span>
+        <span><a href="/privacy/">{t.privacy}</a> &nbsp; <a href="/terms/">{t.terms}</a> &nbsp; {GA_ID && <span hidden><button type="button" data-consent-open>{cookieSettings}</button> &nbsp; </span>}<a href={other} lang={isTr ? 'en' : 'tr'}>{t.langLabel}</a></span>
       </div>
     </div>
   </footer>

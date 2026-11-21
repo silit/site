@@ -1,13 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../data/site.js';
+import { GA_ID, CONSENT_DAYS } from '../data/analytics.js';
+
+// The page says what the site really does: the Analytics section and the newer date appear only when
+// Google Analytics is switched on (PUBLIC_GA_ID is set). Without it the page keeps its earlier wording.
+const updated = GA_ID ? '22 November 2026' : '16 November 2026';
+const months = Math.round(CONSENT_DAYS / 30);
 ---
 <Base title="Privacy policy" description="How Silit Labs handles personal data on silitlabs.com.">
   <section class="page-hero">
     <div class="wrap">
       <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Privacy</li></ol>
       <h1>Privacy policy</h1>
-      <p class="muted" style="margin-top:14px">Last updated 16 November 2026</p>
+      <p class="muted" style="margin-top:14px">Last updated {updated}</p>
     </div>
   </section>
   <section class="section tight">
@@ -16,8 +22,17 @@ import { SITE } from '../data/site.js';
       <h2>Who we are</h2>
       <p>Silit Labs, Antalya, Turkey. Contact: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
       <h2>What this site collects</h2>
-      <p>This site has no accounts, no contact forms, no advertising trackers and no analytics cookies. Fonts, images and videos are served from this site, not from third parties.</p>
-      <p>Our hosting provider, Vercel, processes technical request data such as IP address, browser type and the page requested, to deliver the site and keep it secure. These logs are kept for a short time and are not used to identify you.</p>
+      <p>{GA_ID ? 'This site has no accounts, no contact forms and no advertising trackers. Analytics runs only if you accept it, as described under Analytics below.' : 'This site has no accounts, no contact forms, no advertising trackers and no analytics cookies.'} Fonts, images and videos are served from this site, not from third parties.</p>
+      <p>Our hosting provider, Vercel, processes technical request data such as IP address, browser type and the page requested, to deliver the site and keep it secure. These logs are kept for a short time and are not used to identify you.</p>{GA_ID && (
+        <Fragment>
+          <h2 id="analytics">Analytics</h2>
+          <p>We use Google Analytics 4 to see how many people visit, which pages they read and which product links they follow. It stays off until you choose Accept in the cookie notice. If you choose Decline, or if your browser sends a Global Privacy Control signal, nothing is loaded from Google and no analytics cookies are set.</p>
+          <p>When it is on, Google Analytics sets cookies on silitlabs.com: one named _ga and one whose name starts with _ga_. They hold a random ID for your browser and the times of your visits, so that a returning visitor is not counted as a new one. Analytics records the pages you open, how far you scroll, the page or search that brought you here, and the links you click that lead to our shop listings, our apps, live previews, our email address or other sites. It also records your browser, operating system, device type, screen size and language, and roughly where you are, such as country and city. Google works the location out from your IP address and says it does not store the address.</p>
+          <p>Advertising features are switched off. We do not use Google signals, ad personalisation or advertising cookies, and we do not use this data for ads. We use it only to improve the site and our products.</p>
+          <p>Google processes the data for us and may store it outside your country, including in the United States. Google Analytics keeps visit data that is tied to a browser for 14 months at most. The legal basis is your consent.</p>
+          <p>You can change your mind at any time: open <button type="button" data-consent-open>Cookie settings</button>, here or at the bottom of any page. We remember your choice in your browser for {months} months and then ask again. The Analytics cookies expire {months} months after your last visit, and they are removed from this site as soon as you decline.</p>
+        </Fragment>
+      )}
       <h2>When you email us</h2>
       <p>If you write to us, we use your email address and message only to reply and, if you buy a service, to deliver it. Email is handled by Google Workspace. We keep correspondence for as long as needed to support you and to meet legal record-keeping duties.</p>
       <h2>Purchases</h2>
@@ -25,7 +40,7 @@ import { SITE } from '../data/site.js';
       <h2>Your rights</h2>
       <p>Under the Turkish Personal Data Protection Law (KVKK) and, where it applies, the EU GDPR, you can ask what data we hold about you, ask us to correct or delete it, and object to its use. Write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and we will answer within 30 days.</p>
       <h2>Changes</h2>
-      <p>If we add analytics or anything else that changes what we collect, we will update this page first and change the date above.</p>
+      <p>{GA_ID ? 'If we change what we collect' : 'If we add analytics or anything else that changes what we collect'}, we will update this page first and change the date above.</p>
     </div>
   </section>
 </Base>

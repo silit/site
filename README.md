@@ -7,6 +7,7 @@ The Silit Labs website: one home for every Silit Labs product. Built with [Astro
 ```
 src/
   data/site.js          brand, links, navigation, EN/TR page pairs (hreflang)
+  data/analytics.js     reads the Google Analytics ID (PUBLIC_GA_ID) and says how long a cookie choice is kept
   data/kits.js          clinic kit catalogue, EN and TR side by side
   data/templates.js     template catalogue (spreadsheet and Webflow templates), EN and TR side by side
   data/shop.js          small business catalogue sold on Etsy (booking site templates, beauty, Airbnb, cleaning), EN only
@@ -15,6 +16,7 @@ src/
   layouts/Base.astro    <head> SEO, header, footer, JSON-LD
   pages/                one file per URL
 public/                 images, videos, favicon, robots.txt
+.env.production         the Google Analytics Measurement ID, read by `astro build`
 ```
 
 | URL | What it is |
@@ -50,6 +52,29 @@ public/                 images, videos, favicon, robots.txt
 
 - **Google:** the URL-prefix property `https://silitlabs.com/` in Search Console (info@silitlabs.com). The sitemap is `/sitemap-index.xml`.
 - **IndexNow** (Bing, Yandex, Naver, Seznam, Yep and the other IndexNow engines; Google does not use it): after every production deploy (when the Vercel commit status on `main` turns to success), `.github/workflows/indexnow.yml` runs `scripts/indexnow.mjs`. It submits only the pages whose HTML changed since the last run, plus removed pages, because IndexNow asks not to resubmit unchanged ones. The key file is `public/2a0f480c411a530423ba08e4a4bbdcfc.txt`; keep it. To submit by hand, open the IndexNow workflow in the Actions tab and choose "Run workflow".
+
+## Analytics
+
+Google Analytics 4 runs on the live site, and only for visitors who accept it. One public variable switches it on: `PUBLIC_GA_ID`, the Measurement ID of the GA4 web stream. The ID is not a secret, every page prints it.
+
+- **Where the ID lives.** In `.env.production` at the root of the repository. `astro build` reads that file, so every deploy has analytics. `astro dev` does not read it, so analytics stays off while developing.
+- **Changing it.** Edit `.env.production`, or set `PUBLIC_GA_ID` in the build environment (in Vercel: the project, then Settings, Environment Variables). A value from the environment wins over the file. The value is read when the site is built, so redeploy after a change. A value that is not a GA4 ID stops the build with a clear message.
+- **Turning it off.** Leave the value empty or write `off`, in the file or in the build environment (`PUBLIC_GA_ID=off`), and redeploy. Nothing about analytics is built into the pages then: no notice, no script, no "Cookie settings" link, and the privacy page goes back to its "no analytics" wording.
+- **Consent.** `src/components/Consent.astro` asks before anything is loaded from Google. On a first visit the notice is a strip at the top of the page, and "Cookie settings" in the footer opens it again. Accept and Decline look the same on purpose. Declining, or a browser that sends Global Privacy Control, means no request to Google and no cookie. The choice is kept in localStorage for 180 days (`CONSENT_DAYS` in `src/data/analytics.js`), then asked again.
+- **What is sent.** Page views, with Consent Mode v2 set for analytics only: the three advertising signals stay denied, Google signals and ad personalisation are off, and the cookies stay on silitlabs.com (not the app subdomains) for 180 days. These settings are given with `gtag('set', ...)` before the tag loads, because Google's tag sets itself up on load and ignores settings passed to `gtag('config', ...)`. Plus five click events, named by where the link goes, so a new product page needs no extra code:
+
+  | Event | A click on a link to | Parameters |
+  | --- | --- | --- |
+  | `buy_click` | an Etsy listing, a Webflow or Framer Marketplace listing, a Polar checkout | `store`, `product_name`, `product_id` (Etsy listing number), `link_url`, `link_domain`, `link_text` |
+  | `shop_click` | the Etsy shop front | `store`, `link_url`, `link_domain`, `link_text` |
+  | `app_click` | Flowdeck or AI SEO Deck ("Start free") | `product_name`, `link_url`, `link_domain`, `link_text` |
+  | `demo_click` | a live preview (`*.webflow.io`, Framer preview sites) | `product_name`, `link_url`, `link_domain`, `link_text` |
+  | `contact_click` | an email address | `method`, `subject`, `link_text` |
+
+  `product_name` is the heading of the card the link sits in, or else the main heading of the page, so it follows the page language. Add `data-ga-product="Name"` to a link to name it by hand. A new app host or store goes in the click script at the end of `Consent.astro`.
+- **Changing your mind.** When a visitor declines after accepting, analytics stops on the spot and the two Analytics cookies are removed. Google sends events in batches every few seconds, so an event recorded just before the decline can still be sent.
+- **Privacy page.** `src/pages/privacy.astro` shows its Analytics section and the newer "Last updated" date only while analytics is on. If analytics goes live on a later day than the date written there, change the date.
+- **Content-Security-Policy.** The site sends none. If one is added, it has to allow the inline scripts, `script-src https://www.googletagmanager.com`, and `connect-src` plus `img-src` for `https://*.google-analytics.com`, `https://*.analytics.google.com` and `https://*.googletagmanager.com`.
 
 ## House rules for copy
 
