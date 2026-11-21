@@ -5,6 +5,7 @@
 import Base from '../layouts/Base.astro';
 import { templates, templatePath, kindOf, buyUrl, storeText, isOnSale } from '../data/templates.js';
 import { SITE } from '../data/site.js';
+import { digitalOffer } from '../data/offer.js';
 
 const { tpl, lang = 'en' } = Astro.props;
 const tr = lang === 'tr';
@@ -45,7 +46,8 @@ const main = onSale
       url,
       brand: { '@type': 'Brand', name: 'Silit Labs' },
       category: kindOf(tpl).name[lang],
-      offers: { '@type': 'Offer', price: String(tpl.price), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: buy, seller: { '@id': `${SITE.url}/#org` } }
+      // Sold on Etsy: a digital item there cannot be returned. Another store (tpl.store) has its own refund rule.
+      offers: digitalOffer({ price: tpl.price, url: buy, returns: tpl.store ? undefined : false })
     }
   : {
       '@type': 'CreativeWork',
