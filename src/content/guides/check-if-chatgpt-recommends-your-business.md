@@ -10,7 +10,7 @@ readMinutes: 8
 
 More people now ask an AI which product, studio or service to choose before they ever see a list of links. If ChatGPT answers "the best invoicing software for a small business" with three names and yours is not one of them, that customer may never reach your site, however well you rank on Google.
 
-The good news is that you can check where you stand, and the check is simple enough to repeat every week. This guide shows how to run it by hand, what to write down, and how to turn what you find into changes on your site. If you would rather see one check done before you start, the free [AI Visibility Report](https://aiseodeck.silitlabs.com/ai-visibility-report) check runs one for your site in about a minute.
+The good news is that you can check where you stand, and the check is simple enough to repeat every week. This guide shows how to run it by hand, what to write down, and how to turn what you find into changes on your site. If you would rather see one check done before you start, the free [AI Visibility Report](/ai-visibility-report) check runs one for your site in about a minute.
 
 ## Why an AI answer is not a ranking
 
@@ -76,4 +76,4 @@ Five keywords, two questions each, on six engines is sixty answers a week. That 
 
 That is what we built AI SEO Deck to do for Webflow sites. It asks ChatGPT, Gemini, Claude and Grok two customer questions per keyword, checks Google AI Overviews and AI Mode for the search itself, and turns the gaps into fixes you can apply to your Webflow pages. The free plan covers one site and three keywords, so you can compare it with your own sheet.
 
-Not on Webflow? The [AI Visibility Report](https://aiseodeck.silitlabs.com/ai-visibility-report) does the same check once, for any website. Type your address and the free check finds the searches your customers make, with how often each is made on Google, and shows what ChatGPT, Google AI Overviews and Gemini answer for one of them, word for word. The full report covers five searches on six engines, asks every chat engine twice and comes with the fixes. You can read a [sample report](https://aiseodeck.silitlabs.com/ai-visibility-report/sample) first.
+Not on Webflow? The [AI Visibility Report](/ai-visibility-report) does the same check once, for any website. Type your address and the free check finds the searches your customers make, with how often each is made on Google, and shows what ChatGPT, Google AI Overviews and Gemini answer for one of them, word for word. The full report covers five searches on six engines, asks every chat engine twice and comes with the fixes. You can read a [sample report](/ai-visibility-report/sample) first.

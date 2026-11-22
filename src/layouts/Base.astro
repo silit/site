@@ -143,6 +143,7 @@ const cookieSettings = isTr ? 'Çerez ayarları' : 'Cookie settings';
             {templates.map((x) => <li><a href={templatePath(x, lang)}>{x.price ? x.name[lang] : `${x.name[lang]} ${x.tagline[lang]}`}</a></li>)}
             <li><a href="/webflow-apps/ai-seo-deck/">AI SEO Deck</a></li>
             <li><a href="/webflow-apps/flowdeck/">Flowdeck</a></li>
+            <li><a href={SITE.report} hreflang={isTr ? 'en' : undefined}>{isTr ? 'AI Visibility Report (EN)' : 'AI Visibility Report'}</a></li>
           </ul>
         </div>
         <div>
