@@ -1,6 +1,15 @@
 {
   "redirects": [
-    { "source": "/lander", "destination": "/", "permanent": true }
+    { "source": "/lander", "destination": "/", "permanent": true },
+    { "source": "/ai-visibility-report/", "destination": "/ai-visibility-report", "permanent": true },
+    { "source": "/ai-visibility-report/sample/", "destination": "/ai-visibility-report/sample", "permanent": true },
+    { "source": "/check", "destination": "/ai-visibility-report", "permanent": true },
+    { "source": "/check/", "destination": "/ai-visibility-report", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/ai-visibility-report", "destination": "https://aiseodeck.silitlabs.com/_vr/ai-visibility-report" },
+    { "source": "/ai-visibility-report/:path*", "destination": "https://aiseodeck.silitlabs.com/_vr/ai-visibility-report/:path*" },
+    { "source": "/check/:path*", "destination": "https://aiseodeck.silitlabs.com/_vr/check/:path*" }
   ],
   "headers": [
     { "source": "/images/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }] },
