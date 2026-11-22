@@ -13,6 +13,9 @@ export const SITE = {
   instagram: 'https://www.instagram.com/silitlabs/',
   flowdeck: 'https://flowdeck.silitlabs.com',
   aiseodeck: 'https://aiseodeck.silitlabs.com',
+  // The AI Visibility Report. Its pages are built by the AI SEO Deck app and served here through the rewrites
+  // in vercel.json, so they are not Astro pages: the sitemap lists them by hand (astro.config.mjs).
+  report: '/ai-visibility-report',
   ogDefault: '/images/og/default.jpg'
 };
 
