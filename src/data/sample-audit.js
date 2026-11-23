@@ -35,5 +35,22 @@ export const SAMPLE = {
   fixes: 9 // items in the fix kit
 };
 
+// Three of the sample's five searches on Google AI Overviews: the three things that can happen to a search.
+// `segs` is the Overview's text: a plain string, or [name, 'you' | 'rival'] for a name the report marks.
+// `sources` are the pages the Overview linked to; `via` is the one of them that lists the hotel.
+export const OVERVIEWS = [
+  {
+    keyword: 'boutique hotel alfama', volume: 590, state: 'absent',
+    segs: ['Popular boutique hotels in Alfama, Lisbon include ', ['The Lumiar House', 'rival'], ', ', ['Hotel Marquês Azul', 'rival'], ' and ', ['Solar das Andorinhas', 'rival'], '. Travelers choose the area for its historic streets, viewpoints and Fado houses. Prices are usually lower from November to February.'],
+    sources: ['lisbonweekender.example', 'booking.com', 'tripadvisor.com']
+  },
+  { keyword: 'quiet hotel lisbon', volume: 110, state: 'none' },
+  {
+    keyword: 'hotels near santa apolonia station', volume: 90, state: 'named',
+    segs: ['Hotels near Santa Apolónia station in Lisbon include ', ['Casa Aldora', 'you'], ', ', ['Hotel Marquês Azul', 'rival'], ' and ', ['Travessa Nove Suites', 'rival'], '. The station is on the edge of the Alfama district.'],
+    sources: ['alfamaguide.example', 'booking.com'], via: 'alfamaguide.example'
+  }
+];
+
 export const namedIn = (search) => search.cells.flat().filter((m) => m === 1).length;
 export const answersIn = (search) => search.cells.flat().filter((m) => m !== null).length;

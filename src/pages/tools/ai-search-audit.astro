@@ -22,7 +22,7 @@ const parts = [
   ['What AI says about you', 'The chat engines asked about you by name: what they get right, and what they get wrong.', NO, 'Four engines asked by name'],
   ['What a crawler sees', 'Your home page read without scripts, the way most AI crawlers read it, and whether robots.txt lets them in.', 'The page as a crawler reads it, and the most serious finding', 'Every finding, crawler by crawler'],
   ['The fix kit', 'What to change, in order, with who does it, how long it takes and the text or code to paste.', NO, 'Every fix, ready to hand over'],
-  ['The re-check', `The same searches asked again after ${REPORT.keptDays} days, with before and after side by side.`, NO, 'One re-check, included']
+  ['The re-check', `The same searches asked again after ${REPORT.recheckDays} days, with before and after side by side.`, NO, 'One re-check, included']
 ];
 
 // The sample audit's grid: one mark per answer, and the totals down the side and along the foot.
@@ -51,7 +51,7 @@ const faq = [
   ['Which AI engines does the audit cover?', 'The free check asks ChatGPT, Gemini and Google AI Overviews. The full audit asks six: those three and Google AI Mode, Claude and Grok. The chat engines are asked twice each, because the same question often gets a different answer the second time.'],
   ['How long does an AI search audit take?', `The free check takes about a minute. The full audit is ready about four minutes after you pay for it. Doing the same work by hand, about ${REPORT.answers} answers to ask for, read and record, takes most of an afternoon.`],
   ['Do I have to give access to my website?', 'No. The audit reads what any visitor or crawler can read: your public pages, your robots.txt and your sitemap. There is nothing to install and no login to hand over.'],
-  ['How often should I run an audit?', `Once before you change anything, and once after the changes have had a few weeks to be read. The full audit includes that second look, a re-check after ${REPORT.keptDays} days. If you want a number every week, that is the job of a tracker, not an audit.`],
+  ['How often should I run an audit?', `Once before you change anything, and once after the changes have had a few weeks to be read. The full audit includes that second look, a re-check after ${REPORT.recheckDays} days. If you want a number every week, that is the job of a tracker, not an audit.`],
   ['What does an AI search audit cost?', `The first pass is free, with no account and no email address. The full audit is ${REPORT.price}, paid once, with no subscription. An agency audit adds interviews, research into your market and a plan written for you. This one is the measured part of that work, done by software.`]
 ];
 
@@ -99,7 +99,7 @@ const jsonld = [
             <h2>What the free pass shows you</h2>
             <ul>
               <li>The searches your customers make, with how often each is made</li>
-              <li>The most searched one, answered by ChatGPT, Gemini and Google AI Overviews, word for word</li>
+              <li>One of them, the most searched unless you pick another, answered by ChatGPT, Gemini and Google AI Overviews, word for word</li>
               <li>Your home page as a crawler reads it, and the most serious thing wrong with it</li>
             </ul>
           </div>

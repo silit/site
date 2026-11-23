@@ -124,7 +124,7 @@ Our Webflow app, [AI SEO Deck](/webflow-apps/ai-seo-deck/), drafts an llms.txt f
 Add it because it is cheap, not because it will move anything soon. The evidence so far:
 
 - **Many sites have one, and almost nobody fetches it.** [Ahrefs looked at 137,000 domains](https://ahrefs.com/blog/what-is-llms-txt/) in 2026 and found that 28% publish an llms.txt. Of the domains with a valid file, 97% received no request for it at all in May 2026.
-- **Google does not ask for it.** Its guidance on [AI features in Search](https://developers.google.com/search/docs/appearance/ai-features) says you do not need new AI text files to appear in AI Overviews or AI Mode.
+- **Google ignores it.** Its [guide to generative AI features in Search](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) says you do not need an llms.txt, and that Search does not use the file: it neither helps nor harms there.
 - **Webflow says so too.** Its own help article calls the format experimental and its effect unproven.
 
 Where the file is read today is on documentation sites, by coding assistants that a developer points at the docs. If your Webflow site is a product's documentation, the file is worth more care. If it is a business site, the file is a small bet on the future.

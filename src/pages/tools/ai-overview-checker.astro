@@ -1,0 +1,303 @@
+---
+import Base from '../../layouts/Base.astro';
+import CheckForm from '../../components/CheckForm.astro';
+import ReportOffer from '../../components/ReportOffer.astro';
+import OtherTools from '../../components/OtherTools.astro';
+import { SITE } from '../../data/site.js';
+import { REPORT } from '../../data/report.js';
+import { SAMPLE, OVERVIEWS } from '../../data/sample-audit.js';
+
+const url = `${SITE.url}/tools/ai-overview-checker/`;
+// Where the facts on this page come from. All read on 23 November 2026.
+const GOOGLE_AI = 'https://developers.google.com/search/docs/appearance/ai-features';
+const GOOGLE_GUIDE = 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide';
+const GSC_REPORT = 'https://support.google.com/webmasters/answer/16984139';
+const GSC_CONTROL = 'https://support.google.com/webmasters/answer/16908024';
+const AHREFS_DATA = 'https://www.searchenginejournal.com/google-ai-overviews-appear-on-21-of-searches-new-data/560471/';
+const SIMILARWEB_DATA = 'https://techcrunch.com/2026/07/27/googles-ai-search-is-rapidly-becoming-the-default-new-data-shows/';
+const PEW = 'https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/';
+
+// What the sample shows for each of the three things that can happen to a search.
+const STATE = {
+  absent: 'An AI Overview, without the hotel',
+  none: 'No AI Overview',
+  named: 'An AI Overview that names the hotel'
+};
+const named = OVERVIEWS.find((o) => o.state === 'named');
+
+// Search Console's report beside this check: [what, the report, the check].
+const NOT = 'Not shown';
+const versus = [
+  ['Whose site', 'Only a site you have verified', 'Any website, a rival\'s too'],
+  ['What it tells you', 'How often links to your pages were shown in AI Overviews and AI Mode', 'What one AI Overview says today'],
+  ['The search', 'Not shown: the report has no searches in it', 'Shown, and you pick it'],
+  ['The words of the answer', NOT, 'Word for word'],
+  ['A mention without a link', 'Not counted', 'Marked'],
+  ['Who is named when you are not', NOT, 'Every name, in order'],
+  ['The pages behind the answer', 'Only yours', 'All of them'],
+  ['Change over time', 'By day, week or month', `One moment, kept for ${REPORT.keptDays} days`]
+];
+
+const blockers = [
+  ['The page is not in Google\'s index', 'An AI Overview links only to pages Google has indexed. URL Inspection in Search Console tells you whether a page is.'],
+  ['Snippets are switched off', 'A "nosnippet" rule, or a "max-snippet" of zero, tells Google to show no text from the page. A page that cannot show a snippet cannot be a link in an AI Overview either.'],
+  ['The site is excluded in Search Console', 'Under Settings, Search generative AI, a whole property can be taken out of AI Overviews and AI Mode. Included is the default, but a colleague or an agency may have changed it.'],
+  ['robots.txt turns Googlebot away', 'AI Overviews are built from what Googlebot crawls. A page it may not fetch is a page Google cannot read.']
+];
+
+const faq = [
+  ['What is a Google AI Overview?', 'A short answer written by Google\'s AI at the top of some search results, with links to the pages it drew on. Google shows one only when its systems judge that it adds something to the ordinary results, so many searches have none.'],
+  ['Why is there no AI Overview for my search?', 'Because most searches do not get one. In the data so far, questions and long searches get an AI Overview far more often than local or shopping searches. It also changes with the country and from one month to the next. "No AI Overview" is a result, not an error.'],
+  ['How do I get my business into an AI Overview?', 'There is no form to fill in and no special markup. Google\'s guidance is that a page has to be indexed and allowed to show a snippet, and that its AI features run on the same systems as ordinary Search. In practice two things help: a page of your own that answers the search plainly, and a place on the pages the Overview is already built from.'],
+  ['Can I see my AI Overviews in Search Console?', 'Partly. Search Console has a Generative AI performance report that counts how often links to your pages were shown in AI Overviews and AI Mode, by page, country and date. It does not show the searches, the clicks, the words of the answer or who was named when you were not.'],
+  ['Does blocking Google-Extended take my site out of AI Overviews?', 'No. Google-Extended decides whether your content may be used to train Google\'s AI models and in its other AI products, such as the Gemini app. AI Overviews are part of Search: they follow Googlebot\'s rules, the snippet controls and the Search generative AI setting in Search Console.'],
+  ['How do I keep my site out of AI Overviews?', 'Search Console has a setting for it under Settings, Search generative AI. Set to exclude, your links and content stop appearing in AI Overviews, AI Mode and the AI features of Discover within a few days, and Google says the setting is not used as a ranking signal elsewhere in Search. For a single page, the snippet controls limit what can be shown.'],
+  ['Is this an AI Overview tracker?', `No. It is one check of one search, and the same website shows that check again for a week. A tracker asks the same searches on a schedule. For your own site, Search Console's report gives the trend in impressions. The full report covers your ${REPORT.searchesWord} most searched and checks them again after ${REPORT.recheckDays} days.`],
+  ['Is the AI Overview checker free?', `Yes. It needs no account and no email address, and you can check up to ${REPORT.checksPerDay} websites a day. The same check also asks ChatGPT and Gemini. The full report is optional and costs ${REPORT.price}, paid once.`]
+];
+
+const jsonld = [
+  {
+    '@type': 'WebApplication',
+    name: 'AI Overview Checker',
+    url,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    description: 'A free check of Google AI Overviews for a website: whether Google shows one for a search its customers make, whether it names the business, and the pages it was built from.',
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: `${SITE.url}/tools/` },
+      { '@type': 'ListItem', position: 3, name: 'AI Overview checker', item: url }
+    ]
+  }
+];
+---
+<Base
+  title="AI Overview checker: is your site in Google's AI answer?"
+  description="A free AI Overview checker. See whether Google shows an AI Overview for a search your customers make, whether it names you, and which pages it was built from."
+  image="/images/og/ai-overview-checker.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/tools/">Free tools</a></li><li aria-current="page">AI Overview checker</li></ol>
+      <div class="grid">
+        <div>
+          <h1>AI Overview checker</h1>
+          <p class="lead">Type your website. We work out what your customers search for on Google, run one of those searches from their country, and show you the AI Overview: whether there is one, whether it names you, and the pages it was built from.</p>
+          <CheckForm id="check-top" tool="ai-overview-checker" button="Check AI Overviews" />
+          <ul class="facts"><li>Free</li><li>About a minute</li><li>No sign-up, no email</li></ul>
+          <div class="asks">
+            <h2>How the check asks Google</h2>
+            <ul>
+              <li>You choose the search, and the country it is made from</li>
+              <li>Google is asked the way a searcher who is not signed in would ask</li>
+              <li>ChatGPT and Gemini are asked about the same search, in the same check</li>
+            </ul>
+          </div>
+        </div>
+        <figure class="ov-card">
+          <div class="ov-sheet">
+            <p class="ov-who"><b>Three searches, three results</b><span>Google AI Overviews for {SAMPLE.brand}, {SAMPLE.what}, searched from {SAMPLE.asked}</span></p>
+            <ul class="ov-list">
+              {OVERVIEWS.map((o) => (
+                <li class={`ov is-${o.state}`}>
+                  <p class="ov-q"><b>{o.keyword}</b><span>{o.volume} searches a month</span></p>
+                  <p class="ov-state">{STATE[o.state]}</p>
+                  {o.segs
+                    ? <p class="ov-text">{o.segs.map((g) => (Array.isArray(g) ? <mark class={g[1]}>{g[0]}</mark> : g))}</p>
+                    : <p class="ov-text plain">Google answered this search with ordinary results only.</p>}
+                  {o.sources && <p class="ov-src"><span>Built from</span>{o.sources.map((h) => <b>{h}</b>)}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <figcaption>From the <a class="link" href={REPORT.sample}>sample report</a>. Yellow is the business, an underline is someone named in its place.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three things can happen to a search</h2>
+        <p>Each one sends you to a different piece of work, which is why the check shows the Overview itself and not a score.</p>
+      </div>
+      <div class="cols3">
+        <div><h3>No AI Overview</h3><p class="muted">Google answered with ordinary results. That is common for local and shopping searches, and there is nothing to win or lose there today. The same question still gets asked elsewhere, so the check puts it to ChatGPT and Gemini as well.</p></div>
+        <div><h3>An AI Overview without you</h3><p class="muted">The answer names other businesses. Read the pages it was built from: that is where Google learned those names. A place on those pages is usually the shortest way into the answer.</p></div>
+        <div><h3>An AI Overview that names you</h3><p class="muted">Look at your place in the list, and at whether your own site is among the sources. In the sample, the hotel is named for "{named.keyword}" although its own site is not among the sources. One of them is {named.via}, a local guide that lists it.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What Search Console shows, and what it cannot</h2>
+        <p>Since 2026 Search Console has had a <a class="link" href={GSC_REPORT} rel="noopener">Generative AI performance report</a>. If the site is yours, open it first. Then use this check for what a count of impressions leaves out.</p>
+      </div>
+      <div class="dtable-wrap">
+        <table class="dtable versus">
+          <caption class="sr">What Search Console's Generative AI performance report shows, beside what this check shows</caption>
+          <thead><tr><th scope="col">Question</th><th scope="col">Search Console's report</th><th scope="col">This check</th></tr></thead>
+          <tbody>
+            {versus.map(([what, report, check]) => (
+              <tr>
+                <th scope="row">{what}</th>
+                <td data-label="Search Console's report" class:list={{ no: report === NOT || report === 'Not counted' }}>{report}</td>
+                <td data-label="This check">{check}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note vs-note">The report counts an impression when a link to your site is shown in an AI Overview or in AI Mode. It appears only once a site has enough of them. Read in Google's help on 23 November 2026.</p>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Four switches that keep a page out</h2>
+        <p>Before you rewrite anything, check these. Each one keeps a page out of AI Overviews whatever the page says.</p>
+      </div>
+      <ul class="switches">
+        {blockers.map(([h, p]) => <li><h3>{h}</h3><p class="muted">{p}</p></li>)}
+      </ul>
+      <div class="not-these">
+        <h3>And three things that do not</h3>
+        <ul class="rows">
+          <li><span class="row"><span><b>Blocking Google-Extended.</b> <span class="block muted">It covers training and Google's other AI products, not the AI features of Search.</span></span></span></li>
+          <li><span class="row"><span><b>Having no llms.txt.</b> <span class="block muted">Google's guide says Search ignores the file, so it neither helps nor harms.</span></span></span></li>
+          <li><span class="row"><span><b>Having no special markup.</b> <span class="block muted">Google says there is no structured data made for its AI features.</span></span></span></li>
+        </ul>
+      </div>
+      <p class="note vs-note">From Google's pages on <a class="link" href={GOOGLE_AI} rel="noopener">AI features and your website</a>, its <a class="link" href={GOOGLE_GUIDE} rel="noopener">guide to generative AI features in Search</a> and the help page for the <a class="link" href={GSC_CONTROL} rel="noopener">Search generative AI control</a>.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split start">
+      <div>
+        <h2>How often Google shows one</h2>
+        <p class="lede">Often enough to matter, and not for every kind of search. For a local business, "No AI Overview" is still a common result.</p>
+      </div>
+      <div class="facts-col">
+        <ul class="rows">
+          <li><span class="row"><span><b>About one keyword in five.</b> <span class="block muted">Ahrefs looked at 146 million search results and found an AI Overview on 20.5% of keywords.</span></span></span></li>
+          <li><span class="row"><span><b>Questions get them, local searches rarely do.</b> <span class="block muted">In the same data: 58% of searches worded as a question, 8% of local searches and 3% of shopping searches.</span></span></span></li>
+          <li><span class="row"><span><b>The share is rising.</b> <span class="block muted">By Similarweb's count, Google searches that show an AI Overview went from 15% to 43% in about a year.</span></span></span></li>
+          <li><span class="row"><span><b>People click less when one is there.</b> <span class="block muted">Pew followed 900 US adults in March 2025. They clicked a result on 8% of visits to a results page with an AI summary, and on 15% without one.</span></span></span></li>
+        </ul>
+        <p class="note src-note">Sources: Ahrefs' data as <a class="link" href={AHREFS_DATA} rel="noopener">reported by Search Engine Journal</a> in November 2025, Similarweb's as <a class="link" href={SIMILARWEB_DATA} rel="noopener">reported by TechCrunch</a> in July 2026, and <a class="link" href={PEW} rel="noopener">Pew Research Center</a>, July 2025. The first two count differently: one is a share of keywords, the other of searches people made.</p>
+      </div>
+    </div>
+  </section>
+
+  <ReportOffer
+    heading="From one search to five"
+    intro="One search on one day is a snapshot. The full report puts your five most searched to AI Overviews and to AI Mode, and asks four chat engines twice each."
+    engines="AI engines"
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Questions</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Read next</h2></div>
+      <ul class="rows guide-rows">
+        <li><a href="/guides/geo-audit/"><span>GEO audit: how to run one yourself, step by step</span><span class="meta">9 min</span></a></li>
+        <li><a href="/guides/check-if-chatgpt-recommends-your-business/"><span>How to check if ChatGPT recommends your business</span><span class="meta">8 min</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <OtherTools current="ai-overview-checker" />
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>See what Google's AI says for your search</h2>
+      <CheckForm id="check-last" tool="ai-overview-checker" button="Check AI Overviews" dark />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero .grid { align-items: start; }
+  .page-hero h1 { margin-top: 6px; }
+
+  /* three searches of the sample and what Google showed for each */
+  .ov-card { min-width: 0; --mark: #FFE14D; --rose: #C2335A; --pen: #1E5AA8; }
+  .ov-sheet { background: var(--sheet); border-radius: 22px; padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.4vw, 28px) 6px; box-shadow: inset 0 0 0 1px var(--line), 0 30px 60px -36px rgba(11, 37, 64, .45); }
+  .ov-who b { display: block; font-family: var(--display); font-weight: 700; font-size: clamp(21px, 2vw, 25px); letter-spacing: -.02em; line-height: 1.15; }
+  .ov-who span { display: block; margin-top: 4px; font-size: 14.5px; line-height: 1.4; color: var(--muted); }
+  .ov-list { list-style: none; margin-top: 16px; }
+  .ov { padding: 16px 0 18px; border-top: 1px solid var(--line); }
+  .ov-q { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; padding: 9px 16px; border-radius: 999px; background: var(--paper); }
+  .ov-q b { font-weight: 600; }
+  .ov-q span { font-size: 13.5px; color: var(--muted); }
+  .ov-state { margin-top: 12px; display: flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 700; }
+  .ov-state::before { content: ''; flex: none; width: 12px; height: 12px; border-radius: 50%; }
+  .is-absent .ov-state::before { box-shadow: inset 0 0 0 2.5px var(--rose); }
+  .is-named .ov-state::before { background: var(--mark); box-shadow: inset 0 0 0 1.5px #DDBC14; }
+  .is-none .ov-state::before { width: 12px; height: 2.5px; border-radius: 2px; background: #9FB0C4; }
+  .ov-text { margin-top: 8px; font-size: 15.5px; line-height: 1.55; }
+  .ov-text.plain { color: var(--muted); }
+  .ov-text mark { background: none; color: inherit; font-weight: 600; }
+  .ov-text mark.you { color: #1B1600; background: linear-gradient(100deg, transparent .5%, var(--mark) 3%, var(--mark) 96%, transparent 99.5%) no-repeat 0 60% / 100% 82%; padding: 0 .2em; margin: 0 -.2em; border-radius: .3em .9em .35em .8em / .8em .3em .9em .35em; }
+  .ov-text mark.rival { text-decoration: underline; text-decoration-color: var(--rose); text-decoration-thickness: 2.2px; text-underline-offset: 3.5px; text-decoration-skip-ink: none; }
+  .ov-src { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13.5px; }
+  .ov-src span { color: var(--muted); font-weight: 600; margin-right: 2px; }
+  .ov-src b { font-weight: 550; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--muted); overflow-wrap: anywhere; }
+  .ov-card figcaption { margin-top: 14px; padding: 0 4px; font-size: 14px; color: var(--muted); }
+
+  /* under the form: how the search is made */
+  .asks { margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); max-width: 34em; }
+  .asks h2 { font-family: var(--text); font-size: 15px; font-weight: 700; font-stretch: 100%; letter-spacing: 0; line-height: 1.4; }
+  .asks ul { list-style: none; margin-top: 10px; display: grid; gap: 8px; color: var(--muted); font-size: 15.5px; line-height: 1.45; }
+  .asks li { display: grid; grid-template-columns: 14px 1fr; gap: 8px; }
+  .asks li::before { content: ''; width: 6px; height: 6px; margin-top: 8px; border-radius: 50%; background: var(--ink); }
+
+  /* Search Console's report beside this check: on a phone each question becomes a block with two labelled answers */
+  .versus tbody th { width: 30%; }
+  .versus td.no { color: var(--muted); }
+  .vs-note { margin-top: 18px; }
+  @media (max-width: 760px) {
+    .versus thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .versus, .versus tbody, .versus tr, .versus th, .versus td { display: block; }
+    .versus tbody th { width: auto; }
+    .versus tr { padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .versus tbody tr:first-child { border-top: 2px solid var(--ink); }
+    .versus tbody th, .versus td { border: 0; padding: 0; }
+    .versus td { margin-top: 10px; }
+    .versus td::before { content: attr(data-label); display: block; font-size: 13.5px; font-weight: 700; color: var(--muted); }
+  }
+
+  .switches { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .switches li { background: var(--paper); border-radius: 22px; padding: clamp(22px, 3vw, 32px); }
+  .switches p { margin-top: 10px; }
+  @media (max-width: 760px) { .switches { grid-template-columns: 1fr; } }
+  .not-these { margin-top: clamp(36px, 5vw, 56px); max-width: 860px; }
+  .not-these .rows { margin-top: 16px; }
+  .not-these .block, .facts-col .block { display: block; margin-top: 4px; font-weight: 500; }
+  .src-note { margin-top: 18px; }
+  .band :global(.check) { margin-top: 26px; }
+</style>
