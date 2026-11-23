@@ -2,7 +2,7 @@
 title: "AI visibility tracker: what to measure and how to read it"
 description: "What an AI visibility tracker should measure across ChatGPT, Google AI Overviews, AI Mode, Gemini, Claude and Grok, how to read the numbers without fooling yourself, and what to ask before you pick a tool."
 date: 2026-11-16
-updated: 2026-11-22
+updated: 2026-11-23
 category: "Webflow"
 product: "ai-seo-deck"
 readMinutes: 7
@@ -70,4 +70,4 @@ We built AI SEO Deck for Webflow sites. It checks ChatGPT, Gemini, Claude and Gr
 
 Then it writes fixes from your own pages: a new title and description, and answers to the questions behind the keyword as FAQ schema, which you apply to Webflow as unpublished changes. The free plan covers one site and three keywords, checked every month.
 
-For a site that is not on Webflow, or for one look before you pay for any tracker, the [AI Visibility Report](/ai-visibility-report) measures the same things once. It picks the searches from your home page, ranks them by monthly Google searches in your customers' country, asks six engines and shows where the most searches end in an answer without you. The check of one search is free, and there is a [sample report](/ai-visibility-report/sample) to read.
+For a site that is not on Webflow, or for one look before you pay for any tracker, the [AI Visibility Report](/ai-visibility-report) measures the same things once. It picks the searches from your home page, ranks them by monthly Google searches in your customers' country, asks six engines and shows where the most searches end in an answer without you. The check of one search is free, and there is a [sample report](/ai-visibility-report/sample) to read. The free [LLM visibility checker](/tools/llm-visibility-checker/) runs the first part of it in about a minute.

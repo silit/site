@@ -2,7 +2,7 @@
 title: "How to check if ChatGPT recommends your business"
 description: "A repeatable way to see whether ChatGPT, Google AI Overviews and other AI engines name your business for the questions your customers ask, and what to do when they name a rival instead."
 date: 2026-11-16
-updated: 2026-11-22
+updated: 2026-11-23
 category: "Webflow"
 product: "ai-seo-deck"
 readMinutes: 8
@@ -66,7 +66,7 @@ Then look at the page on your site that should answer the question:
 - **Say what the page is in the title and description.** "Invoicing | Tallyhawk" tells an engine very little. "Invoicing software for small business | Tallyhawk" tells it exactly which question the page answers.
 - **Answer the questions on the page itself.** If customers ask about price, put a clear, written answer about price on the page, in text rather than inside an image.
 - **Add FAQ structured data that matches the visible answers.** It helps engines read the question and answer pairs. Google is clear that structured data has to match what visitors can see.
-- **Do not block the search crawlers.** OpenAI's [OAI-SearchBot](https://developers.openai.com/api/docs/bots) is how sites appear in ChatGPT search answers, and Anthropic documents [Claude-SearchBot](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web) for the same job. Check your robots.txt does not shut them out by accident.
+- **Do not block the search crawlers.** OpenAI's [OAI-SearchBot](https://developers.openai.com/api/docs/bots) is how sites appear in ChatGPT search answers, and Anthropic documents [Claude-SearchBot](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web) for the same job. Check your robots.txt does not shut them out by accident: the free [llms.txt checker](/tools/llms-txt-checker/) reads it and shows which AI crawlers it turns away.
 
 For Google's AI features, the rules are the ones you already know. Google says a page has to be indexed and eligible to show a snippet in Search to appear as a link in AI Overviews or AI Mode, and that there are [no extra requirements](https://developers.google.com/search/docs/appearance/ai-features) or special files beyond that.
 

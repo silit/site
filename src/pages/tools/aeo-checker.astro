@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import CheckForm from '../../components/CheckForm.astro';
 import AnswerDemo from '../../components/AnswerDemo.astro';
 import ReportOffer from '../../components/ReportOffer.astro';
+import OtherTools from '../../components/OtherTools.astro';
 import { SITE } from '../../data/site.js';
 import { REPORT } from '../../data/report.js';
 
@@ -143,10 +144,11 @@ const jsonld = [
       <div class="section-head"><h2>Read next</h2></div>
       <ul class="rows guide-rows">
         <li><a href="/guides/webflow-aeo-checklist/"><span>Webflow AEO checklist: get your site ready for AI search</span><span class="meta">8 min</span></a></li>
-        <li><a href="/tools/chatgpt-visibility-checker/"><span>ChatGPT visibility checker: who it names and which pages it read</span><span class="meta">Free tool</span></a></li>
       </ul>
     </div>
   </section>
+
+  <OtherTools current="aeo-checker" />
 
   <section class="band dark">
     <div class="wrap">

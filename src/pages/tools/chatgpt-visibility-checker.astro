@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import CheckForm from '../../components/CheckForm.astro';
 import AnswerDemo from '../../components/AnswerDemo.astro';
 import ReportOffer from '../../components/ReportOffer.astro';
+import OtherTools from '../../components/OtherTools.astro';
 import { SITE } from '../../data/site.js';
 import { REPORT } from '../../data/report.js';
 
@@ -163,10 +164,11 @@ const jsonld = [
       <div class="section-head"><h2>Read next</h2></div>
       <ul class="rows guide-rows">
         <li><a href="/guides/check-if-chatgpt-recommends-your-business/"><span>How to check if ChatGPT recommends your business</span><span class="meta">8 min</span></a></li>
-        <li><a href="/tools/llm-visibility-checker/"><span>LLM visibility checker: the same check across six models</span><span class="meta">Free tool</span></a></li>
       </ul>
     </div>
   </section>
+
+  <OtherTools current="chatgpt-visibility-checker" />
 
   <section class="band dark">
     <div class="wrap">

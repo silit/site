@@ -1,0 +1,19 @@
+---
+// The other free tools, listed on a tool page so that each tool links to the rest. Props: current (this page's id).
+import { TOOLS } from '../data/report.js';
+const { current = '' } = Astro.props;
+const others = TOOLS.filter((t) => t.id !== current);
+---
+<section class="section tight">
+  <div class="wrap">
+    <div class="section-head"><h2>More free tools</h2></div>
+    <ul class="rows other-tools">
+      {others.map((t) => <li><a href={t.href}><span>{t.name}<span class="block muted">{t.line}</span></span><span class="meta">Free</span></a></li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .other-tools a { align-items: flex-start; }
+  .other-tools .block { display: block; margin-top: 4px; font-weight: 500; font-size: 16px; max-width: 46em; }
+</style>

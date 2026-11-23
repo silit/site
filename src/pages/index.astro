@@ -16,6 +16,7 @@ const jsonld = [{
   inLanguage: ['en', 'tr'],
   publisher: { '@id': `${SITE.url}/#org` }
 }];
+import { TOOLS } from '../data/report.js';
 ---
 <Base
   title="Silit Labs: ready-made templates and tools for small businesses"
@@ -94,6 +95,15 @@ const jsonld = [{
           </div>
           <p class="muted">Curavia and Sessa, our Webflow templates for clinics and for coaches, are coming soon to the Webflow Marketplace. After them come a treatment plan presenter for clinics, kits for more clinic types and tools for Framer. <a class="link" href="/lab/">See what is on the bench</a>.</p>
         </article>
+      </div>
+      <div class="free-tools">
+        <div>
+          <h3><a href="/tools/">Free tools for AI search</a></h3>
+          <p class="muted">See how ChatGPT, Gemini and Google's AI treat a website. One question per tool, no account.</p>
+        </div>
+        <ul class="rows">
+          {TOOLS.map((t) => <li><a href={t.href}><span>{t.name}<span class="block muted">{t.line}</span></span><span class="meta">Free</span></a></li>)}
+        </ul>
       </div>
     </div>
   </section>
@@ -180,6 +190,14 @@ const jsonld = [{
   .principles p { margin-top: 10px; }
   @media (max-width: 800px) { .principles { grid-template-columns: 1fr; } }
 
+  .free-tools { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 18px clamp(24px, 4vw, 56px); align-items: start; background: var(--sheet); border-radius: 22px; padding: clamp(22px, 3vw, 36px); box-shadow: inset 0 0 0 1px var(--line); }
+  .free-tools h3 { font-size: clamp(22px, 2.2vw, 28px); }
+  .free-tools h3 a { text-decoration: none; }
+  .free-tools h3 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  .free-tools p { margin-top: 8px; max-width: 24em; }
+  .free-tools .rows a { align-items: flex-start; padding: 14px 2px; }
+  .free-tools .block { display: block; margin-top: 3px; font-weight: 500; font-size: 15.5px; }
+  @media (max-width: 860px) { .free-tools { grid-template-columns: 1fr; } }
   .guide-rows a { align-items: flex-start; }
   .guide-rows .block { display: block; margin-top: 4px; font-weight: 500; }
   .guide-rows a > span:first-child { font-size: 19px; }

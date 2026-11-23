@@ -25,6 +25,7 @@ export const NAV = {
     { href: '/templates/', label: 'Templates' },
     { href: '/clinic-kits/', label: 'Clinic kits' },
     { href: '/webflow-apps/', label: 'Webflow apps' },
+    { href: '/tools/', label: 'Free tools' },
     { href: '/guides/', label: 'Guides' },
     { href: '/about/', label: 'About' }
   ],

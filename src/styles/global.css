@@ -100,6 +100,10 @@ p { text-wrap: pretty; }
   .nav { display: none; }
   .menu { display: block; }
 }
+/* The English menu has seven items: a little tighter on small laptops, and the Menu button takes over below 940px
+   (between 901 and 939px the labels would break onto two lines). */
+@media (max-width: 1099px) { html[lang='en'] .top .wrap { gap: 12px; } html[lang='en'] .nav { gap: 0; } html[lang='en'] .nav a { padding: 8px; font-size: 14.5px; } html[lang='en'] .nav .btn.sm { padding: 8px 14px; } }
+@media (max-width: 939px) { html[lang='en'] .nav { display: none; } html[lang='en'] .menu { display: block; } }
 
 /* Sections */
 .section { padding: clamp(64px, 9vw, 120px) 0; }

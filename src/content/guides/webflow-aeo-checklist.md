@@ -2,6 +2,7 @@
 title: "Webflow AEO checklist: get your site ready for AI search"
 description: "A practical checklist for answer engine optimization on Webflow: crawler access, titles and descriptions, FAQ answers and schema, llms.txt, and how to check whether ChatGPT and Google AI Overviews name you."
 date: 2026-11-16
+updated: 2026-11-23
 category: "Webflow"
 product: "ai-seo-deck"
 readMinutes: 8
@@ -59,7 +60,7 @@ Organization structured data on the home page, with your name, logo and social p
 
 An llms.txt file is a short Markdown summary of your site with links to the pages that matter most, written for language models. Webflow supports it in **Site settings, SEO, LLMs.txt**: upload a UTF-8 file of up to 100 KB, and after you publish it is served at the root of your custom domain. It is not published to the webflow.io staging domain.
 
-Webflow's own [help article](https://help.webflow.com/hc/en-us/articles/43240104183315-Upload-an-llms-txt-file-to-your-site) calls the format experimental, and Google says you do not need AI text files for its AI features. Add one because it is cheap, keep it current, and spend most of your effort on the pages it links to.
+Webflow's own [help article](https://help.webflow.com/hc/en-us/articles/43240104183315-Upload-an-llms-txt-file-to-your-site) calls the format experimental, and Google says you do not need AI text files for its AI features. Add one because it is cheap, keep it current, and spend most of your effort on the pages it links to. Once it is live, the free [llms.txt checker](/tools/llms-txt-checker/) tells you whether the file follows the format and whether your robots.txt lets AI crawlers in.
 
 ## 7. Cover the basics engines rely on
 
