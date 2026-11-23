@@ -24,13 +24,30 @@ export const ENGINES = [
   { id: 'grok', name: 'Grok', maker: 'xAI', sent: 'question', free: 0, full: 2 }
 ];
 
-// The free tools. Each gets a page under /tools/ and a card on the hub.
+// The free tools. Each gets a page under /tools/, a card on the hub and a share picture (`og`).
 export const TOOLS = [
   {
     id: 'llm-visibility-checker',
     href: '/tools/llm-visibility-checker/',
+    og: '/images/og/llm-visibility-checker.jpg',
     name: 'LLM visibility checker',
     line: 'Type a website and read what ChatGPT, Gemini and Google AI Overviews answer when its customers search.',
     facts: ['Three LLMs', 'About a minute', 'No sign-up']
+  },
+  {
+    id: 'chatgpt-visibility-checker',
+    href: '/tools/chatgpt-visibility-checker/',
+    og: '/images/og/chatgpt-visibility-checker.jpg',
+    name: 'ChatGPT visibility checker',
+    line: 'Read what ChatGPT answers when customers ask for a business like yours: who it names, the searches it ran and the pages it read.',
+    facts: ['Asked with web search on', 'About a minute', 'No sign-up']
+  },
+  {
+    id: 'aeo-checker',
+    href: '/tools/aeo-checker/',
+    og: '/images/og/aeo-checker.jpg',
+    name: 'AEO checker',
+    line: 'An answer engine check in two halves: what the engines answer today, and what on the site keeps it out of the answer.',
+    facts: ['Answers and site', 'About a minute', 'No sign-up']
   }
 ];

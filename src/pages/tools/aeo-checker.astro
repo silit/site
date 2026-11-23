@@ -1,0 +1,176 @@
+---
+import Base from '../../layouts/Base.astro';
+import CheckForm from '../../components/CheckForm.astro';
+import AnswerDemo from '../../components/AnswerDemo.astro';
+import ReportOffer from '../../components/ReportOffer.astro';
+import { SITE } from '../../data/site.js';
+import { REPORT } from '../../data/report.js';
+
+const url = `${SITE.url}/tools/aeo-checker/`;
+const freeNames = 'ChatGPT, Gemini and Google AI Overviews';
+
+// What the check looks at on the site, most serious first: the same list, in the same order, as the report's
+// findings (findingsOf in the app). The free check shows the first one it finds; the full report shows all.
+const looks = [
+  ['Whether the site lets a reader in', 'A firewall or bot wall that turns every visitor without a browser away keeps AI crawlers out too.'],
+  ['robots.txt rules for AI search crawlers', 'OAI-SearchBot, Claude-SearchBot, PerplexityBot, Googlebot and Bingbot fetch pages for answers. Shut out, they cannot read or cite you.'],
+  ['Words in the page code', 'Most AI crawlers do not run JavaScript. If your text only appears once scripts have loaded, they read an almost empty page.'],
+  ['HTTPS', 'Engines prefer sources they can verify.'],
+  ['Organization markup', 'Without it an engine has to guess your name, your place and what you sell from loose text, and guesses are where mix-ups start.'],
+  ['Title and meta description', 'This is the line an engine reaches for when it describes you.'],
+  ['FAQ markup', 'When a page answers questions, markup tells the engine which words are the question and which are the answer.'],
+  ['sitemap.xml', 'Without one, crawlers find your pages more slowly.'],
+  ['llms.txt', 'A short guide to your site for AI crawlers. Cheap to add, but no major engine has said it uses the file for answers, so it comes last.']
+];
+
+const faq = [
+  ['What is AEO?', 'AEO stands for answer engine optimization: the work of getting a business named and cited when people put their question to an AI system such as ChatGPT, Gemini or Google AI Overviews, where the reply is one written answer and not a page of links.'],
+  ['What does an AEO checker check?', `This one checks two things. First the outcome: it asks ${freeNames} what your customers ask and shows whether the answers name you. Then the cause: it reads your home page the way an AI crawler does and tells you the most serious thing standing in the way.`],
+  ['How is AEO different from SEO?', 'SEO is measured in positions on a results page. AEO is measured in answers: whether you are named, whether your pages are cited, and where in the list you come. Good SEO helps, because answer engines read pages that search engines can find, but a page can rank well and still be left out of the answer.'],
+  ['Are AEO, GEO and LLMO different things?', 'They are three names for the same job. AEO is answer engine optimization, GEO is generative engine optimization and LLMO is large language model optimization. Whichever name a tool uses, the test is the same: does the answer include you?'],
+  ['Do I need an llms.txt file?', 'It does no harm and takes a few minutes, but do not expect it to move answers. So far no major AI company has said its answers rely on llms.txt, and Google has said the file is not needed to appear in its AI features. Crawler access in robots.txt and text that is in the page code matter far more.'],
+  ['Is the AEO checker free?', `Yes. It needs no account and no email address, and you can check up to ${REPORT.checksPerDay} websites a day. The full report, with every finding and its fix, is optional and costs ${REPORT.price}, paid once.`]
+];
+
+const jsonld = [
+  {
+    '@type': 'WebApplication',
+    name: 'AEO Checker',
+    url,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    description: `A free answer engine optimization check: what ${freeNames} answer for a business's customers, and what on its site keeps it out of the answer.`,
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: `${SITE.url}/tools/` },
+      { '@type': 'ListItem', position: 3, name: 'AEO checker', item: url }
+    ]
+  }
+];
+---
+<Base
+  title="AEO checker: free, for any website"
+  description="A free AEO checker that starts with the answers: what ChatGPT, Gemini and Google AI Overviews say when your customers ask, and what on your site holds you back."
+  image="/images/og/aeo-checker.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/tools/">Free tools</a></li><li aria-current="page">AEO checker</li></ol>
+      <div class="grid">
+        <div>
+          <h1>AEO checker</h1>
+          <p class="lead">Answer engine optimization has one test that counts: when a customer asks, are you in the answer? Type your website to read the answers, then see what on your site stands in the way.</p>
+          <CheckForm id="check-top" tool="aeo-checker" />
+          <ul class="facts"><li>Free</li><li>About a minute</li><li>No sign-up, no email</li></ul>
+        </div>
+        <AnswerDemo open="gemini" id="sample" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>An AEO check in two halves</h2>
+        <p>Most AEO checkers grade a page and stop there. A grade cannot tell you whether anyone is recommending you, so this check starts from the other end.</p>
+      </div>
+      <div class="halves">
+        <div>
+          <h3>First, the answers</h3>
+          <p class="muted">We work out what your customers search for and put the most searched one to {freeNames}. You read each answer word for word, with your name marked, the rivals named in your place and the pages the answer was built from.</p>
+        </div>
+        <div>
+          <h3>Then, the site</h3>
+          <p class="muted">We read your home page the way an AI crawler does, without running scripts, and check the things that decide whether an engine can read you, tell who you are and quote you. You get the most serious finding straight away.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What it looks at on your site</h2>
+        <p>Nine things, in the order they matter. One near the top can undo everything below it: perfect markup does nothing for a page a crawler cannot open.</p>
+      </div>
+      <ol class="looks">
+        {looks.map(([h, p]) => <li><div><b>{h}</b><span>{p}</span></div></li>)}
+      </ol>
+      <p class="note looks-note">The free check shows the first of these it finds on your home page. The full report lists every one, each with what to change and the text or code to paste.</p>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What AEO changes, and what it does not</h2>
+      </div>
+      <div class="cols3">
+        <div><h3>The unit is an answer, not a position</h3><p class="muted">There is no page two. An answer names a handful of businesses, and for that customer the rest are not there.</p></div>
+        <div><h3>Other people's pages count as much as yours</h3><p class="muted">Engines build answers from listings, guides and reviews. Being on the pages they read often matters more than polishing your own.</p></div>
+        <div><h3>The basics still decide</h3><p class="muted">A crawler has to reach your page and find your words in it. Most of what holds a site back is ordinary: a blocked crawler, an empty page, no clear statement of who you are.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <ReportOffer
+    heading="From one finding to the full list"
+    intro="The free check gives you one search and the first thing wrong with your site. The full report covers the five searches that matter most and every finding, with the fix written out."
+    engines="answer engines"
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Questions</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Read next</h2></div>
+      <ul class="rows guide-rows">
+        <li><a href="/guides/webflow-aeo-checklist/"><span>Webflow AEO checklist: get your site ready for AI search</span><span class="meta">8 min</span></a></li>
+        <li><a href="/tools/chatgpt-visibility-checker/"><span>ChatGPT visibility checker: who it names and which pages it read</span><span class="meta">Free tool</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Find out if the answer includes you</h2>
+      <CheckForm id="check-last" tool="aeo-checker" dark />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero .grid { align-items: start; }
+  .page-hero h1 { margin-top: 6px; }
+  .halves { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .halves > div { background: var(--paper); border-radius: 22px; padding: clamp(22px, 3vw, 34px); }
+  .halves p { margin-top: 10px; }
+  @media (max-width: 760px) { .halves { grid-template-columns: 1fr; } }
+  /* two columns read downwards: 1 to 5 on the left, 6 to 9 on the right */
+  .looks { list-style: none; counter-reset: look; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto); grid-auto-flow: column; gap: 0 48px; }
+  .looks li:nth-child(1), .looks li:nth-child(6) { border-top: 1px solid var(--line); }
+  .looks li { counter-increment: look; display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 16px 2px; border-bottom: 1px solid var(--line); }
+  .looks li::before { content: counter(look); font-family: var(--display); font-weight: 700; font-size: 19px; color: var(--blue); }
+  .looks b { display: block; font-size: 18px; }
+  .looks span { color: var(--muted); }
+  .looks-note { margin-top: 18px; }
+  @media (max-width: 860px) { .looks { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; } .looks li:nth-child(6) { border-top: 0; } }
+  .band .check { margin-top: 26px; }
+</style>

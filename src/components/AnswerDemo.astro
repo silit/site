@@ -1,7 +1,7 @@
 ---
 // A sample of what the free check gives back: the three answers of a made-up hotel, with the marks the real check
 // uses (yellow = the business, underlined = a rival, dotted = a listing site, blue = its own site among the pages
-// the answer was built from) and the notes that explain them. The
+// the answer was built from), the searches a chat model ran before it answered, and the notes that explain them. The
 // business, the answers and the notes follow the sample report at /ai-visibility-report/sample, shortened to fit.
 // Props: open (the answer shown first: chatgpt, aio or gemini), id (prefix for element ids, unique on the page).
 const { open = 'aio', id = 'demo' } = Astro.props;
@@ -23,6 +23,7 @@ const takes = [
       { t: 'li', segs: [rival('Hotel Marquês Azul'), ', larger and more polished, with river-view rooms at a higher price.'] },
       { t: 'p', segs: ['Check recent reviews on ', dir('TripAdvisor'), ' before you book.'] }
     ],
+    queries: ['best boutique hotels Alfama Lisbon', 'Alfama small hotel reviews 2026'],
     sources: [['lisbonweekender.example'], ['casaaldora.example', 'own'], ['tripadvisor.com']],
     notes: ['You, named second of 3.', 'It sends the customer to TripAdvisor. Are you listed there?', 'Your site is one of its sources.']
   },
@@ -46,6 +47,7 @@ const takes = [
       { t: 'li', segs: [you('Casa Aldora'), ' is a 14-room hotel in a restored townhouse, with breakfast in a courtyard and a rooftop terrace facing the Tagus.'] },
       { t: 'li', segs: [rival('Hotel Marquês Azul'), ' offers larger rooms and river views.'] }
     ],
+    queries: ['boutique hotels in Alfama Lisbon', 'Alfama hotels for a weekend'],
     sources: [['casaaldora.example', 'own'], ['alfamaguide.example'], ['lisbonweekender.example']],
     notes: ['You, named second of 3.', 'The Lumiar House comes before you.', 'Your site is one of its sources.']
   }
@@ -77,6 +79,7 @@ const grouped = (blocks) => blocks.reduce((out, b) => {
             ? <ul>{b.items.map((li) => <li>{li.segs.map((s) => typeof s === 'string' ? s : <mark class={s.m}>{s.x}</mark>)}</li>)}</ul>
             : <p>{b.segs.map((s) => typeof s === 'string' ? s : <mark class={s.m}>{s.x}</mark>)}</p>)}
         </div>
+        {t.queries && <p class="demo-src"><span>It searched for</span>{t.queries.map((q) => <b class="q">{q}</b>)}</p>}
         <p class="demo-src"><span>Pages it read</span>{t.sources.map(([host, own]) => <b class={own}>{host}</b>)}</p>
         <ul class="demo-notes">{t.notes.map((n) => <li>{n}</li>)}</ul>
       </div>
@@ -144,6 +147,8 @@ const grouped = (blocks) => blocks.reduce((out, b) => {
   .demo-src span { color: var(--muted); font-weight: 600; margin-right: 2px; }
   .demo-src b { font-weight: 550; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--muted); }
   .demo-src b.own { background: #E3ECF8; color: var(--pen); font-weight: 650; }
+  .demo-src b.q { border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
+  .demo-src + .demo-src { margin-top: 8px; }
   .demo-notes { list-style: none; margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); display: grid; gap: 8px; font-size: 15px; font-weight: 600; color: var(--pen); }
   .demo-notes li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; }
   .demo-notes li::before { content: ''; margin-top: .72em; height: 2px; border-radius: 2px; background: currentColor; }
