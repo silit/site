@@ -1,0 +1,28 @@
+# Silit Labs
+
+> Silit Labs is a small product studio in Antalya, Turkey. It makes ready-to-use templates and tools for small businesses, clinics and web studios, and free tools that show how AI search engines treat a website.
+
+## Free tools
+
+- [LLM visibility checker](https://silitlabs.com/tools/llm-visibility-checker/): what ChatGPT, Gemini and Google AI Overviews answer when a website's customers search
+- [ChatGPT visibility checker](https://silitlabs.com/tools/chatgpt-visibility-checker/): who ChatGPT names, the searches it ran and the pages it read
+- [AEO checker](https://silitlabs.com/tools/aeo-checker/): what answer engines say, and what on the site keeps it out of the answer
+- [llms.txt checker](https://silitlabs.com/tools/llms-txt-checker/): an llms.txt file against the format, and the robots.txt rules for AI crawlers
+
+## Products
+
+- [AI Visibility Report](https://silitlabs.com/ai-visibility-report): a one-time report for any website on five searches and six AI engines, with a fix kit
+- [Webflow apps](https://silitlabs.com/webflow-apps/): Flowdeck for site monitoring and AI SEO Deck for AI search visibility
+- [Clinic kits](https://silitlabs.com/clinic-kits/): patient document kits for dental, aesthetic and hair transplant clinics
+- [Booking site templates](https://silitlabs.com/booking-site-templates/): 27 booking site designs for Square and Acuity, with Instagram posts and stories
+- [Templates](https://silitlabs.com/templates/): templates for beauty pros, Airbnb hosts and cleaning businesses, a clinic lead tracker and Webflow sites
+
+## Guides
+
+- [Guides](https://silitlabs.com/guides/): practical write-ups on AI search visibility, Webflow sites and clinic documents
+
+## Optional
+
+- [About Silit Labs](https://silitlabs.com/about/)
+- [Contact](https://silitlabs.com/contact/)
+- [In the lab](https://silitlabs.com/lab/): what is being built next

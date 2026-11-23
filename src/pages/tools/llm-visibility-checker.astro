@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import CheckForm from '../../components/CheckForm.astro';
 import AnswerDemo from '../../components/AnswerDemo.astro';
+import OtherTools from '../../components/OtherTools.astro';
 import { SITE } from '../../data/site.js';
 import { REPORT, ENGINES } from '../../data/report.js';
 
@@ -212,6 +213,8 @@ const jsonld = [
       </ul>
     </div>
   </section>
+
+  <OtherTools current="llm-visibility-checker" />
 
   <section class="band dark">
     <div class="wrap">
