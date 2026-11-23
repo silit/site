@@ -1,0 +1,77 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../data/site.js';
+import { REPORT, TOOLS } from '../../data/report.js';
+
+const jsonld = [
+  {
+    '@type': 'CollectionPage',
+    name: 'Free tools for AI search',
+    url: `${SITE.url}/tools/`,
+    publisher: { '@id': `${SITE.url}/#org` },
+    hasPart: TOOLS.map((t) => ({ '@type': 'WebApplication', name: t.name, url: `${SITE.url}${t.href}` }))
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: `${SITE.url}/tools/` }
+    ]
+  }
+];
+---
+<Base
+  title="Free tools for AI search"
+  description="Free tools from Silit Labs that show how ChatGPT, Gemini and Google's AI see a website. No account, no email and nothing to install."
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li aria-current="page">Free tools</li></ol>
+      <h1>Free tools for AI search</h1>
+      <p class="lead">Each tool answers one question about how AI models see a website. No account, no email and nothing to install.</p>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg">
+    <div class="wrap">
+      <ul class="tools">
+        {TOOLS.map((t) => (
+          <li>
+            <h2><a href={t.href}>{t.name}</a></h2>
+            <p class="muted">{t.line}</p>
+            <ul class="facts">{t.facts.map((f) => <li>{f}</li>)}</ul>
+            <a class="btn" href={t.href}>Open the checker</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>When a free check is not enough</h2></div>
+      <ul class="rows more">
+        <li><a href={REPORT.href}><span><b>AI Visibility Report</b><span class="block muted">The five searches your customers make most, on six AI models, with a fix kit. For any website.</span></span><span class="p">{REPORT.price} once</span></a></li>
+        <li><a href="/webflow-apps/ai-seo-deck/"><span><b>AI SEO Deck</b><span class="block muted">A weekly check of your keywords on the same six models, with fixes applied to your Webflow site.</span></span><span class="p">Free for one site</span></a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero h1 { max-width: 12em; }
+  .tools { list-style: none; display: grid; gap: 20px; }
+  .tools > li { background: var(--paper); border-radius: 22px; padding: clamp(24px, 3.4vw, 40px); display: grid; gap: 14px; justify-items: start; }
+  .tools h2 { font-size: clamp(28px, 3vw, 40px); }
+  .tools h2 a { text-decoration: none; }
+  .tools h2 a:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+  .tools p { max-width: 38em; font-size: 18px; }
+  .tools .facts { margin-top: 0; }
+  .tools .btn { margin-top: 6px; }
+  .more a { align-items: flex-start; }
+  .more b { font-size: 19px; }
+  .more .block { display: block; margin-top: 4px; font-weight: 500; max-width: 40em; }
+  .more .p { white-space: nowrap; }
+  @media (max-width: 560px) { .more a { flex-direction: column; gap: 8px; } }
+</style>
