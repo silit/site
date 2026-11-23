@@ -8,7 +8,7 @@ const others = TOOLS.filter((t) => t.id !== current);
   <div class="wrap">
     <div class="section-head"><h2>More free tools</h2></div>
     <ul class="rows other-tools">
-      {others.map((t) => <li><a href={t.href}><span>{t.name}<span class="block muted">{t.line}</span></span><span class="meta">Free</span></a></li>)}
+      {others.map((t) => <li><a href={t.href}><span>{t.name}<span class="block muted">{t.line}</span></span><span class="meta">{t.tag || 'Free'}</span></a></li>)}
     </ul>
   </div>
 </section>
@@ -16,4 +16,5 @@ const others = TOOLS.filter((t) => t.id !== current);
 <style>
   .other-tools a { align-items: flex-start; }
   .other-tools .block { display: block; margin-top: 4px; font-weight: 500; font-size: 16px; max-width: 46em; }
+  .other-tools .meta { white-space: nowrap; }
 </style>

@@ -8,6 +8,7 @@
 - [ChatGPT visibility checker](https://silitlabs.com/tools/chatgpt-visibility-checker/): who ChatGPT names, the searches it ran and the pages it read
 - [AEO checker](https://silitlabs.com/tools/aeo-checker/): what answer engines say, and what on the site keeps it out of the answer
 - [llms.txt checker](https://silitlabs.com/tools/llms-txt-checker/): an llms.txt file against the format, and the robots.txt rules for AI crawlers
+- [AI search audit](https://silitlabs.com/tools/ai-search-audit/): the five questions an audit of AI search answers, with a free first pass for any website
 
 ## Products
 
@@ -20,6 +21,8 @@
 ## Guides
 
 - [Guides](https://silitlabs.com/guides/): practical write-ups on AI search visibility, Webflow sites and clinic documents
+- [GEO audit, step by step](https://silitlabs.com/guides/geo-audit/): how to audit a business's place in AI answers by hand
+- [llms.txt on Webflow](https://silitlabs.com/guides/webflow-llms-txt/): how to add the file to a Webflow site, with a template
 
 ## Optional
 

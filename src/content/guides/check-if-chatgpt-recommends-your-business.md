@@ -70,6 +70,8 @@ Then look at the page on your site that should answer the question:
 
 For Google's AI features, the rules are the ones you already know. Google says a page has to be indexed and eligible to show a snippet in Search to appear as a link in AI Overviews or AI Mode, and that there are [no extra requirements](https://developers.google.com/search/docs/appearance/ai-features) or special files beyond that.
 
+Asking the engines is the first half of an audit. The other half is the pages behind the answers, what the engines say about you by name and what a crawler sees on your site. Our [GEO audit guide](/guides/geo-audit/) goes through all of it in order.
+
 ## When to stop doing it by hand
 
 Five keywords, two questions each, on six engines is sixty answers a week. That is manageable once, and tiring by week three. A tracker does the same steps for you: it asks every question on every engine, records whether you are named and linked, keeps the rivals and sources, and shows the trend.

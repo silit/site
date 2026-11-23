@@ -1,0 +1,45 @@
+---
+// A small form that hands a website to the llms.txt checker from another page. It keeps the address in the tab's
+// session storage and opens the checker, which reads it, runs the check and forgets it (see the script of
+// src/pages/tools/llms-txt-checker.astro). The address never goes into a link, so it is not in the browser's
+// history or in analytics. Without JavaScript, or without storage, the form simply opens the checker.
+// Props: id (of the input, unique on the page), dark (true on a dark background).
+const { id = 'llms-start', dark = false } = Astro.props;
+---
+<form class:list={['llms-start', { 'on-dark': dark }]} data-llms-start action="/tools/llms-txt-checker/" method="get" novalidate>
+  <label for={id}>Your website</label>
+  <div class="llms-start-row">
+    <input id={id} type="text" inputmode="url" autocomplete="url" autocapitalize="none" spellcheck="false" placeholder="yourbusiness.com" />
+    <button class="btn" type="submit">Check llms.txt</button>
+  </div>
+</form>
+
+<script>
+  document.querySelectorAll('form[data-llms-start]').forEach((f) => {
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const site = f.querySelector('input').value.trim();
+      try {
+        if (site) window.sessionStorage.setItem('llms-site', site);
+        else window.sessionStorage.removeItem('llms-site');
+      } catch (err) { /* no storage: the checker opens with an empty form */ }
+      window.location.assign(f.getAttribute('action'));
+    });
+  });
+</script>
+
+<style>
+  .llms-start { margin-top: 20px; max-width: 34em; }
+  .llms-start label { display: block; font-weight: 650; font-size: 15px; margin-bottom: 8px; }
+  .llms-start-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .llms-start input {
+    flex: 1 1 14em; min-width: 0; min-height: 58px; padding: 12px 20px;
+    border: 1.5px solid var(--ink); border-radius: 18px; background: var(--sheet);
+    font: inherit; font-size: 18px; color: var(--ink);
+  }
+  .llms-start input::placeholder { color: #66778E; opacity: 1; }
+  .llms-start .btn { min-height: 58px; padding: 12px 28px; font-size: 17px; margin-top: 0; }
+  @media (max-width: 520px) { .llms-start .btn { flex: 1 1 100%; } }
+  .llms-start.on-dark input { border-color: transparent; }
+  .llms-start.on-dark :focus-visible { outline-color: var(--coral-2); }
+</style>

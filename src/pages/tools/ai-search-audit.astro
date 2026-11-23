@@ -1,0 +1,357 @@
+---
+import Base from '../../layouts/Base.astro';
+import CheckForm from '../../components/CheckForm.astro';
+import ReportOffer from '../../components/ReportOffer.astro';
+import OtherTools from '../../components/OtherTools.astro';
+import { SITE } from '../../data/site.js';
+import { REPORT } from '../../data/report.js';
+import { SAMPLE, namedIn, answersIn } from '../../data/sample-audit.js';
+
+const url = `${SITE.url}/tools/ai-search-audit/`;
+const priceNumber = REPORT.price.replace(/[^0-9.]/g, '');
+const NO = 'Not in the free check';
+const cap = (w) => w.charAt(0).toUpperCase() + w.slice(1);
+
+// The parts of the audit: what each one answers, and how far the free check and the full audit go.
+// The same parts, in the same order, as the report itself (its contents list is in the app's view.js).
+const parts = [
+  ['Your searches', 'What customers type when they look for a business like yours, and how often each search is made.', 'The list, with monthly numbers', `The ${REPORT.searchesWord} made most often, checked in full`],
+  ['The answers', 'What each engine replies, word for word, with your name marked.', 'One search on ChatGPT, Gemini and Google AI Overviews', `${cap(REPORT.searchesWord)} searches on six engines: about ${REPORT.answers} answers`],
+  ['Who is named instead', 'The businesses that take your place, and how often each one comes up.', 'In those three answers', 'Counted across every answer'],
+  ['The pages AI read', 'The listings, guides and reviews the answers were built from, and whether you are on them.', 'For those three answers', 'For every answer, most used first'],
+  ['What AI says about you', 'The chat engines asked about you by name: what they get right, and what they get wrong.', NO, 'Four engines asked by name'],
+  ['What a crawler sees', 'Your home page read without scripts, the way most AI crawlers read it, and whether robots.txt lets them in.', 'The page as a crawler reads it, and the most serious finding', 'Every finding, crawler by crawler'],
+  ['The fix kit', 'What to change, in order, with who does it, how long it takes and the text or code to paste.', NO, 'Every fix, ready to hand over'],
+  ['The re-check', `The same searches asked again after ${REPORT.keptDays} days, with before and after side by side.`, NO, 'One re-check, included']
+];
+
+// The sample audit's grid: one mark per answer, and the totals down the side and along the foot.
+const WORD = { 1: 'named', 0: 'not named', null: 'no AI answer' };
+const columns = SAMPLE.engines.map((name, i) => {
+  const marks = SAMPLE.searches.flatMap((s) => s.cells[i]);
+  return { name, named: marks.filter((m) => m === 1).length, answers: marks.filter((m) => m !== null).length };
+});
+const empty = columns.find((c) => c.named === 0);
+
+// The audit done by hand: the steps of the guide, in its order.
+const hand = [
+  'Choose the searches that matter',
+  'Ask every engine, more than once',
+  'Count who gets named',
+  'Read the pages behind the answers',
+  'Ask about yourself by name',
+  'Read your site as a crawler does',
+  'Write the fixes, most important first',
+  'Ask again in a month'
+];
+
+const faq = [
+  ['What is an AI search audit?', 'A one-time review of how AI search engines treat a business: what they answer when its customers search, who they name, which pages they build those answers from, what they say about the business by name, and what on its website gets in the way. It ends in a list of fixes, in the order to do them.'],
+  ['Is an AI search audit the same as a GEO audit or an AEO audit?', 'Yes. GEO stands for generative engine optimization and AEO for answer engine optimization, and an AI visibility audit is the same review under one more name. What differs is the method. Many audit tools score your pages against a checklist and stop there. Fewer ask the engines and read what comes back. Before you run one, find out which kind it is.'],
+  ['Which AI engines does the audit cover?', 'The free check asks ChatGPT, Gemini and Google AI Overviews. The full audit asks six: those three and Google AI Mode, Claude and Grok. The chat engines are asked twice each, because the same question often gets a different answer the second time.'],
+  ['How long does an AI search audit take?', `The free check takes about a minute. The full audit is ready about four minutes after you pay for it. Doing the same work by hand, about ${REPORT.answers} answers to ask for, read and record, takes most of an afternoon.`],
+  ['Do I have to give access to my website?', 'No. The audit reads what any visitor or crawler can read: your public pages, your robots.txt and your sitemap. There is nothing to install and no login to hand over.'],
+  ['How often should I run an audit?', `Once before you change anything, and once after the changes have had a few weeks to be read. The full audit includes that second look, a re-check after ${REPORT.keptDays} days. If you want a number every week, that is the job of a tracker, not an audit.`],
+  ['What does an AI search audit cost?', `The first pass is free, with no account and no email address. The full audit is ${REPORT.price}, paid once, with no subscription. An agency audit adds interviews, research into your market and a plan written for you. This one is the measured part of that work, done by software.`]
+];
+
+const jsonld = [
+  {
+    '@type': 'WebApplication',
+    name: 'AI Search Audit',
+    url,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    description: 'An audit of how AI search engines treat a website: the answers its customers get, who is named, the pages the answers were built from, and what to fix. The first pass is free.',
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'AggregateOffer', lowPrice: '0', highPrice: priceNumber, priceCurrency: 'USD', offerCount: 2 }
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: `${SITE.url}/tools/` },
+      { '@type': 'ListItem', position: 3, name: 'AI search audit', item: url }
+    ]
+  }
+];
+---
+<Base
+  title={`AI search audit: free first pass, full audit ${REPORT.price}`}
+  description="An AI search audit for any website: what ChatGPT, Gemini and Google's AI answer when your customers search, who they name instead, and what to fix first."
+  image="/images/og/ai-search-audit.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/tools/">Free tools</a></li><li aria-current="page">AI search audit</li></ol>
+      <div class="grid">
+        <div>
+          <h1>AI search audit</h1>
+          <p class="lead">An audit of AI search answers five questions about your business, in order, from whether AI can read your site to whether it names you first. Type your website and the first pass is free.</p>
+          <CheckForm id="check-top" tool="ai-search-audit" button="Run the free check" />
+          <ul class="facts"><li>Free first pass</li><li>Full audit {REPORT.price}, once</li><li>No sign-up, no email</li></ul>
+          <div class="pass">
+            <h2>What the free pass shows you</h2>
+            <ul>
+              <li>The searches your customers make, with how often each is made</li>
+              <li>The most searched one, answered by ChatGPT, Gemini and Google AI Overviews, word for word</li>
+              <li>Your home page as a crawler reads it, and the most serious thing wrong with it</li>
+            </ul>
+          </div>
+        </div>
+        <figure class="audit-card">
+          <div class="audit-sheet">
+            <p class="audit-who"><b>Where {SAMPLE.brand} stands</b><span>{SAMPLE.what}, in {SAMPLE.answers} answers from six AI engines</span></p>
+            <ol class="rungs">
+              {SAMPLE.ladder.map((r) => (
+                <li class:list={{ start: r.name === SAMPLE.start }}>
+                  <div>
+                    <p class="rung-q"><b>{r.name}</b> {r.q}</p>
+                    <span class="bar" aria-hidden="true"><i style={`width:${Math.round(r.p * 100)}%`}></i></span>
+                    <p class="rung-e">{r.evidence}</p>
+                    {r.name === SAMPLE.start && <p class="rung-go">Start here. Every step after it rests on this one.</p>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <figcaption>The first page of the <a class="link" href={REPORT.sample}>sample audit</a>. The first step that is not solid is where the work begins.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What the audit covers</h2>
+        <p>Eight parts. The free check makes a first pass at five of them, so you read your own answers before you decide about the rest.</p>
+      </div>
+      <div class="dtable-wrap">
+        <table class="dtable parts">
+          <caption class="sr">The parts of the audit, and what the free check and the full audit cover in each</caption>
+          <thead><tr><th scope="col">Part of the audit</th><th scope="col">Free check</th><th scope="col">Full audit, {REPORT.price}</th></tr></thead>
+          <tbody>
+            {parts.map(([name, what, free, full]) => (
+              <tr>
+                <th scope="row">{name}<small>{what}</small></th>
+                <td data-label="Free check" class:list={{ no: free === NO }}>{free}</td>
+                <td data-label={`Full audit, ${REPORT.price}`}>{full}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What {SAMPLE.answers} answers look like</h2>
+        <p>This is the sample audit: {REPORT.searchesWord} searches put to six engines for {SAMPLE.brand}, {SAMPLE.what}. Each dot is one answer.</p>
+      </div>
+      <div class="grid-wrap">
+        <table class="grid49">
+          <caption class="sr">For each search and each AI engine, whether the answer named {SAMPLE.brand}</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="gq">Search</th>
+              {columns.map((c) => <th scope="col" class="ge"><span>{c.name}</span></th>)}
+              <th scope="col" class="gt"><span>Named</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {SAMPLE.searches.map((s) => (
+              <tr>
+                <th scope="row" class="gq">{s.keyword}<small>{s.volume} searches a month</small></th>
+                {s.cells.map((cell) => (
+                  <td>
+                    <span class="pips" aria-hidden="true">{cell.map((m) => <i class={m === 1 ? 'on' : m === 0 ? 'off' : 'na'}></i>)}</span>
+                    <span class="sr">{cell.map((m) => WORD[m]).join(', ')}</span>
+                  </td>
+                ))}
+                <td class="gt">{namedIn(s)}<span class="of"> of </span>{answersIn(s)}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row" class="gq">Named, by engine</th>
+              {columns.map((c) => <td class:list={{ zero: c.named === 0 }}>{c.named}<span class="of"> of </span>{c.answers}</td>)}
+              <td class="gt">{SAMPLE.named}<span class="of"> of </span>{SAMPLE.answers}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <ul class="legend">
+        <li><i class="on"></i> named the hotel</li>
+        <li><i class="off"></i> answered without it</li>
+        <li><i class="na"></i> Google showed no AI answer</li>
+        <li>Two dots: the same question asked twice</li>
+        <li>Searches a month: on Google, in {SAMPLE.asked}</li>
+      </ul>
+      <div class="cols3 reads">
+        <div><h3>Named in {SAMPLE.named} of {SAMPLE.answers}</h3><p class="muted">Fewer than one answer in three. One look at one engine would have told you yes or no, and either would have been wrong.</p></div>
+        <div><h3>One column is empty</h3><p class="muted">{empty.name} never names the hotel. The crawler view shows a likely reason: robots.txt shuts {empty.name}'s search crawler out.</p></div>
+        <div><h3>The gap that costs most</h3><p class="muted">"{SAMPLE.gap.keyword}" is searched {SAMPLE.gap.volume} times a month, and the hotel is in {SAMPLE.gap.named} of its {SAMPLE.gap.answers} answers. {SAMPLE.rival.name} is in {SAMPLE.rival.named} of the {SAMPLE.answers}.</p></div>
+      </div>
+      <div class="actions"><a class="btn quiet" href={REPORT.sample}>Open the sample audit</a></div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Checker, audit or tracker</h2>
+        <p>Three words that get used for each other. They are different jobs, and they come in this order.</p>
+      </div>
+      <div class="cols3">
+        <div><h3>A checker looks at one thing</h3><p class="muted">One question, answered in a minute: what ChatGPT says, whether a file is valid. The other <a class="link" href="/tools/">free tools</a> here are checkers.</p></div>
+        <div><h3>An audit looks at everything, once</h3><p class="muted">Every search that matters on every engine, the reasons behind the answers and the fixes in order. You run one before you change anything.</p></div>
+        <div><h3>A tracker asks again every week</h3><p class="muted">The same searches on a schedule, to show whether your changes worked. It earns its price after an audit, not before. See <a class="link" href="/guides/ai-visibility-tracker/">what a tracker should measure</a>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split start">
+      <div>
+        <h2>You can run the audit by hand</h2>
+        <p class="lede">Nothing in an audit is secret. With a spreadsheet and an afternoon you can ask the engines yourself, count the names and read the sources. Our guide goes through it step by step.</p>
+        <div class="actions"><a class="btn quiet" href="/guides/geo-audit/">Read the GEO audit guide</a></div>
+      </div>
+      <ol class="hand">
+        {hand.map((h) => <li>{h}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  <ReportOffer
+    heading="The full audit, for one payment"
+    intro="The full audit is our AI Visibility Report. It puts the five searches that matter most to six engines and ends in a fix kit. The free check is its first pass: one search, three engines and the most serious finding."
+    engines="AI engines"
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Questions</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Read next</h2></div>
+      <ul class="rows guide-rows">
+        <li><a href="/guides/geo-audit/"><span>GEO audit: how to run one yourself, step by step</span><span class="meta">9 min</span></a></li>
+        <li><a href="/guides/ai-visibility-tracker/"><span>AI visibility tracker: what to measure and how to read it</span><span class="meta">7 min</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <OtherTools current="ai-search-audit" />
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Start with the part that is free</h2>
+      <CheckForm id="check-last" tool="ai-search-audit" button="Run the free check" dark />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero .grid { align-items: start; }
+  .page-hero h1 { margin-top: 6px; }
+
+  /* the first page of the sample audit: five steps, each with the share measured and the line of evidence */
+  .audit-card { min-width: 0; }
+  .audit-sheet { background: var(--sheet); border-radius: 22px; padding: clamp(20px, 2.4vw, 30px) clamp(18px, 2.4vw, 30px) 8px; box-shadow: inset 0 0 0 1px var(--line), 0 30px 60px -36px rgba(11, 37, 64, .45); }
+  .audit-who b { display: block; font-family: var(--display); font-weight: 700; font-size: clamp(21px, 2vw, 25px); letter-spacing: -.02em; line-height: 1.15; }
+  .audit-who span { display: block; margin-top: 4px; font-size: 14.5px; color: var(--muted); }
+  .rungs { list-style: none; counter-reset: rung; margin-top: 16px; }
+  .rungs li { counter-increment: rung; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 14px 0 15px; border-top: 1px solid var(--line); }
+  .rungs li::before { content: counter(rung); font-family: var(--display); font-weight: 700; font-size: 19px; line-height: 1.3; color: var(--blue); }
+  .rung-q { font-size: 15.5px; line-height: 1.4; color: var(--muted); }
+  .rung-q b { color: var(--ink); font-weight: 700; margin-right: 4px; }
+  .bar { display: block; height: 8px; margin-top: 9px; border-radius: 999px; background: var(--paper-2); overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 999px; background: var(--ink); }
+  .rung-e { margin-top: 8px; font-size: 14px; line-height: 1.45; }
+  .rung-go { margin-top: 8px; display: flex; align-items: baseline; gap: 9px; font-size: 14px; font-weight: 650; }
+  .rung-go::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--coral); transform: translateY(-1px); }
+  .rungs li.start .bar i { background: var(--coral); }
+  .audit-card figcaption { margin-top: 14px; padding: 0 4px; font-size: 14px; color: var(--muted); }
+
+  /* under the form: what the free part is, so that nobody has to guess what "first pass" means */
+  .pass { margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); max-width: 34em; }
+  .pass h2 { font-family: var(--text); font-size: 15px; font-weight: 700; font-stretch: 100%; letter-spacing: 0; line-height: 1.4; }
+  .pass ul { list-style: none; margin-top: 10px; display: grid; gap: 8px; color: var(--muted); font-size: 15.5px; line-height: 1.45; }
+  .pass li { display: grid; grid-template-columns: 14px 1fr; gap: 8px; }
+  .pass li::before { content: ''; width: 6px; height: 6px; margin-top: 8px; border-radius: 50%; background: var(--ink); }
+
+  /* the parts of the audit: on a phone each part becomes a block with its two answers labelled */
+  .parts tbody th { width: 44%; }
+  .parts th small { margin-top: 4px; font-size: 14.5px; line-height: 1.45; }
+  .parts td.no { color: var(--muted); }
+  @media (max-width: 760px) {
+    .parts thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .parts, .parts tbody, .parts tr, .parts th, .parts td { display: block; }
+    .parts tbody th { width: auto; }
+    .parts tr { padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .parts tbody tr:first-child { border-top: 2px solid var(--ink); }
+    .parts tbody th, .parts td { border: 0; padding: 0; }
+    .parts td { margin-top: 10px; }
+    .parts td::before { content: attr(data-label); display: block; font-size: 13.5px; font-weight: 700; color: var(--muted); }
+  }
+
+  /* the grid of answers */
+  .grid-wrap { background: var(--sheet); border-radius: 22px; padding: clamp(8px, 1.6vw, 20px) clamp(10px, 2.4vw, 30px); box-shadow: inset 0 0 0 1px var(--line); }
+  .grid49 { width: 100%; border-collapse: collapse; font-size: 16px; }
+  .grid49 th, .grid49 td { padding: 15px 8px; text-align: center; border-bottom: 1px solid var(--line); }
+  .grid49 thead th { font-size: 14px; font-weight: 700; color: var(--muted); vertical-align: bottom; border-bottom: 2px solid var(--ink); }
+  .grid49 .gq { text-align: left; padding-left: 0; font-weight: 600; line-height: 1.3; }
+  .grid49 tbody .gq small { display: block; margin-top: 3px; font-size: 13.5px; font-weight: 500; color: var(--muted); }
+  .grid49 .gt { padding-right: 0; text-align: right; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .grid49 tfoot th, .grid49 tfoot td { border-bottom: 0; font-size: 14.5px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .grid49 tfoot .gq { white-space: normal; color: var(--muted); }
+  .grid49 tfoot .zero { color: var(--down); }
+  .pips { display: inline-flex; gap: 5px; align-items: center; vertical-align: middle; }
+  .pips i, .legend i { display: block; flex: none; width: 14px; height: 14px; border-radius: 50%; }
+  .pips .on, .legend .on { background: var(--ink); }
+  .pips .off, .legend .off { box-shadow: inset 0 0 0 1.5px #9FB0C4; }
+  .pips .na, .legend .na { width: 12px; height: 2px; border-radius: 1px; background: #9FB0C4; }
+  .legend { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 16px; font-size: 14px; color: var(--muted); }
+  .legend li { display: flex; align-items: center; gap: 8px; }
+  .reads { margin-top: clamp(36px, 5vw, 56px); }
+  /* narrow screens: the engine names stand upright so that six columns fit without scrolling */
+  @media (max-width: 720px) {
+    .grid49 { font-size: 14.5px; }
+    .grid49 th, .grid49 td { padding: 12px 2px; }
+    .grid49 thead .ge, .grid49 thead .gt { height: 104px; padding-bottom: 10px; }
+    .grid49 thead .ge span, .grid49 thead .gt span { display: inline-block; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; font-size: 13px; }
+    .grid49 .gq { width: 34%; font-size: 14px; }
+    .grid49 tbody .gq small { font-size: 12.5px; }
+    .grid49 .of { font-size: 0; }
+    .grid49 .of::after { content: '/'; font-size: 13px; }
+    .grid49 .gt, .grid49 tfoot td { font-size: 13px; }
+    .pips { gap: 3px; }
+    .pips i { width: 10px; height: 10px; }
+    .pips .na { width: 9px; }
+  }
+
+  /* the audit by hand: eight steps in two columns that read downwards */
+  .hand { list-style: none; counter-reset: hand; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, auto); grid-auto-flow: column; gap: 0 36px; }
+  .hand li { counter-increment: hand; display: grid; grid-template-columns: 26px 1fr; gap: 10px; padding: 15px 2px; border-bottom: 1px solid var(--line); font-weight: 600; }
+  .hand li:nth-child(1), .hand li:nth-child(5) { border-top: 1px solid var(--line); }
+  .hand li::before { content: counter(hand); font-family: var(--display); font-weight: 700; font-size: 19px; line-height: 1.35; color: var(--blue); }
+  @media (max-width: 560px) { .hand { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; } .hand li:nth-child(5) { border-top: 0; } }
+
+  .band :global(.check) { margin-top: 26px; }
+</style>

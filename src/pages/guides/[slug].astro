@@ -6,6 +6,7 @@ import { templates, templatePath } from '../../data/templates.js';
 import { SITE, apps } from '../../data/site.js';
 import { TOOLS } from '../../data/report.js';
 import CheckForm from '../../components/CheckForm.astro';
+import LlmsStart from '../../components/LlmsStart.astro';
 
 export async function getStaticPaths() {
   const guides = await getCollection('guides');
@@ -24,7 +25,8 @@ const product = app
   : tpl
     ? { name: tpl.name.en, lead: tpl.lead.en, href: templatePath(tpl, 'en'), img: tpl.img.hero.src, og: tpl.og, cta: 'See the template' }
     : null;
-// A guide about AI search ends with the form of a free tool instead of a product.
+// A guide about AI search ends with the form of a free tool instead of a product: the form that starts an AI
+// visibility check, or, for a tool with a form of its own (the llms.txt checker), one that hands the site to it.
 const tool = TOOLS.find((t) => t.id === g.data.tool);
 const share = product ? product.og : tool ? tool.og : undefined;
 const url = `${SITE.url}/guides/${g.id}/`;
@@ -77,14 +79,37 @@ const jsonld = [
           <aside class="callout">
             <h2 style="margin:0;font-size:26px">{tool.name}</h2>
             <p>{tool.line}</p>
-            <CheckForm id="check-guide" tool={tool.id} dark />
-            <p class="small tool-more"><a href={tool.href}>How the check works</a></p>
+            {tool.form === 'llms' ? <LlmsStart id="llms-guide" dark /> : <CheckForm id="check-guide" tool={tool.id} dark />}
+            <p class="small tool-more"><a href={tool.href}>{tool.form === 'llms' ? 'What the checker looks at' : 'How the check works'}</a></p>
           </aside>
         )}
       </article>
     </div>
   </section>
 </Base>
+
+<script>
+  // A Copy button on each code block (a file to save, a line for the page head). The copy is the block's own text.
+  document.querySelectorAll('.article pre').forEach((pre) => {
+    const box = document.createElement('div');
+    box.className = 'codebox';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copy';
+    btn.textContent = 'Copy';
+    pre.parentNode.insertBefore(box, pre);
+    box.append(btn, pre);
+    let timer;
+    const say = (text) => { btn.textContent = text; clearTimeout(timer); timer = setTimeout(() => { btn.textContent = 'Copy'; }, 2200); };
+    btn.addEventListener('click', () => {
+      const text = pre.textContent.replace(/\n$/, '');
+      const select = () => { const r = document.createRange(); r.selectNodeContents(pre); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); say('Selected: now copy'); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => say('Copied'), select);
+      else select();
+    });
+  });
+</script>
+
 <style>
   .guide-h1 { font-size: clamp(36px, 4.6vw, 60px); }
   .article .lead { margin-top: 20px; }

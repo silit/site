@@ -5,6 +5,7 @@ import http from 'node:http';
 import { normalizeSite, checkLlms, checkFull, checkRobots, robotsRule, BOTS } from '../api/_lib/llms.js';
 import { getText, privateIp } from '../api/_lib/fetch-safe.js';
 import handler, { inspect } from '../api/llms-txt.js';
+import { readFileSync } from 'node:fs';
 
 const ok = (text, contentType = 'text/plain; charset=utf-8', extra = {}) => Object.assign({ ok: true, status: 200, url: 'https://example.com/llms.txt', contentType, text }, extra);
 const miss = (status = 404) => ({ ok: false, status, url: 'https://example.com/llms.txt', contentType: 'text/html', text: '<html>not found</html>' });
@@ -235,4 +236,26 @@ test('the reader follows redirects only on the site itself, caps the size and ke
     server.closeAllConnections();
     server.close();
   }
+});
+
+// What we publish ourselves has to pass our own checker: the site's llms.txt and the template in the Webflow guide.
+const here = (path) => readFileSync(new URL(path, import.meta.url), 'utf8');
+test('the site\'s own llms.txt is valid, and lists every free tool', () => {
+  const text = here('../public/llms.txt');
+  const r = checkLlms(ok(text));
+  assert.equal(r.state, 'valid', JSON.stringify(r.items));
+  const tools = here('../src/data/report.js').match(/href: '\/tools\/[a-z0-9-]+\/'/g).map((m) => m.slice(7, -1));
+  assert.ok(tools.length >= 5);
+  for (const href of tools) assert.ok(text.includes(`(https://silitlabs.com${href})`), `${href} is missing from public/llms.txt`);
+});
+
+test('the llms.txt template in the Webflow guide is valid as it stands', () => {
+  const guide = here('../src/content/guides/webflow-llms-txt.md');
+  const blocks = [...guide.matchAll(/```\n([\s\S]*?)```/g)].map((m) => m[1]);
+  const template = blocks.find((b) => b.startsWith('# '));
+  assert.ok(template, 'the guide has a template that starts with a title');
+  const r = checkLlms(ok(template));
+  assert.equal(r.state, 'valid', JSON.stringify(r.items));
+  assert.equal(r.sections, 3);
+  assert.equal(r.links, 7);
 });
