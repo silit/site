@@ -49,5 +49,13 @@ export const TOOLS = [
     name: 'AEO checker',
     line: 'An answer engine check in two halves: what the engines answer today, and what on the site keeps it out of the answer.',
     facts: ['Answers and site', 'About a minute', 'No sign-up']
+  },
+  {
+    id: 'llms-txt-checker',
+    href: '/tools/llms-txt-checker/',
+    og: '/images/og/llms-txt-checker.jpg',
+    name: 'llms.txt checker',
+    line: 'Check a site\'s llms.txt against the format, and the robots.txt rules that decide whether AI crawlers can read the site at all.',
+    facts: ['Format and crawler rules', 'A few seconds', 'No sign-up']
   }
 ];

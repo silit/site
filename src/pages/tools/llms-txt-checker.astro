@@ -1,0 +1,403 @@
+---
+import Base from '../../layouts/Base.astro';
+import CheckForm from '../../components/CheckForm.astro';
+import { SITE } from '../../data/site.js';
+
+const url = `${SITE.url}/tools/llms-txt-checker/`;
+const AHREFS = 'https://ahrefs.com/blog/what-is-llms-txt/';
+const SPEC = 'https://llmstxt.org/';
+
+// The example file in the hero: each line, and above it what that part of the file is.
+const example = [
+  ['# Harbor Books', 'Title: the only required line'],
+  ['> An independent bookshop in Leith that ships new and second-hand books across the UK.', 'Summary'],
+  ['## Shop', 'Section'],
+  ['- [Opening hours](https://harbor.example/visit): where we are and when we are open', 'Link, with an optional note'],
+  ['- [Delivery](https://harbor.example/delivery)', ''],
+  ['## Optional', 'Links a reader may skip'],
+  ['- [Our story](https://harbor.example/about)', '']
+];
+
+const looks = [
+  ['That the file is there', 'A real text file at /llms.txt. Many sites answer every unknown address with their home page; to a crawler that is no file at all.'],
+  ['The title', 'The first line has to begin with one # and name the site. It is the only part the format requires.'],
+  ['The summary', 'A line beginning with > that says in a sentence or two what the site is.'],
+  ['Sections and links', 'Sections begin with ##. Each link in them is written "- [Title](https://address): a short note".'],
+  ['Full addresses', 'Links should start with https:// and your domain. A reader that fetched only this file has nothing to resolve a relative link against.'],
+  ['How it is served', 'As plain text or Markdown, and small. The file is an index, not the content.']
+];
+
+const faq = [
+  ['What is llms.txt?', 'A plain text file at the root of a website, written in Markdown, that gives AI systems a short description of the site and a list of the pages worth reading. It was proposed in 2024 and is a convention, not a standard that any engine is bound to follow.'],
+  ['Where does the llms.txt file go?', 'At the root of the site, so it opens at yourbusiness.com/llms.txt. The current version of the proposal also allows a file at a deeper path that covers the pages under it. This checker reads the one at the root.'],
+  ['Is llms.txt the same as robots.txt?', 'No. robots.txt tells crawlers what they may fetch, and the major crawlers obey it. llms.txt is a reading list: it permits and forbids nothing. A site can have a perfect llms.txt and still shut every AI crawler out in robots.txt.'],
+  ['Do ChatGPT, Google or Claude use llms.txt?', 'So far none of the major AI companies has said its answers rely on it. Google has said files like llms.txt are not needed to appear in its generative AI search features. The file is read most where it started: documentation sites, by coding assistants that a developer points at the docs.'],
+  ['What is llms-full.txt?', 'A second file that some documentation tools publish, holding the full text of the docs in one place. It is not part of the llms.txt proposal. The checker tells you whether one is there and does not grade it.'],
+  ['Should I add an llms.txt to my site?', 'It takes a few minutes and does no harm, so there is little reason not to. Do not expect it to change what AI engines say about you. Crawler access and pages whose text is in the page code decide far more.']
+];
+
+const jsonld = [
+  {
+    '@type': 'WebApplication',
+    name: 'llms.txt Checker',
+    url,
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Any',
+    description: 'A free check of a website\'s llms.txt file against the format, and of the robots.txt rules that decide whether AI crawlers can read the site.',
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: `${SITE.url}/tools/` },
+      { '@type': 'ListItem', position: 3, name: 'llms.txt checker', item: url }
+    ]
+  }
+];
+---
+<Base
+  title="llms.txt checker: validate the file, free"
+  description="Check any website's llms.txt against the format, and see the robots.txt rules that decide whether AI crawlers can read the site at all. Free, no sign-up."
+  image="/images/og/llms-txt-checker.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/tools/">Free tools</a></li><li aria-current="page">llms.txt checker</li></ol>
+      <div class="grid">
+        <div>
+          <h1>llms.txt checker</h1>
+          <p class="lead">Type a website. We read its llms.txt, check it against the format line by line, and look at the file that decides more today: the robots.txt rules for AI crawlers.</p>
+          <form class="llms-form" data-llms novalidate>
+            <label for="llms-site">Website</label>
+            <div class="llms-row">
+              <input id="llms-site" type="text" inputmode="url" autocomplete="url" autocapitalize="none" spellcheck="false" placeholder="yourbusiness.com" required />
+              <button class="btn" type="submit">Check llms.txt</button>
+            </div>
+            <p class="llms-msg" role="alert"></p>
+            <p class="llms-busy" role="status" hidden>Reading llms.txt and robots.txt</p>
+          </form>
+          <ul class="facts"><li>Free</li><li>A few seconds</li><li>No sign-up, no email</li></ul>
+        </div>
+        <figure class="filecard">
+          <p class="file-tab">llms.txt</p>
+          <div class="file-sheet">
+            {example.map(([code, note]) => (
+              <div class:list={['file-line', { noted: !!note }]}>{note && <span>{note}</span>}<code>{code}</code></div>
+            ))}
+          </div>
+          <figcaption>A valid file for a made-up bookshop. One required line, and the rest helps.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg" id="result" tabindex="-1" hidden>
+    <div class="wrap">
+      <div class="res-head">
+        <h2>Result for <span data-host></span></h2>
+        <p class="muted" data-took></p>
+      </div>
+      <div class="res-grid">
+        <article class="res-card" data-llms-card>
+          <h3>llms.txt</h3>
+          <p class="verdict" data-verdict></p>
+          <p class="res-sum muted" data-sum></p>
+          <ul class="res-items" data-items></ul>
+          <p class="res-extra muted" data-full hidden></p>
+        </article>
+        <article class="res-card" data-robots-card>
+          <h3>AI crawlers in robots.txt</h3>
+          <p class="verdict" data-verdict></p>
+          <p class="res-sum muted" data-sum></p>
+          <div class="dtable-wrap" data-table-wrap>
+            <table class="dtable bots">
+              <caption class="sr">Whether robots.txt lets each AI crawler read the home page</caption>
+              <thead><tr><th scope="col">Crawler</th><th scope="col">Home page</th></tr></thead>
+              <tbody data-bots></tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+      <aside class="res-next">
+        <div>
+          <h3>A valid file is not the same as being named</h3>
+          <p class="muted">The file and the crawler rules say whether AI engines can read this site. Whether they recommend it is a different check: we ask ChatGPT, Gemini and Google AI Overviews what its customers ask, and show you the answers.</p>
+        </div>
+        <CheckForm id="check-after" tool="llms-txt-checker" button="See what AI answers" />
+      </aside>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" data-below>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What the checker looks at</h2>
+        <p>The format is short. These are its rules, as set out in the <a class="link" href={SPEC} rel="noopener">llms.txt proposal</a>, and the checker tells you which one a file breaks.</p>
+      </div>
+      <ol class="looks">
+        {looks.map(([h, p]) => <li><div><b>{h}</b><span>{p}</span></div></li>)}
+      </ol>
+      <p class="note looks-note">It does not open the links in the file or judge what you chose to list. It also tells you whether an llms-full.txt is there.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split start">
+      <div>
+        <h2>Does llms.txt do anything yet?</h2>
+        <p class="lede">Less than its popularity suggests. The numbers are worth knowing before you spend an afternoon on the file.</p>
+      </div>
+      <div class="facts-col">
+        <ul class="rows">
+          <li><span class="row"><span><b>Lots of sites have one.</b> <span class="block muted">Ahrefs looked at 137,000 domains in 2026 and found that 28% publish an llms.txt.</span></span></span></li>
+          <li><span class="row"><span><b>Almost nobody fetches it.</b> <span class="block muted">Of the roughly 38,000 domains in that study with a valid file, 97% received no request for it at all in May 2026.</span></span></span></li>
+          <li><span class="row"><span><b>Google does not ask for it.</b> <span class="block muted">Its guidance on generative AI search says files like llms.txt are not needed to appear there.</span></span></span></li>
+          <li><span class="row"><span><b>It helps where it began.</b> <span class="block muted">On documentation sites, coding assistants and agents read it when a developer points them at the docs.</span></span></span></li>
+        </ul>
+        <p class="note src-note">Figures from <a class="link" href={AHREFS} rel="noopener">Ahrefs' study of llms.txt</a>, updated 15 June 2026.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The file that decides more today</h2>
+        <p>robots.txt is older, duller and obeyed. That is why the checker reads it too.</p>
+      </div>
+      <div class="cols3">
+        <div><h3>It can shut you out of answers</h3><p class="muted">ChatGPT search, Claude and Perplexity each fetch pages with a crawler of their own. A rule that turns one away removes you from that engine's answers, however good your llms.txt is.</p></div>
+        <div><h3>Search and training are separate</h3><p class="muted">Each company uses one crawler to answer questions and another to collect training data. You can refuse training and stay in the answers, if the rules name the right crawler.</p></div>
+        <div><h3>A blanket rule catches both</h3><p class="muted">"Disallow: /" under "User-agent: *" blocks every crawler that has no rule of its own. The checker shows which rule caught each one.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Questions</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Read next</h2></div>
+      <ul class="rows guide-rows">
+        <li><a href="/guides/webflow-aeo-checklist/"><span>Webflow AEO checklist: get your site ready for AI search</span><span class="meta">8 min</span></a></li>
+        <li><a href="/tools/chatgpt-visibility-checker/"><span>ChatGPT visibility checker: what its crawlers do, and what it answers</span><span class="meta">Free tool</span></a></li>
+        <li><a href="/tools/aeo-checker/"><span>AEO checker: the nine things that keep a site out of AI answers</span><span class="meta">Free tool</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>See whether AI engines name you</h2>
+      <CheckForm id="check-last" tool="llms-txt-checker" dark />
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector('form[data-llms]');
+  const input = form.querySelector('input');
+  const btn = form.querySelector('button');
+  const msg = form.querySelector('.llms-msg');
+  const busy = form.querySelector('.llms-busy');
+  const result = document.getElementById('result');
+
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const LEVEL = { ok: 'Good', warn: 'Tidy', bad: 'Problem', info: 'Note' };
+  const VERDICT = {
+    valid: ['good', 'Valid', 'The file follows the format.'],
+    notes: ['fair', 'Valid, with things to tidy', 'A reader can use the file. The points marked "Tidy" would make it cleaner.'],
+    invalid: ['poor', 'Not valid', 'The file breaks the format. Fix the point marked "Problem" first.'],
+    html: ['poor', 'No llms.txt: a web page answers instead', ''],
+    missing: ['none', 'No llms.txt', 'That is not a problem today: no major AI engine has said it reads the file. What decides more is whether AI crawlers can reach the site.'],
+    unreadable: ['none', 'Could not be read', '']
+  };
+
+  function showLlms(card, llms, full) {
+    const [tone, title, sum] = VERDICT[llms.state] || VERDICT.unreadable;
+    const verdict = card.querySelector('[data-verdict]');
+    verdict.textContent = title;
+    verdict.dataset.tone = tone;
+    const found = ['valid', 'notes', 'invalid'].includes(llms.state);
+    const meta = found ? [llms.url.replace(/^https?:\/\//, ''), llms.bytes < 1024 ? llms.bytes + ' bytes' : (Math.round(llms.bytes / 102.4) / 10) + ' KB'].join(', ') + '. ' : '';
+    card.querySelector('[data-sum]').textContent = meta + sum;
+    const list = card.querySelector('[data-items]');
+    list.replaceChildren();
+    for (const item of llms.items) {
+      const li = el('li', 'l-' + item.level);
+      li.append(el('b', '', LEVEL[item.level] || 'Note'), el('span', '', item.text));
+      list.append(li);
+    }
+    const extra = card.querySelector('[data-full]');
+    extra.hidden = !full.found;
+    extra.textContent = full.found ? 'There is also an llms-full.txt (' + full.size + '). It is not part of the format, so it is not graded.' : '';
+  }
+
+  function showRobots(card, robots) {
+    const verdict = card.querySelector('[data-verdict]');
+    const sum = card.querySelector('[data-sum]');
+    const wrap = card.querySelector('[data-table-wrap]');
+    const body = card.querySelector('[data-bots]');
+    body.replaceChildren();
+    wrap.hidden = !robots.bots.length;
+    if (!robots.bots.length) {
+      verdict.textContent = 'Could not be read';
+      verdict.dataset.tone = 'none';
+      sum.textContent = robots.note;
+      return;
+    }
+    const search = robots.bots.filter((b) => b.kind === 'search');
+    if (robots.searchBlocked) {
+      verdict.textContent = robots.searchBlocked + ' of ' + search.length + ' AI search crawlers ' + (robots.searchBlocked === 1 ? 'is' : 'are') + ' shut out';
+      verdict.dataset.tone = 'poor';
+      sum.textContent = 'An engine whose crawler is shut out cannot read these pages or cite them.';
+    } else {
+      verdict.textContent = 'No AI search crawler is shut out';
+      verdict.dataset.tone = 'good';
+      sum.textContent = robots.note || 'The crawlers that fetch pages for AI answers may read the home page.';
+    }
+    if (robots.trainingBlocked) sum.textContent += ' ' + robots.trainingBlocked + ' training ' + (robots.trainingBlocked === 1 ? 'crawler is' : 'crawlers are') + ' shut out: that keeps pages out of model training, and is a choice, not an error.';
+    for (const b of robots.bots) {
+      const tr = el('tr');
+      const th = el('th');
+      th.scope = 'row';
+      th.append(el('code', '', b.name), el('small', '', b.job));
+      const td = el('td', b.blocked ? 'out' : 'in', b.blocked ? 'Shut out' : 'Allowed');
+      if (b.blocked) td.append(el('small', '', b.by === 'named' ? 'by a rule that names it' : 'by the rule for all crawlers'));
+      tr.append(th, td);
+      body.append(tr);
+    }
+  }
+
+  function show(data) {
+    result.querySelector('[data-host]').textContent = data.host;
+    result.querySelector('[data-took]').textContent = 'Read in ' + (data.ms < 1000 ? 'under a second' : Math.round(data.ms / 100) / 10 + ' seconds') + '.';
+    showLlms(result.querySelector('[data-llms-card]'), data.llms, data.full);
+    showRobots(result.querySelector('[data-robots-card]'), data.robots);
+    const next = result.querySelector('form[data-check] input');
+    if (next) next.value = data.host;
+    result.hidden = false;
+    result.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    result.focus({ preventScroll: true });
+    if (typeof window.gtag === 'function') window.gtag('event', 'llms_check', { result: data.llms.state });
+  }
+
+  const idle = () => { btn.disabled = false; busy.hidden = true; form.classList.remove('busy'); };
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const site = input.value.trim();
+    msg.textContent = '';
+    if (!site) { msg.textContent = 'Type a website address, like yourbusiness.com.'; input.focus(); return; }
+    if (form.classList.contains('busy')) return;
+    form.classList.add('busy');
+    btn.disabled = true;
+    busy.hidden = false;
+    fetch('/api/llms-txt', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ site }) })
+      .then((r) => r.json().catch(() => ({ error: 'Something went wrong on our side. Try again in a minute.' })))
+      .then((data) => {
+        idle();
+        if (!data || data.error || !data.llms) { msg.textContent = (data && data.error) || 'Something went wrong on our side. Try again in a minute.'; input.focus(); return; }
+        show(data);
+      }, () => { idle(); msg.textContent = 'We could not reach the server. Check your connection and try again.'; input.focus(); });
+  });
+</script>
+
+<style>
+  .page-hero .grid { align-items: start; }
+  .page-hero h1 { margin-top: 6px; }
+
+  .llms-form { margin-top: 30px; max-width: 34em; }
+  .llms-form label { display: block; font-weight: 650; font-size: 15px; margin-bottom: 8px; }
+  .llms-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .llms-form input { flex: 1 1 14em; min-width: 0; min-height: 58px; padding: 12px 20px; border: 1.5px solid var(--ink); border-radius: 18px; background: var(--sheet); font: inherit; font-size: 18px; color: var(--ink); }
+  .llms-form input::placeholder { color: #66778E; opacity: 1; }
+  .llms-form .btn { min-height: 58px; padding: 12px 28px; font-size: 17px; }
+  .llms-form .btn:disabled { opacity: .55; cursor: progress; }
+  .llms-msg { margin-top: 12px; font-weight: 600; color: #B1362B; }
+  .llms-msg:empty { display: none; }
+  .llms-busy { margin-top: 14px; font-weight: 600; display: flex; align-items: center; gap: 11px; }
+  .llms-busy[hidden] { display: none; }
+  .llms-busy::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--coral); box-shadow: 0 0 0 4px rgba(255, 122, 89, .22); }
+  @media (prefers-reduced-motion: no-preference) {
+    .llms-busy::before { animation: llms-beat 1.1s ease-in-out infinite; }
+    @keyframes llms-beat { 50% { box-shadow: 0 0 0 7px rgba(255, 122, 89, 0); } }
+  }
+  @media (max-width: 520px) { .llms-form .btn { flex: 1 1 100%; } }
+
+  /* the example file: the code on the left, what each part is on the right */
+  .filecard { min-width: 0; --pen: #1E5AA8; }
+  .file-tab { display: inline-block; margin-left: 18px; padding: 10px 16px 11px; border-radius: 12px 12px 0 0; background: var(--ink); color: var(--paper); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; font-weight: 600; line-height: 1; }
+  .file-sheet { background: var(--sheet); border-radius: 22px; padding: 24px 0 26px; box-shadow: inset 0 0 0 1px var(--line), 0 30px 60px -36px rgba(11, 37, 64, .45); }
+  .file-line { padding: 2px 26px; }
+  .file-line.noted { margin-top: 16px; }
+  .file-line.noted:first-child { margin-top: 0; }
+  .file-line code { display: block; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .file-line span { display: flex; align-items: center; gap: 10px; margin-bottom: 3px; font-size: 13px; font-weight: 650; color: var(--pen); }
+  .file-line span::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: .28; }
+  .filecard figcaption { margin-top: 14px; padding: 0 4px; font-size: 14px; color: var(--muted); }
+  @media (max-width: 560px) { .file-line { padding-inline: 18px; } .file-line code { font-size: 13px; } }
+
+  /* the result */
+  #result { scroll-margin-top: 80px; outline: none; }
+  #result[hidden] { display: none; }
+  .res-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; margin-bottom: 26px; }
+  .res-head h2 span { overflow-wrap: anywhere; }
+  .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  .res-card { background: var(--paper); border-radius: 22px; padding: clamp(22px, 3vw, 34px); min-width: 0; }
+  .res-card h3 { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; font-weight: 600; letter-spacing: 0; color: var(--muted); }
+  .res-card:last-child h3 { font-family: var(--text); }
+  .verdict { margin-top: 10px; font-family: var(--display); font-weight: 700; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.15; letter-spacing: -.02em; padding-left: 16px; border-left: 4px solid var(--line); }
+  .verdict[data-tone='good'] { border-color: var(--live); }
+  .verdict[data-tone='fair'] { border-color: #C98A00; }
+  .verdict[data-tone='poor'] { border-color: var(--down); }
+  .res-sum { margin-top: 12px; overflow-wrap: anywhere; }
+  .res-items { list-style: none; margin-top: 18px; border-top: 1px solid var(--line); }
+  .res-extra { margin-top: 14px; font-size: 15px; }
+  .res-extra[hidden] { display: none; }
+  .bots { margin-top: 18px; font-size: 15.5px; }
+  .res-next { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; align-items: center; border-radius: 22px; padding: clamp(22px, 3vw, 34px); box-shadow: inset 0 0 0 1.5px var(--ink); }
+  .res-next p { margin-top: 8px; }
+  .res-next :global(.check) { margin-top: 0; }
+  @media (max-width: 860px) { .res-grid, .res-next { grid-template-columns: 1fr; } }
+
+  .looks { list-style: none; counter-reset: look; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, auto); grid-auto-flow: column; gap: 0 48px; }
+  .looks li { counter-increment: look; display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 16px 2px; border-bottom: 1px solid var(--line); }
+  .looks li:nth-child(1), .looks li:nth-child(4) { border-top: 1px solid var(--line); }
+  .looks li::before { content: counter(look); font-family: var(--display); font-weight: 700; font-size: 19px; color: var(--blue); }
+  .looks b { display: block; font-size: 18px; }
+  .looks span { color: var(--muted); }
+  .looks-note, .src-note { margin-top: 18px; }
+  @media (max-width: 860px) { .looks { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; } .looks li:nth-child(4) { border-top: 0; } }
+  .facts-col .block { display: block; margin-top: 4px; font-weight: 500; }
+  .band :global(.check) { margin-top: 26px; }
+</style>
+
+<style is:global>
+  /* rows the script adds to the result: they do not carry this page's style scope */
+  #result .res-items li { display: grid; grid-template-columns: 5.2em 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+  #result .res-items b { font-size: 13.5px; font-weight: 700; line-height: 1.75; }
+  #result .res-items .l-ok b { color: #17764A; }
+  #result .res-items .l-warn b { color: #8A5A00; }
+  #result .res-items .l-bad b { color: #B1362B; }
+  #result .res-items .l-info b { color: var(--muted); }
+  #result .bots th, #result .bots td { padding: 11px 14px 11px 0; }
+  #result .bots td { white-space: nowrap; font-weight: 650; }
+  #result .bots td.in { color: #17764A; }
+  #result .bots td.out { color: #B1362B; }
+  #result .bots td small { white-space: normal; }
+</style>
