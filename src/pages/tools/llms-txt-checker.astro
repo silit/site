@@ -7,6 +7,7 @@ import { SITE } from '../../data/site.js';
 const url = `${SITE.url}/tools/llms-txt-checker/`;
 const AHREFS = 'https://ahrefs.com/blog/what-is-llms-txt/';
 const SPEC = 'https://llmstxt.org/';
+const GOOGLE_GUIDE = 'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide';
 
 // The example file in the hero: each line, and above it what that part of the file is.
 const example = [
@@ -32,7 +33,7 @@ const faq = [
   ['What is llms.txt?', 'A plain text file at the root of a website, written in Markdown, that gives AI systems a short description of the site and a list of the pages worth reading. It was proposed in 2024 and is a convention, not a standard that any engine is bound to follow.'],
   ['Where does the llms.txt file go?', 'At the root of the site, so it opens at yourbusiness.com/llms.txt. The current version of the proposal also allows a file at a deeper path that covers the pages under it. This checker reads the one at the root.'],
   ['Is llms.txt the same as robots.txt?', 'No. robots.txt tells crawlers what they may fetch, and the major crawlers obey it. llms.txt is a reading list: it permits and forbids nothing. A site can have a perfect llms.txt and still shut every AI crawler out in robots.txt.'],
-  ['Do ChatGPT, Google or Claude use llms.txt?', 'So far none of the major AI companies has said its answers rely on it. Google has said files like llms.txt are not needed to appear in its generative AI search features. The file is read most where it started: documentation sites, by coding assistants that a developer points at the docs.'],
+  ['Do ChatGPT, Google or Claude use llms.txt?', 'So far none of the major AI companies has said its answers rely on it. Google says its Search ignores the file: having one neither helps nor harms a site there. The file is read most where it started: documentation sites, by coding assistants that a developer points at the docs.'],
   ['What is llms-full.txt?', 'A second file that some documentation tools publish, holding the full text of the docs in one place. It is not part of the llms.txt proposal. The checker tells you whether one is there and does not grade it.'],
   ['Should I add an llms.txt to my site?', 'It takes a few minutes and does no harm, so there is little reason not to. Do not expect it to change what AI engines say about you. Crawler access and pages whose text is in the page code decide far more.']
 ];
@@ -159,7 +160,7 @@ const jsonld = [
         <ul class="rows">
           <li><span class="row"><span><b>Lots of sites have one.</b> <span class="block muted">Ahrefs looked at 137,000 domains in 2026 and found that 28% publish an llms.txt.</span></span></span></li>
           <li><span class="row"><span><b>Almost nobody fetches it.</b> <span class="block muted">Of the roughly 38,000 domains in that study with a valid file, 97% received no request for it at all in May 2026.</span></span></span></li>
-          <li><span class="row"><span><b>Google does not ask for it.</b> <span class="block muted">Its guidance on generative AI search says files like llms.txt are not needed to appear there.</span></span></span></li>
+          <li><span class="row"><span><b>Google ignores it.</b> <span class="block muted">Its <a class="link" href={GOOGLE_GUIDE} rel="noopener">guide to generative AI search</a> says Search does not use llms.txt, so the file neither helps nor harms there.</span></span></span></li>
           <li><span class="row"><span><b>It helps where it began.</b> <span class="block muted">On documentation sites, coding assistants and agents read it when a developer points them at the docs.</span></span></span></li>
         </ul>
         <p class="note src-note">Figures from <a class="link" href={AHREFS} rel="noopener">Ahrefs' study of llms.txt</a>, updated 15 June 2026.</p>

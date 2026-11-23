@@ -33,6 +33,7 @@ For Google's AI features, Google's guidance is short: a page needs to be indexed
 - Check **Page settings** for pages excluded from search by mistake, especially CMS template pages.
 - Avoid `nosnippet` and very short `max-snippet` values on pages you want quoted.
 - Use the Pages report in Google Search Console to find important pages that are not indexed.
+- In Search Console, open **Settings, Search generative AI**. Sites are included by default, but [this setting](https://support.google.com/webmasters/answer/16908024) can take a whole site out of AI Overviews and AI Mode, so make sure nobody changed it.
 
 ## 3. Write titles and descriptions that state the answer
 
@@ -60,7 +61,7 @@ Organization structured data on the home page, with your name, logo and social p
 
 An llms.txt file is a short Markdown summary of your site with links to the pages that matter most, written for language models. Webflow supports it in **Site settings, SEO, LLMs.txt**: upload a UTF-8 file of up to 100 KB, and after you publish it is served at the root of your custom domain. It is not published to the webflow.io staging domain. Our guide to [llms.txt on Webflow](/guides/webflow-llms-txt/) has a template to copy and the steps one by one.
 
-Webflow's own [help article](https://help.webflow.com/hc/en-us/articles/43240104183315-Upload-an-llms-txt-file-to-your-site) calls the format experimental, and Google says you do not need AI text files for its AI features. Add one because it is cheap, keep it current, and spend most of your effort on the pages it links to. Once it is live, the free [llms.txt checker](/tools/llms-txt-checker/) tells you whether the file follows the format and whether your robots.txt lets AI crawlers in.
+Webflow's own [help article](https://help.webflow.com/hc/en-us/articles/43240104183315-Upload-an-llms-txt-file-to-your-site) calls the format experimental, and Google's [guide to its AI features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) says Search ignores such files. Add one because it is cheap, keep it current, and spend most of your effort on the pages it links to. Once it is live, the free [llms.txt checker](/tools/llms-txt-checker/) tells you whether the file follows the format and whether your robots.txt lets AI crawlers in.
 
 ## 7. Cover the basics engines rely on
 
@@ -77,4 +78,6 @@ AI answers lean heavily on other sites: review platforms, comparison articles, d
 
 AEO without measurement is guesswork. Pick the keywords that matter, turn each one into the questions customers ask, and check every week whether ChatGPT, Google AI Overviews, AI Mode, Gemini, Claude and Grok name you, link to you, or name someone else.
 
-You can do this by hand with a sheet, or let a tracker do it. AI SEO Deck runs these checks for Webflow sites, shows the rivals and sources behind every answer, and writes the fixes from steps 3 to 5 from your own pages, ready to apply to Webflow as unpublished changes. It is free for one site.
+For Google's own AI features there is one count you get for free. Search Console's [Generative AI performance report](https://support.google.com/webmasters/answer/16984139) shows how often links to your pages were shown in AI Overviews and AI Mode, by page and country. It has no searches or clicks in it, and it says nothing about ChatGPT, Gemini or Claude. Our free [AI Overview checker](/tools/ai-overview-checker/) shows the Overview itself for one search.
+
+For everything else, you can do this by hand with a sheet, or let a tracker do it. AI SEO Deck runs these checks for Webflow sites, shows the rivals and sources behind every answer, and writes the fixes from steps 3 to 5 from your own pages, ready to apply to Webflow as unpublished changes. It is free for one site.

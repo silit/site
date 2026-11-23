@@ -47,7 +47,7 @@ The way you ask decides whether the answer means anything.
 
 - **Use a clean session.** Log out or open a temporary chat, in a private window, with web search on.
 - **Ask the chat engines twice.** Open a fresh chat for the second run. The same question often gets different names the second time, and one answer cannot tell you which kind of result you have.
-- **Give Google the keyword itself.** Note first whether an AI Overview appears at all. Often there is none, and that is a result too. Then open AI Mode for the same search.
+- **Give Google the keyword itself.** Note first whether an AI Overview appears at all. Often there is none, and that is a result too. Then open AI Mode for the same search. The free [AI Overview checker](/tools/ai-overview-checker/) does this for one search, from your customers' country.
 - **Mind where you are.** Engines answer for the place they think you are in. If your customers are in another country, say so in the question, or what you read is not what they read.
 - **Keep the whole answer.** Paste it into the sheet or save a screenshot. You will read it again in steps 3 and 4.
 
@@ -77,6 +77,8 @@ Being named and being cited are not the same thing, and the difference matters l
 
 Do not turn the count into a yes or a no too early. Named in one run of two means "sometimes", and sometimes is the most common result.
 
+For Google there is one count you do not have to make by hand. If the site is yours, Search Console's [Generative AI performance report](https://support.google.com/webmasters/answer/16984139) shows how often links to your pages were shown in AI Overviews and AI Mode, by page and country. It has no searches and no clicks in it, and it cannot show an answer you are missing from, so it adds to your sheet and does not replace it.
+
 ## Step 4: read the pages behind the answers
 
 Engines do not make their lists up. They build them from pages they read at that moment: round-ups, directories, review sites and guides. Your Sources column is the list of those pages.
@@ -101,7 +103,7 @@ Each mistake has a source. It is usually an old directory entry, a profile nobod
 
 This is the half the checklist tools do, and it is quicker by hand than it sounds. Check these in order, because one near the top can undo everything below it.
 
-1. **Can crawlers get in?** Open `yourdomain.com/robots.txt`. Look for rules that shut out OAI-SearchBot, Claude-SearchBot, PerplexityBot, Googlebot or Bingbot, or every crawler at once with `Disallow: /` under `User-agent: *`. The free [llms.txt checker](/tools/llms-txt-checker/) reads the file and lists each crawler for you.
+1. **Can crawlers get in?** Open `yourdomain.com/robots.txt`. Look for rules that shut out OAI-SearchBot, Claude-SearchBot, PerplexityBot, Googlebot or Bingbot, or every crawler at once with `Disallow: /` under `User-agent: *`. The free [llms.txt checker](/tools/llms-txt-checker/) reads the file and lists each crawler for you. For Google, also open Settings, Search generative AI in Search Console: sites are included by default, but [that setting](https://support.google.com/webmasters/answer/16908024) can take a whole site out of AI Overviews and AI Mode.
 2. **Are your words in the page code?** Open your home page, choose View source, and search for a sentence you can see on the page. If it is not there, a script adds it later, and most AI crawlers do not run scripts.
 3. **Does the page say who you are?** A title and a description that name what you do and where. Organization markup, so that an engine does not have to guess.
 4. **Do you answer questions on the page?** Prices, places and limits in text, with FAQ markup where the page really is questions and answers.

@@ -10,7 +10,8 @@ export const REPORT = {
   searchesWord: 'five',
   answers: 50, // 5 searches x (4 chat models asked twice + 2 Google surfaces)
   checksPerDay: 4, // free checks a visitor can start in a day
-  keptDays: 30 // how long a free check is kept
+  keptDays: 30, // how long a free check is kept
+  recheckDays: 30 // the full report asks its searches again after this many days
 };
 
 // The six engines, in the order the report shows them. `sent` is what the engine is given: a chat model gets the
@@ -43,6 +44,14 @@ export const TOOLS = [
     name: 'ChatGPT visibility checker',
     line: 'Read what ChatGPT answers when customers ask for a business like yours: who it names, the searches it ran and the pages it read.',
     facts: ['Asked with web search on', 'About a minute', 'No sign-up']
+  },
+  {
+    id: 'ai-overview-checker',
+    href: '/tools/ai-overview-checker/',
+    og: '/images/og/ai-overview-checker.jpg',
+    name: 'AI Overview checker',
+    line: 'See whether Google shows an AI Overview for a search your customers make, whether it names the business, and the pages it was built from.',
+    facts: ['Searched from your customers\' country', 'About a minute', 'No sign-up']
   },
   {
     id: 'aeo-checker',
