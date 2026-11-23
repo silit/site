@@ -1,0 +1,156 @@
+---
+// A sample of what the free check gives back: the three answers of a made-up hotel, with the marks the real check
+// uses (yellow = the business, underlined = a rival, dotted = a listing site, blue = its own site among the pages
+// the answer was built from) and the notes that explain them. The
+// business, the answers and the notes follow the sample report at /ai-visibility-report/sample, shortened to fit.
+// Props: open (the answer shown first: chatgpt, aio or gemini), id (prefix for element ids, unique on the page).
+const { open = 'aio', id = 'demo' } = Astro.props;
+
+const you = (x) => ({ x, m: 'you' });
+const rival = (x) => ({ x, m: 'rival' });
+const dir = (x) => ({ x, m: 'dir' });
+const QUESTION = 'What is a good boutique hotel in Alfama, Lisbon for a weekend?';
+
+const takes = [
+  {
+    id: 'chatgpt', name: 'ChatGPT', tab: 'ChatGPT', named: true,
+    from: 'asked from the United Kingdom, in English',
+    ask: { label: 'A customer asks', text: QUESTION },
+    blocks: [
+      { t: 'p', segs: ['For a weekend in Alfama, these small hotels come up again and again:'] },
+      { t: 'li', segs: [rival('The Lumiar House'), ', a 12-room townhouse near the Sé cathedral, known for its tiled breakfast room.'] },
+      { t: 'li', segs: [you('Casa Aldora'), ', a family-run hotel in a restored 18th-century house with a lemon-tree courtyard and a roof terrace over the river.'] },
+      { t: 'li', segs: [rival('Hotel Marquês Azul'), ', larger and more polished, with river-view rooms at a higher price.'] },
+      { t: 'p', segs: ['Check recent reviews on ', dir('TripAdvisor'), ' before you book.'] }
+    ],
+    sources: [['lisbonweekender.example'], ['casaaldora.example', 'own'], ['tripadvisor.com']],
+    notes: ['You, named second of 3.', 'It sends the customer to TripAdvisor. Are you listed there?', 'Your site is one of its sources.']
+  },
+  {
+    id: 'aio', name: 'Google AI Overviews', tab: 'AI Overviews', named: false,
+    from: 'searched from the United Kingdom',
+    ask: { label: 'A customer searches', text: 'boutique hotel alfama', vol: '590 searches a month' },
+    blocks: [
+      { t: 'p', segs: ['Popular boutique hotels in Alfama, Lisbon include ', rival('The Lumiar House'), ', ', rival('Hotel Marquês Azul'), ' and ', rival('Solar das Andorinhas'), '. Travelers choose the area for its historic streets, viewpoints and Fado houses. Prices are usually lower from November to February.'] }
+    ],
+    sources: [['lisbonweekender.example'], ['booking.com'], ['tripadvisor.com']],
+    notes: ['You are not in this answer. 3 others are, The Lumiar House first.', 'Built from 3 pages. None of them is yours.']
+  },
+  {
+    id: 'gemini', name: 'Gemini', tab: 'Gemini', named: true,
+    from: 'asked from the United Kingdom, in English',
+    ask: { label: 'A customer asks', text: QUESTION },
+    blocks: [
+      { t: 'p', segs: ['A few boutique hotels in Alfama suit a weekend stay:'] },
+      { t: 'li', segs: [rival('The Lumiar House'), ' sits near the cathedral and is praised for its service.'] },
+      { t: 'li', segs: [you('Casa Aldora'), ' is a 14-room hotel in a restored townhouse, with breakfast in a courtyard and a rooftop terrace facing the Tagus.'] },
+      { t: 'li', segs: [rival('Hotel Marquês Azul'), ' offers larger rooms and river views.'] }
+    ],
+    sources: [['casaaldora.example', 'own'], ['alfamaguide.example'], ['lisbonweekender.example']],
+    notes: ['You, named second of 3.', 'The Lumiar House comes before you.', 'Your site is one of its sources.']
+  }
+];
+
+// consecutive list items become one list
+const grouped = (blocks) => blocks.reduce((out, b) => {
+  const last = out[out.length - 1];
+  if (b.t === 'li' && last && last.t === 'ul') last.items.push(b);
+  else out.push(b.t === 'li' ? { t: 'ul', items: [b] } : b);
+  return out;
+}, []);
+---
+<figure class="demo" data-demo>
+  <div class="demo-tabs" role="tablist" aria-label="Sample answers">
+    {takes.map((t) => (
+      <button type="button" role="tab" id={`${id}-tab-${t.id}`} aria-controls={`${id}-${t.id}`} aria-selected={t.id === open ? 'true' : 'false'} tabindex={t.id === open ? 0 : -1} class:list={['demo-tab', t.named ? 'named' : 'absent']}>
+        {t.tab}<span class="sr">{t.named ? ', named the hotel' : ', did not name the hotel'}</span>
+      </button>
+    ))}
+  </div>
+  <div class="demo-sheet">
+    {takes.map((t) => (
+      <div class:list={['demo-take', { off: t.id !== open }]} role="tabpanel" id={`${id}-${t.id}`} aria-labelledby={`${id}-tab-${t.id}`}>
+        <p class="demo-head"><b>{t.name}</b><span>{t.from}</span></p>
+        <p class="demo-ask"><span>{t.ask.label}</span><b>{t.ask.text}</b>{t.ask.vol && <i>{t.ask.vol}</i>}</p>
+        <div class="demo-answer">
+          {grouped(t.blocks).map((b) => b.t === 'ul'
+            ? <ul>{b.items.map((li) => <li>{li.segs.map((s) => typeof s === 'string' ? s : <mark class={s.m}>{s.x}</mark>)}</li>)}</ul>
+            : <p>{b.segs.map((s) => typeof s === 'string' ? s : <mark class={s.m}>{s.x}</mark>)}</p>)}
+        </div>
+        <p class="demo-src"><span>Pages it read</span>{t.sources.map(([host, own]) => <b class={own}>{host}</b>)}</p>
+        <ul class="demo-notes">{t.notes.map((n) => <li>{n}</li>)}</ul>
+      </div>
+    ))}
+  </div>
+  <figcaption>Casa Aldora is a made-up hotel, to show the idea. A yellow tab means that answer named it.</figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll('[data-demo]').forEach((demo) => {
+    const tabs = [...demo.querySelectorAll('[role=tab]')];
+    const show = (tab, focus) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).classList.toggle('off', !on);
+      });
+      if (focus) tab.focus();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => show(tab, false));
+      tab.addEventListener('keydown', (e) => {
+        const to = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
+        if (to === null) return;
+        e.preventDefault();
+        show(tabs[(to + tabs.length) % tabs.length], true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .demo { --mark: #FFE14D; --mark-edge: #DDBC14; --rose: #C2335A; --pen: #1E5AA8; min-width: 0; }
+  .demo-tabs { display: flex; gap: 6px; padding: 0 18px; }
+  .demo-tab {
+    font-weight: 650; font-size: 14.5px; line-height: 1; padding: 12px 15px 13px; border-radius: 12px 12px 0 0;
+    border: 1px solid var(--line); border-bottom: 0; background: var(--paper-2); color: var(--muted);
+    transform: translateY(6px); transition: transform .16s var(--ease);
+  }
+  .demo-tab.named { background: var(--mark); border-color: var(--mark-edge); color: #1B1600; }
+  .demo-tab:hover { transform: translateY(3px); }
+  .demo-tab[aria-selected='true'] { transform: none; }
+  .demo-sheet {
+    position: relative; background: var(--sheet); border-radius: 22px;
+    box-shadow: inset 0 0 0 1px var(--line), 0 30px 60px -36px rgba(11, 37, 64, .45);
+  }
+  .demo-take { padding: 24px 26px 26px; min-width: 0; }
+  .demo-take.off { display: none; }
+  .demo-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; padding-bottom: 14px; border-bottom: 1px dashed var(--line); }
+  .demo-head b { font-family: var(--display); font-size: 20px; letter-spacing: -.015em; }
+  .demo-head span { font-size: 14px; color: var(--muted); }
+  .demo-ask { margin-top: 16px; padding: 12px 16px; border-radius: 14px; background: var(--paper); display: grid; gap: 2px; }
+  .demo-ask span { font-size: 13.5px; font-weight: 600; color: var(--muted); }
+  .demo-ask b { font-weight: 600; line-height: 1.35; }
+  .demo-ask i { font-style: normal; font-size: 14px; color: var(--muted); }
+  .demo-answer { margin-top: 16px; font-size: 16px; line-height: 1.6; }
+  .demo-answer p + p, .demo-answer ul, .demo-answer ul + p { margin-top: 10px; }
+  .demo-answer ul { padding-left: 20px; display: grid; gap: 7px; }
+  .demo mark { background: none; color: inherit; font-weight: 600; }
+  .demo mark.you { color: #1B1600; background: linear-gradient(100deg, transparent .5%, var(--mark) 3%, var(--mark) 96%, transparent 99.5%) no-repeat 0 60% / 100% 82%; padding: 0 .2em; margin: 0 -.2em; border-radius: .3em .9em .35em .8em / .8em .3em .9em .35em; }
+  .demo mark.rival { text-decoration: underline; text-decoration-color: var(--rose); text-decoration-thickness: 2.2px; text-underline-offset: 3.5px; text-decoration-skip-ink: none; }
+  .demo mark.dir { text-decoration: underline dotted; text-decoration-color: var(--pen); text-decoration-thickness: 2px; text-underline-offset: 3.5px; }
+  .demo-src { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13.5px; }
+  .demo-src span { color: var(--muted); font-weight: 600; margin-right: 2px; }
+  .demo-src b { font-weight: 550; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--muted); }
+  .demo-src b.own { background: #E3ECF8; color: var(--pen); font-weight: 650; }
+  .demo-notes { list-style: none; margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); display: grid; gap: 8px; font-size: 15px; font-weight: 600; color: var(--pen); }
+  .demo-notes li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; }
+  .demo-notes li::before { content: ''; margin-top: .72em; height: 2px; border-radius: 2px; background: currentColor; }
+  .demo figcaption { margin-top: 14px; padding: 0 4px; font-size: 14px; color: var(--muted); }
+  @media (max-width: 420px) {
+    .demo-tabs { padding: 0 10px; gap: 4px; }
+    .demo-tab { padding: 11px 11px 12px; font-size: 13.5px; }
+    .demo-take { padding: 20px 18px 22px; }
+  }
+</style>

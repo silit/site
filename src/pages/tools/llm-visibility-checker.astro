@@ -1,0 +1,265 @@
+---
+import Base from '../../layouts/Base.astro';
+import CheckForm from '../../components/CheckForm.astro';
+import AnswerDemo from '../../components/AnswerDemo.astro';
+import { SITE } from '../../data/site.js';
+import { REPORT, ENGINES } from '../../data/report.js';
+
+const url = `${SITE.url}/tools/llm-visibility-checker/`;
+const freeNames = 'ChatGPT, Gemini and Google AI Overviews';
+const answers = (n) => (n === 0 ? 'Not included' : n === 1 ? '1 answer' : `${n} answers`);
+const freeTotal = ENGINES.reduce((sum, e) => sum + e.free, 0);
+
+const gets = [
+  'The searches your customers make, each with its monthly Google searches',
+  'Three answers, word for word, with your name and your rivals marked',
+  'A note beside each mark that says what it means for you',
+  'Your home page as an AI crawler reads it, and the first problem on it'
+];
+
+// The rungs of the report, from the ground up. `where` says which check shows it.
+const rungs = [
+  ['Readable', 'A crawler that opens your page finds your words in the page code, without running scripts.', 'Free check'],
+  ['Known', 'Asked about you by name, the model describes the right business.', 'Full report'],
+  ['Named', 'Asked for a business like yours, the model puts you in the answer.', 'Free check'],
+  ['Cited', 'The answer links to your own pages as a source.', 'Free check'],
+  ['First', 'Yours is the first name in the answer.', 'Free check']
+];
+
+const limits = [
+  ['How many people ask an LLM your question', 'Nobody outside the AI companies has that number, and a tool that shows an AI search volume is estimating. We show how often the search is made on Google, and call it that.'],
+  ['What the model will say tomorrow', 'Answers change with the day, the country and the wording. A check is a dated reading. The full report asks every chat model twice and includes a re-check after 30 days, so you see a direction and not one lucky answer.'],
+  ['What a signed-in person sees', 'Chat history and personal settings can tilt an answer. We ask with a clean slate, from your customers\' country, because that is the reading you can repeat and compare.']
+];
+
+const full = [
+  `The ${REPORT.searchesWord} searches your customers make most, on all six LLMs: about ${REPORT.answers} answers`,
+  'Who gets named in your place, and how often',
+  'The pages the models read, and whether you are on them',
+  'What each model says about you when asked by name',
+  'A fix kit: what to change, who does it, how long it takes, and the text or code to paste',
+  'A re-check after 30 days, with your before and after'
+];
+
+const faq = [
+  ['What is LLM visibility?', 'LLM visibility is how often, and how well, large language models such as ChatGPT, Gemini and Claude mention your business when people ask them for what you sell. It is counted in answers, not in positions: of the answers to a customer\'s question, how many name you, how many cite your site, and where your name comes in the list.'],
+  ['Is the LLM visibility checker free?', `Yes. The check costs nothing and needs no account and no email address. You can check up to ${REPORT.checksPerDay} websites a day. The full report is optional and costs ${REPORT.price}, paid once.`],
+  ['Which LLMs does it check?', `The free check asks ${freeNames}. The full report adds Google AI Mode, Claude and Grok, and asks each chat model twice for every search.`],
+  ['Why do two checks of the same site give different answers?', 'A language model rarely returns the same text twice, and it runs a fresh web search each time it answers. One answer proves little either way. That is why the full report asks every chat model twice for each search and shows you both.'],
+  ['How is a checker different from an LLM visibility tracker?', 'A tracker repeats the check on a schedule and charts the change, for a monthly fee. A checker gives you one dated reading, with the answers themselves. If your site is on Webflow and you want a weekly check, AI SEO Deck tracks your keywords on the same six models.'],
+  ['Can I check a client\'s or a competitor\'s website?', 'Yes. Any public website works. The check reads public pages only, the way a search engine does.'],
+  ['What happens to the website I type in?', `We read its public pages and keep the check for ${REPORT.keptDays} days, so you can come back to its address. After that it is deleted. The page of a check is not listed anywhere and is kept out of search engines.`]
+];
+
+const jsonld = [
+  {
+    '@type': 'WebApplication',
+    name: 'LLM Visibility Checker',
+    url,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    description: `A free check that shows what ${freeNames} answer for the searches a business's customers make, with every mention of the business marked.`,
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: `${SITE.url}/tools/` },
+      { '@type': 'ListItem', position: 3, name: 'LLM visibility checker', item: url }
+    ]
+  }
+];
+---
+<Base
+  title="LLM visibility checker: free, for any website"
+  description="Type your website and read what ChatGPT, Gemini and Google AI Overviews answer when your customers search, with every mention of you marked. Free, no sign-up."
+  image="/images/og/llm-visibility-checker.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/tools/">Free tools</a></li><li aria-current="page">LLM visibility checker</li></ol>
+      <div class="grid">
+        <div>
+          <h1>LLM visibility checker</h1>
+          <p class="lead">Type your website. We work out what your customers search for, put the most searched one to {freeNames}, and show you each answer word for word, with your name marked wherever it appears.</p>
+          <CheckForm id="check-top" tool="llm-visibility-checker" />
+          <ul class="facts"><li>Free</li><li>About a minute</li><li>No sign-up, no email</li></ul>
+        </div>
+        <AnswerDemo open="aio" id="sample" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap split start">
+      <div>
+        <h2>How the check works</h2>
+        <ol class="steps">
+          <li><div><b>We read your website</b><span>Your home page tells us what you sell, where, and to whom. From that we list the searches your customers make, each with its monthly Google searches in their country.</span></div></li>
+          <li><div><b>You pick the search</b><span>You see what we understood and can correct it: your business name, your customers' country, the search, and the question a customer would type into a chat model.</span></div></li>
+          <li><div><b>Three LLMs answer</b><span>ChatGPT and Gemini get the question. Google gets the search, and we read its AI Overview. Each answer lands on the page as it comes in.</span></div></li>
+        </ol>
+      </div>
+      <div>
+        <h3 class="gets-h">What is on the page when it is done</h3>
+        <ul class="rows">
+          {gets.map((g) => <li><span class="row">{g}</span></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Which LLMs it checks</h2>
+        <p>Four of the six are chat models. The other two are the answers Google's own model writes on its results page. People do not use them the same way, so we do not ask them the same way: a chat model gets the question a customer would type, and Google gets the search itself.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="engines">
+          <caption class="sr">Answers for each search, in the free check and in the full report</caption>
+          <thead>
+            <tr><th scope="col">Answer from</th><th scope="col" class="given">It is given</th><th scope="col">Free check<small>1 search</small></th><th scope="col">Full report<small>{REPORT.searches} searches</small></th></tr>
+          </thead>
+          <tbody>
+            {ENGINES.map((e) => (
+              <tr>
+                <th scope="row">{e.name}<small>{e.maker}</small></th>
+                <td class="given">{e.sent === 'search' ? 'The search' : 'The question'}</td>
+                <td class:list={{ none: e.free === 0 }}>{answers(e.free)}</td>
+                <td>{answers(e.full)} a search</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr><th scope="row">Answers in all</th><td class="given"></td><td>{freeTotal}</td><td>About {REPORT.answers}</td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <p class="note engines-note">ChatGPT, Gemini, Claude and Grok are asked through their makers' own APIs with web search switched on. AI Overviews and AI Mode are read from the live Google results for the search. Every answer is requested from the country your customers are in: a hotel in Lisbon is asked about from London. Silit Labs is not affiliated with or endorsed by OpenAI, Google, Anthropic or xAI.</p>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap split start">
+      <div>
+        <h2>What LLM visibility is made of</h2>
+        <p class="muted lede">Being unknown to a model and being left out of its shortlist are different problems with different fixes. These five rungs go from the ground up, and the lowest one that wobbles is where to start.</p>
+      </div>
+      <ol class="rungs">
+        {rungs.map(([name, text, where]) => (
+          <li><div><b>{name}</b><span>{text}</span></div><i class:list={{ paid: where !== 'Free check' }}>{where}</i></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What no LLM checker can tell you</h2>
+        <p>Ours included. Three things nobody can measure from the outside, and what we show in their place.</p>
+      </div>
+      <div class="limits">
+        {limits.map(([h, p]) => <div><h3>{h}</h3><p class="muted">{p}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg" id="full-report">
+    <div class="wrap split start">
+      <div>
+        <h2>When one search is not enough</h2>
+        <p class="muted lede">The free check is one search on three LLMs. The full report is the whole picture, for one payment.</p>
+        <p class="price">{REPORT.price}<small>once, no subscription</small></p>
+        <div class="actions">
+          <a class="btn" href={REPORT.sample}>Open the sample report</a>
+          <a class="btn quiet" href={REPORT.href}>About the full report</a>
+        </div>
+        <p class="small muted fine">Paid through Polar, with no account to create. Every sale is final, so run the free check first and decide after you have read your answers.</p>
+      </div>
+      <div>
+        <ul class="rows">
+          {full.map((f) => <li><span class="row">{f}</span></li>)}
+        </ul>
+        <p class="small weekly">Need a check every week? On a Webflow site, <a class="link" href="/webflow-apps/ai-seo-deck/">AI SEO Deck</a> tracks your keywords on the same six models and applies the fixes for you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Questions</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Read next</h2><p>How to do the same check by hand, and what to measure if you track it over time.</p></div>
+      <ul class="rows guide-rows">
+        <li><a href="/guides/check-if-chatgpt-recommends-your-business/"><span>How to check if ChatGPT recommends your business</span><span class="meta">8 min</span></a></li>
+        <li><a href="/guides/ai-visibility-tracker/"><span>AI visibility tracker: what to measure and how to read it</span><span class="meta">7 min</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Read what the models answer about you</h2>
+      <CheckForm id="check-last" tool="llm-visibility-checker" dark />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero .grid { align-items: start; }
+  .page-hero h1 { margin-top: 6px; }
+  .split.start { align-items: start; }
+  .lede { margin-top: 18px; font-size: 18px; max-width: 30em; }
+  .gets-h { margin-bottom: 18px; }
+  .steps li > div { display: grid; gap: 4px; }
+
+  .table-wrap { overflow-x: auto; }
+  .engines { width: 100%; border-collapse: collapse; font-size: 16.5px; }
+  .engines th, .engines td { text-align: left; padding: 15px 20px 15px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .engines thead th { padding-top: 0; font-size: 14.5px; font-weight: 700; color: var(--muted); border-bottom: 2px solid var(--ink); vertical-align: bottom; }
+  .engines small { display: block; font-weight: 500; font-size: 13.5px; color: var(--muted); }
+  .engines tbody th { font-weight: 650; }
+  .engines td.none { color: var(--muted); }
+  .engines tfoot th, .engines tfoot td { border-bottom: 0; padding-top: 18px; font-family: var(--display); font-weight: 700; font-size: 19px; }
+  .engines-note { margin-top: 18px; }
+  /* on a phone the table keeps three columns: what each one is given is in the paragraph above it */
+  @media (max-width: 640px) { .engines .given { display: none; } .engines { font-size: 15.5px; } .engines th, .engines td { padding-right: 12px; } }
+
+  .rungs { list-style: none; counter-reset: rung; border-top: 1px solid var(--line); }
+  .rungs li { counter-increment: rung; display: grid; grid-template-columns: 34px 1fr auto; gap: 6px 14px; align-items: start; padding: 16px 2px; border-bottom: 1px solid var(--line); }
+  .rungs li::before { content: counter(rung); font-family: var(--display); font-weight: 700; font-size: 19px; color: var(--blue); }
+  .rungs b { display: block; font-size: 18px; }
+  .rungs span { color: var(--muted); }
+  .rungs i { font-style: normal; font-size: 13.5px; font-weight: 650; white-space: nowrap; padding: 4px 11px; border-radius: 999px; background: var(--paper-2); }
+  .rungs i.paid { background: var(--ink); color: var(--paper); }
+
+  .limits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 40px; }
+  .limits > div { border-top: 2px solid var(--ink); padding-top: 18px; }
+  .limits p { margin-top: 8px; }
+  @media (max-width: 860px) { .limits { grid-template-columns: 1fr; gap: 28px; } }
+
+  .price { margin-top: 22px; }
+  .fine { margin-top: 18px; max-width: 34em; }
+  .weekly { margin-top: 18px; }
+  .band .check { margin-top: 26px; }
+  @media (max-width: 520px) {
+    .rungs li { grid-template-columns: 26px 1fr; }
+    .rungs i { grid-column: 2; justify-self: start; }
+  }
+</style>
