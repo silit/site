@@ -106,7 +106,7 @@ It is the same thing seen from different sides. LLM visibility and AI visibility
 
 ### Which models matter most?
 
-The ones your customers use. By reach, Google's AI answers are the largest: Google says AI Overviews has [more than 2.5 billion monthly users](https://blog.google/products-and-platforms/products/search/new-opportunities-control-and-insights-for-website-owners/). Among the chat apps, ChatGPT has the most users. Check those two before the rest.
+The ones your customers use. By reach, Google's AI answers are the largest (see [how AI Mode picks its answer](/guides/how-to-rank-in-ai-mode/)): Google says AI Overviews has [more than 2.5 billion monthly users](https://blog.google/products-and-platforms/products/search/new-opportunities-control-and-insights-for-website-owners/). Among the chat apps, ChatGPT has the most users. Check those two before the rest.
 
 ### Does a first place on Google guarantee a mention?
 

@@ -28,6 +28,7 @@ const faq = [
   ['How do I check if my business shows up in ChatGPT?', 'By hand: open a new chat with search on, ask what a customer would ask without naming your business, and note who is named. Repeat it, because the next answer can differ. Or type your website above and the checker does it for you, from your customers\' country, and marks every name in the answer.'],
   ['Is this the same answer I would get in the ChatGPT app?', 'Close, not always identical. We ask through OpenAI\'s API with web search switched on, with no chat history, from your customers\' country. The app can shape an answer around a signed-in person\'s history and settings. A clean reading is the one you can repeat and compare.'],
   ['Does blocking GPTBot keep me out of ChatGPT answers?', 'No. GPTBot collects pages for training. The crawler behind ChatGPT search is OAI-SearchBot, and OpenAI states that each setting is independent of the others. Blocking OAI-SearchBot is what keeps a site out of ChatGPT search answers.'],
+  ['What is a ChatGPT rank tracker?', 'A tool that asks ChatGPT the same questions on a schedule and records whether you are named, and where in the answer. The word "rank" is borrowed from search. ChatGPT has no fixed positions, so what a ChatGPT rank tracker or visibility tracker really reports is how often you are named over time.'],
   ['Can I see my ranking in ChatGPT?', 'There is no fixed ranking to look up. ChatGPT writes a fresh answer each time and the list of names can change between two tries. What you can measure is how often you are named, where in the list you come, and whether your own pages are among the sources.'],
   ['Is the ChatGPT visibility checker free?', `Yes. It needs no account and no email address, and you can check up to ${REPORT.checksPerDay} websites a day. The same check also shows what Gemini and Google AI Overviews answer. The full report is optional and costs ${REPORT.price}, paid once.`],
   ['How often should I check?', 'After you change something that could move the answer: a new listing, a rewritten page, a robots.txt fix. Give it a few weeks, since the pages ChatGPT reads have to be crawled again first. The full report includes a re-check after 30 days for that reason.']
@@ -138,7 +139,7 @@ const jsonld = [
         </div>
         <div>
           <h3>A tracker tells you which way you are moving</h3>
-          <p class="muted">The same questions on a schedule, for a monthly fee. It earns its price once you are changing things and want to see the effect. The full report re-checks you once after 30 days, and on a Webflow site <a class="link" href="/webflow-apps/ai-seo-deck/">AI SEO Deck</a> checks every week.</p>
+          <p class="muted">The same questions on a schedule, for a monthly fee that starts at about $29 for a short list of prompts (<a class="link" href="/guides/profound-alternatives/">six tools and their prices</a>). It earns its price once you are changing things and want to see the effect. The full report re-checks you once after 30 days, and on a Webflow site <a class="link" href="/webflow-apps/ai-seo-deck/">AI SEO Deck</a> checks every week.</p>
         </div>
       </div>
     </div>
