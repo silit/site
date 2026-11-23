@@ -1,0 +1,234 @@
+---
+import Base from '../../layouts/Base.astro';
+import CheckForm from '../../components/CheckForm.astro';
+import ReportOffer from '../../components/ReportOffer.astro';
+import OtherTools from '../../components/OtherTools.astro';
+import { SITE } from '../../data/site.js';
+import { REPORT } from '../../data/report.js';
+import { SAMPLE, TWICE } from '../../data/sample-audit.js';
+
+const url = `${SITE.url}/tools/gemini-visibility-checker/`;
+// Where the facts on this page come from. All read on 23 November 2026.
+const GROUNDING = 'https://ai.google.dev/gemini-api/docs/grounding';
+const CRAWLERS = 'https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers';
+const GSC_REPORT = 'https://support.google.com/webmasters/answer/16984139';
+
+const TRY = { named: 'names the hotel', absent: 'leaves it out' };
+const ORDINAL = ['First try', 'Second try'];
+
+// The three places Google's AI answers: [what, Gemini, AI Overviews, AI Mode].
+const surfaces = [
+  ['Where it is', 'gemini.google.com and the Gemini app', 'At the top of some Google results', 'Its own tab in Google Search'],
+  ['What it is given', 'A question, in a chat', 'A search', 'A longer question, with follow-ups'],
+  ['How a site opts out', 'Google-Extended in robots.txt', 'The Search generative AI setting in Search Console', 'The same setting'],
+  ['Shown in Search Console', 'No', 'Yes, as impressions', 'Yes, as impressions'],
+  ['In our check', 'Free check', 'Free check', 'Full report']
+];
+
+const faq = [
+  ['How do I check if my business shows up in Gemini?', 'By hand: open gemini.google.com, start a new chat and ask what a customer would ask, without naming your business. Note who is named and open the sources under the answer. Then ask again in another new chat, because the second answer is often different. This checker does one round of that for you.'],
+  ['Is this the same answer I would get in the Gemini app?', 'Close, not always identical. We ask through Google\'s Gemini API with Google Search switched on and no chat history. The app may also draw on a signed-in user\'s settings and history, which a check from outside cannot see.'],
+  ['Does blocking Google-Extended keep me out of Gemini\'s answers?', 'It keeps your pages from being used as sources. Google describes Google-Extended as the control for training Gemini models and for grounding, its word for handing pages from the Search index to the model when it answers. Gemini can still name you from what it read on other sites.'],
+  ['Is there a rank tracker for Gemini?', `There are subscription trackers that ask Gemini the same questions on a schedule. An answer has no fixed positions, so what they report is how often you are named. This checker is one look. The full report asks Gemini twice for each of ${REPORT.searchesWord} searches and checks again after ${REPORT.recheckDays} days.`],
+  ['Does Search Console show how I do in Gemini?', 'No. Its Generative AI performance report covers AI Overviews and AI Mode, which are part of Search. The Gemini app is a separate product and is not in it.'],
+  ['Is the Gemini visibility checker free?', `Yes. It needs no account and no email address, and you can check up to ${REPORT.checksPerDay} websites a day. The same check also shows what ChatGPT and Google AI Overviews answer. The full report is optional and costs ${REPORT.price}, paid once.`]
+];
+
+const jsonld = [
+  {
+    '@type': 'WebApplication',
+    name: 'Gemini Visibility Checker',
+    url,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    description: 'A free check of what Gemini answers when a business\'s customers ask: whether it names the business, the searches it ran and the pages it drew on.',
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: `${SITE.url}/tools/` },
+      { '@type': 'ListItem', position: 3, name: 'Gemini visibility checker', item: url }
+    ]
+  }
+];
+---
+<Base
+  title="Gemini visibility checker: free check for any website"
+  description="Type your website and read what Gemini answers when customers ask for a business like yours: whether it names you, the searches it ran and the pages it drew on."
+  image="/images/og/gemini-visibility-checker.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/tools/">Free tools</a></li><li aria-current="page">Gemini visibility checker</li></ol>
+      <div class="grid">
+        <div>
+          <h1>Gemini visibility checker</h1>
+          <p class="lead">Type your website. We work out what your customers ask, put the question to Gemini with Google Search switched on, and show you the answer: whether it names you, who it names instead, the searches it ran and the pages it drew on.</p>
+          <CheckForm id="check-top" tool="gemini-visibility-checker" button="Check Gemini" />
+          <ul class="facts"><li>Free</li><li>About a minute</li><li>No sign-up, no email</li></ul>
+        </div>
+        <figure class="twice-card">
+          <div class="twice-sheet">
+            <p class="twice-who"><b>One question, asked twice</b><span>Gemini's two answers about {SAMPLE.brand}, {SAMPLE.what}</span></p>
+            <p class="twice-ask"><span>A customer asks</span><b>{TWICE.question}</b></p>
+            <ol class="tries">
+              {TWICE.tries.map((t, i) => (
+                <li class={`try is-${t.state}`}>
+                  <p class="try-state">{ORDINAL[i]}: Gemini {TRY[t.state]}</p>
+                  <p class="try-src"><span>It searched for</span><b class="q">{t.search}</b></p>
+                  <p class="try-text">{t.segs.map((g) => (Array.isArray(g) ? <mark class={g[1]}>{g[0]}</mark> : g))}</p>
+                  <p class="try-src"><span>Built from</span>{t.sources.map(([host, own]) => <b class:list={{ own }}>{host}</b>)}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <figcaption>From the <a class="link" href={REPORT.sample}>sample report</a>. The question is the same both times. The search Gemini wrote for itself is not.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How Gemini gets from a question to names</h2>
+        <p>Three steps, each of which you can see in the check.</p>
+      </div>
+      <div class="cols3">
+        <div><h3>It writes its own searches</h3><p class="muted">Google's <a class="link" href={GROUNDING} rel="noopener">documentation</a> sets out the steps: the model judges whether a search would help, writes one or more searches of its own, runs them on Google and writes the answer from what comes back. The check shows you those searches.</p></div>
+        <div><h3>It reads Google's index</h3><p class="muted">Gemini has no crawler of its own for this. It works from pages Google has already crawled and indexed, so a page that is not in Google is a page Gemini cannot use.</p></div>
+        <div><h3>It does not write the same search twice</h3><p class="muted">Ask again and the search changes, so the pages change, so the names change. In the sample, the second search was about late check-in, and the answer built from it left the hotel out.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split start">
+      <div>
+        <h2>The rule that takes you out of Gemini, and nowhere else</h2>
+        <p class="lede">Two names in robots.txt decide what Google's AI may do with your pages, and they do different things. One of them is easy to set and forget.</p>
+        <p class="note rule-note">From Google's <a class="link" href={CRAWLERS} rel="noopener">list of its crawlers</a>. Google-Extended is not a crawler. It is a name used only in robots.txt, so it never appears in your server logs.</p>
+      </div>
+      <div>
+        <ul class="rows rules">
+          <li><span class="row"><span><b>Googlebot shut out</b> <span class="block muted">Google cannot crawl the page at all, so there is nothing for Search or for Gemini to read.</span></span></span></li>
+          <li><span class="row"><span><b>Google-Extended shut out</b> <span class="block muted">Search, AI Overviews and AI Mode are not affected. Your pages are no longer used as sources for Gemini's answers, or to train its models.</span></span></span></li>
+        </ul>
+        <p class="rule-next">A site that added a Google-Extended rule to stay out of AI training took itself out of Gemini's sources as well. The free <a class="link" href="/tools/llms-txt-checker/">llms.txt checker</a> reads your robots.txt and shows whether that rule is there.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Gemini is not AI Overviews</h2>
+        <p>Google answers with AI in three places. They are run by different controls and show up in different reports, so being in one says little about the others.</p>
+      </div>
+      <div class="dtable-wrap">
+        <table class="dtable surfaces">
+          <caption class="sr">Gemini, AI Overviews and AI Mode compared: where each is, what it is given, how a site opts out, whether Search Console reports it and whether our check covers it</caption>
+          <thead><tr><th scope="col"></th><th scope="col">Gemini</th><th scope="col">AI Overviews</th><th scope="col">AI Mode</th></tr></thead>
+          <tbody>
+            {surfaces.map(([what, gemini, aio, aimode]) => (
+              <tr><th scope="row">{what}</th><td data-label="Gemini">{gemini}</td><td data-label="AI Overviews">{aio}</td><td data-label="AI Mode">{aimode}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note surf-note">Search Console counts AI Overviews and AI Mode in its <a class="link" href={GSC_REPORT} rel="noopener">Generative AI performance report</a>. For the other two, see the <a class="link" href="/tools/ai-overview-checker/">AI Overview checker</a> and <a class="link" href="/guides/how-to-rank-in-ai-mode/">how to rank in AI Mode</a>.</p>
+    </div>
+  </section>
+
+  <ReportOffer
+    heading="Twice, for five searches"
+    intro="One answer from Gemini is one draw. The full report asks it twice for each of your five most searched, and does the same on ChatGPT, Claude and Grok."
+    engines="engines"
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Questions</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Read next</h2></div>
+      <ul class="rows guide-rows">
+        <li><a href="/guides/llm-visibility/"><span>LLM visibility: what it is, how to measure it and how to raise it</span><span class="meta">8 min</span></a></li>
+        <li><a href="/guides/how-to-rank-in-ai-mode/"><span>How to rank in Google AI Mode: what decides the answer</span><span class="meta">7 min</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <OtherTools current="gemini-visibility-checker" />
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Read what Gemini tells your customers</h2>
+      <CheckForm id="check-last" tool="gemini-visibility-checker" button="Check Gemini" dark />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero .grid { align-items: start; }
+  .page-hero h1 { margin-top: 6px; }
+
+  /* one question of the sample and Gemini's two answers to it */
+  .twice-card { min-width: 0; --mark: #FFE14D; --rose: #C2335A; --pen: #1E5AA8; }
+  .twice-sheet { background: var(--sheet); border-radius: 22px; padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2.4vw, 28px) 8px; box-shadow: inset 0 0 0 1px var(--line), 0 30px 60px -36px rgba(11, 37, 64, .45); }
+  .twice-who b { display: block; font-family: var(--display); font-weight: 700; font-size: clamp(21px, 2vw, 25px); letter-spacing: -.02em; line-height: 1.15; }
+  .twice-who span { display: block; margin-top: 4px; font-size: 14.5px; line-height: 1.4; color: var(--muted); }
+  .twice-ask { margin-top: 16px; padding: 12px 16px; border-radius: 14px; background: var(--paper); display: grid; gap: 2px; }
+  .twice-ask span { font-size: 13.5px; font-weight: 600; color: var(--muted); }
+  .twice-ask b { font-weight: 600; line-height: 1.35; }
+  .tries { list-style: none; margin-top: 4px; }
+  .try { padding: 16px 0 18px; border-bottom: 1px solid var(--line); }
+  .try:last-child { border-bottom: 0; }
+  .try-state { display: flex; align-items: center; gap: 9px; font-size: 14.5px; font-weight: 700; }
+  .try-state::before { content: ''; flex: none; width: 12px; height: 12px; border-radius: 50%; }
+  .is-named .try-state::before { background: var(--mark); box-shadow: inset 0 0 0 1.5px #DDBC14; }
+  .is-absent .try-state::before { box-shadow: inset 0 0 0 2.5px var(--rose); }
+  .try-text { margin-top: 10px; font-size: 15.5px; line-height: 1.55; }
+  .try-text mark { background: none; color: inherit; font-weight: 600; }
+  .try-text mark.you { color: #1B1600; background: linear-gradient(100deg, transparent .5%, var(--mark) 3%, var(--mark) 96%, transparent 99.5%) no-repeat 0 60% / 100% 82%; padding: 0 .2em; margin: 0 -.2em; border-radius: .3em .9em .35em .8em / .8em .3em .9em .35em; }
+  .try-text mark.rival { text-decoration: underline; text-decoration-color: var(--rose); text-decoration-thickness: 2.2px; text-underline-offset: 3.5px; text-decoration-skip-ink: none; }
+  .try-src { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 13.5px; }
+  .try-src span { color: var(--muted); font-weight: 600; margin-right: 2px; }
+  .try-src b { font-weight: 550; padding: 3px 10px; border-radius: 999px; background: var(--paper); color: var(--muted); overflow-wrap: anywhere; }
+  .try-src b.own { background: #E3ECF8; color: var(--pen); font-weight: 650; }
+  .try-src b.q { border-radius: 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
+  .twice-card figcaption { margin-top: 14px; padding: 0 4px; font-size: 14px; color: var(--muted); }
+
+  .rule-note { margin-top: 22px; max-width: 34em; }
+  .rules .block { display: block; margin-top: 4px; font-weight: 500; }
+  .rule-next { margin-top: 18px; color: var(--muted); }
+
+  /* the three places Google's AI answers: on a phone each row becomes a block with three labelled answers */
+  .surfaces tbody th { width: 22%; }
+  .surf-note { margin-top: 18px; }
+  @media (max-width: 760px) {
+    .surfaces thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .surfaces, .surfaces tbody, .surfaces tr, .surfaces th, .surfaces td { display: block; }
+    .surfaces tbody th { width: auto; }
+    .surfaces tr { padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .surfaces tbody tr:first-child { border-top: 2px solid var(--ink); }
+    .surfaces tbody th, .surfaces td { border: 0; padding: 0; }
+    .surfaces td { margin-top: 10px; }
+    .surfaces td::before { content: attr(data-label); display: block; font-size: 13.5px; font-weight: 700; color: var(--muted); }
+  }
+  .band :global(.check) { margin-top: 26px; }
+</style>

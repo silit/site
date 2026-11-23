@@ -46,6 +46,14 @@ export const TOOLS = [
     facts: ['Asked with web search on', 'About a minute', 'No sign-up']
   },
   {
+    id: 'gemini-visibility-checker',
+    href: '/tools/gemini-visibility-checker/',
+    og: '/images/og/gemini-visibility-checker.jpg',
+    name: 'Gemini visibility checker',
+    line: 'Read what Gemini answers when customers ask for a business like yours: the searches it ran, who it names and the pages it drew on.',
+    facts: ['Asked with Google Search on', 'About a minute', 'No sign-up']
+  },
+  {
     id: 'ai-overview-checker',
     href: '/tools/ai-overview-checker/',
     og: '/images/og/ai-overview-checker.jpg',

@@ -6,6 +6,7 @@
 
 - [LLM visibility checker](https://silitlabs.com/tools/llm-visibility-checker/): what ChatGPT, Gemini and Google AI Overviews answer when a website's customers search
 - [ChatGPT visibility checker](https://silitlabs.com/tools/chatgpt-visibility-checker/): who ChatGPT names, the searches it ran and the pages it read
+- [Gemini visibility checker](https://silitlabs.com/tools/gemini-visibility-checker/): what Gemini answers, the searches it ran and the pages it drew on
 - [AI Overview checker](https://silitlabs.com/tools/ai-overview-checker/): whether Google shows an AI Overview for a search, whether it names the business, and the pages it was built from
 - [AEO checker](https://silitlabs.com/tools/aeo-checker/): what answer engines say, and what on the site keeps it out of the answer
 - [llms.txt checker](https://silitlabs.com/tools/llms-txt-checker/): an llms.txt file against the format, and the robots.txt rules for AI crawlers

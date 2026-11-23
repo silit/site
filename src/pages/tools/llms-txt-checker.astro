@@ -274,6 +274,8 @@ const jsonld = [
       sum.textContent = robots.note || 'The crawlers that fetch pages for AI answers may read the home page.';
     }
     if (robots.trainingBlocked) sum.textContent += ' ' + robots.trainingBlocked + ' training ' + (robots.trainingBlocked === 1 ? 'crawler is' : 'crawlers are') + ' shut out: that keeps pages out of model training, and is a choice, not an error.';
+    // Google-Extended is also the control for Gemini's use of pages as sources, so a rule against it reaches further
+    if (robots.bots.some((b) => b.name === 'Google-Extended' && b.blocked)) sum.textContent += ' One of them is Google-Extended, which also keeps these pages out of the sources of Gemini\'s answers.';
     for (const b of robots.bots) {
       const tr = el('tr');
       const th = el('th');
