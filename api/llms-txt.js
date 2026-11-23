@@ -3,7 +3,7 @@
 // It only reads those three public files, from the site's own host, through the guard in _lib/fetch-safe.js.
 // Requests have to come from a page of this site, and one visitor gets a limited number per ten minutes.
 import { getText } from './_lib/fetch-safe.js';
-import { normalizeSite, checkLlms, checkFull, checkRobots } from './_lib/llms.js';
+import { normalizeSite, checkLlms, checkFull, checkRobots, movedTo } from './_lib/llms.js';
 
 const LIMIT = 20; // checks per visitor ...
 const WINDOW = 10 * 60 * 1000; // ... in ten minutes (per running copy of the function: a brake, not a meter)
@@ -53,7 +53,9 @@ export async function inspect(host, get) {
   const started = Date.now();
   const [llms, full, robots] = await Promise.all([get('/llms.txt'), get('/llms-full.txt'), get('/robots.txt')]);
   if ([llms, full, robots].every((r) => !r.status)) {
-    return { error: llms.error === 'no such site' ? `We could not find ${host}. Check the spelling.` : `We could not reach ${host} (${llms.error || 'no answer'}). Try again in a minute.` };
+    const to = movedTo(llms) || movedTo(robots);
+    if (to) return { error: `${host} sends its visitors to ${to}. Check that address instead.` };
+    return { error: llms.error === 'no such site' ? `We could not find ${host}. Check the spelling, or try again in a minute.` : `We could not reach ${host} (${llms.error || 'no answer'}). Try again in a minute.` };
   }
   return { host, llms: checkLlms(llms), full: checkFull(full), robots: checkRobots(robots), ms: Date.now() - started };
 }

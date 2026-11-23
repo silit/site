@@ -97,6 +97,8 @@ export async function getText(url, { timeoutMs = 6000, maxBytes = 512000, allowe
     }
     return { ok: false, status: 0, url: current, error: 'too many redirects' };
   } catch (e) {
-    return { ok: false, status: 0, url: current, error: e.code === 'EBLOCKED' ? 'blocked address' : e.code === 'ETIMEOUT' ? 'timed out' : e.code === 'ENOTFOUND' ? 'no such site' : (e.code || e.message || 'error') };
+    // a name that does not resolve: the code differs by platform (ENOTFOUND, EAI_AGAIN, EBUSY on Vercel), the call does not
+    const noName = e.code === 'ENOTFOUND' || e.syscall === 'getaddrinfo';
+    return { ok: false, status: 0, url: current, error: e.code === 'EBLOCKED' ? 'blocked address' : e.code === 'ETIMEOUT' ? 'timed out' : noName ? 'no such site' : (e.code || e.message || 'error') };
   }
 }

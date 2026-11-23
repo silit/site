@@ -150,6 +150,21 @@ test('inspect puts the three files together, and says so when the site does not 
   assert.match(gone.error, /could not find nosuch\.example/);
   const slow = await inspect('slow.example', async () => ({ ok: false, status: 0, url: 'u', error: 'timed out' }));
   assert.match(slow.error, /could not reach slow\.example \(timed out\)/);
+  // a site that has moved to another domain: say where to, instead of "could not reach"
+  const moved = await inspect('old.example', async (p) => ({ ok: false, status: 0, url: 'https://new.example' + p, error: 'redirects to another site' }));
+  assert.equal(moved.error, 'old.example sends its visitors to new.example. Check that address instead.');
+});
+
+test('a file that lives on another site says where it redirects to', () => {
+  const r = checkLlms({ ok: false, status: 0, url: 'https://docs.example.com/llms.txt', error: 'redirects to another site' });
+  assert.equal(r.state, 'unreadable');
+  assert.ok(says(r, /it redirects to docs\.example\.com/));
+});
+
+test('a name that does not resolve is reported as no such site', async () => {
+  const r = await getText('https://nosuch-site-for-tests.invalid/llms.txt', { allowedHosts: ['nosuch-site-for-tests.invalid'], timeoutMs: 4000 });
+  assert.equal(r.ok, false);
+  assert.equal(r.error, 'no such site');
 });
 
 // a stand-in for a request and its answer

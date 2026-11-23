@@ -23,7 +23,12 @@ export function normalizeSite(input) {
 const kb = (n) => (n < 1024 ? `${n} bytes` : `${Math.round(n / 102.4) / 10} KB`);
 const short = (s, n = 70) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 const looksHtml = (text, type) => /^\s*<(!doctype\s+html|html|head|body)\b/i.test(text) || (/text\/html/i.test(type || '') && /<[a-z!][^>]*>/i.test(text.slice(0, 600)));
-const reason = (res) => (res.error ? res.error : `the server answered ${res.status}`);
+const hostOf = (url) => { try { return new URL(url).host; } catch (e) { return ''; } };
+export const MOVED = 'redirects to another site';
+// why a file could not be read, in words; a redirect to another site names where it leads
+const reason = (res) => (res.error === MOVED && hostOf(res.url) ? `it redirects to ${hostOf(res.url)}` : res.error ? res.error : `the server answered ${res.status}`);
+// the host a site redirects to, when that is why nothing could be read
+export const movedTo = (res) => (res && res.error === MOVED ? hostOf(res.url) : '');
 
 // res: what getText returned for /llms.txt.
 // -> { state, url, status, type, bytes, title, sections, links, items: [{ level, text }] }
