@@ -12,6 +12,8 @@ Rank trackers answer one question well: where does my page sit in Google for thi
 
 An AI visibility tracker exists to measure that. This guide covers what it should measure, how to read the results and what to check before you choose one.
 
+A tracker is the second tool, not the first. Before you measure every week, look at everything once and fix what you find: that is an audit, and our [GEO audit guide](/guides/geo-audit/) shows how to run one by hand.
+
 ## What to measure
 
 ### Share of answers that name you

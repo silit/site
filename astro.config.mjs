@@ -5,6 +5,8 @@ export default defineConfig({
   site: 'https://silitlabs.com',
   trailingSlash: 'always',
   build: { format: 'directory' },
+  // Code blocks in guides are plain text to copy (a file, a line for the page head): styled in global.css, no colours.
+  markdown: { syntaxHighlight: false },
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/404'),

@@ -25,6 +25,8 @@ export const ENGINES = [
 ];
 
 // The free tools. Each gets a page under /tools/, a card on the hub and a share picture (`og`).
+// Optional: `tag` (the word shown beside it in lists, 'Free' when left out), `cta` (the hub card's button) and
+// `form` ('llms' when the tool has its own form and does not start an AI visibility check).
 export const TOOLS = [
   {
     id: 'llm-visibility-checker',
@@ -56,6 +58,17 @@ export const TOOLS = [
     og: '/images/og/llms-txt-checker.jpg',
     name: 'llms.txt checker',
     line: 'Check a site\'s llms.txt against the format, and the robots.txt rules that decide whether AI crawlers can read the site at all.',
-    facts: ['Format and crawler rules', 'A few seconds', 'No sign-up']
+    facts: ['Format and crawler rules', 'A few seconds', 'No sign-up'],
+    form: 'llms'
+  },
+  {
+    id: 'ai-search-audit',
+    href: '/tools/ai-search-audit/',
+    og: '/images/og/ai-search-audit.jpg',
+    name: 'AI search audit',
+    line: 'The five questions an audit of AI search has to answer, and a free first pass at them for any website.',
+    facts: ['Free first pass', `Full audit ${REPORT.price}, once`, 'No sign-up'],
+    tag: 'Free first pass',
+    cta: 'See the audit'
   }
 ];

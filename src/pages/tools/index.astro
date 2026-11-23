@@ -41,7 +41,7 @@ const jsonld = [
             <h2><a href={t.href}>{t.name}</a></h2>
             <p class="muted">{t.line}</p>
             <ul class="facts">{t.facts.map((f) => <li>{f}</li>)}</ul>
-            <a class="btn" href={t.href}>Open the checker</a>
+            <a class="btn" href={t.href}>{t.cta || 'Open the checker'}</a>
           </li>
         ))}
       </ul>

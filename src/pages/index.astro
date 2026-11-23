@@ -102,7 +102,7 @@ import { TOOLS } from '../data/report.js';
           <p class="muted">See how ChatGPT, Gemini and Google's AI treat a website. One question per tool, no account.</p>
         </div>
         <ul class="rows">
-          {TOOLS.map((t) => <li><a href={t.href}><span>{t.name}<span class="block muted">{t.line}</span></span><span class="meta">Free</span></a></li>)}
+          {TOOLS.map((t) => <li><a href={t.href}><span>{t.name}<span class="block muted">{t.line}</span></span><span class="meta">{t.tag || 'Free'}</span></a></li>)}
         </ul>
       </div>
     </div>
@@ -197,6 +197,7 @@ import { TOOLS } from '../data/report.js';
   .free-tools p { margin-top: 8px; max-width: 24em; }
   .free-tools .rows a { align-items: flex-start; padding: 14px 2px; }
   .free-tools .block { display: block; margin-top: 3px; font-weight: 500; font-size: 15.5px; }
+  .free-tools .meta { white-space: nowrap; }
   @media (max-width: 860px) { .free-tools { grid-template-columns: 1fr; } }
   .guide-rows a { align-items: flex-start; }
   .guide-rows .block { display: block; margin-top: 4px; font-weight: 500; }

@@ -58,7 +58,7 @@ Organization structured data on the home page, with your name, logo and social p
 
 ## 6. Add an llms.txt file, without expecting too much
 
-An llms.txt file is a short Markdown summary of your site with links to the pages that matter most, written for language models. Webflow supports it in **Site settings, SEO, LLMs.txt**: upload a UTF-8 file of up to 100 KB, and after you publish it is served at the root of your custom domain. It is not published to the webflow.io staging domain.
+An llms.txt file is a short Markdown summary of your site with links to the pages that matter most, written for language models. Webflow supports it in **Site settings, SEO, LLMs.txt**: upload a UTF-8 file of up to 100 KB, and after you publish it is served at the root of your custom domain. It is not published to the webflow.io staging domain. Our guide to [llms.txt on Webflow](/guides/webflow-llms-txt/) has a template to copy and the steps one by one.
 
 Webflow's own [help article](https://help.webflow.com/hc/en-us/articles/43240104183315-Upload-an-llms-txt-file-to-your-site) calls the format experimental, and Google says you do not need AI text files for its AI features. Add one because it is cheap, keep it current, and spend most of your effort on the pages it links to. Once it is live, the free [llms.txt checker](/tools/llms-txt-checker/) tells you whether the file follows the format and whether your robots.txt lets AI crawlers in.
 
