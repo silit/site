@@ -3,10 +3,14 @@
 // production deploy.
 //
 // IndexNow asks for new, changed and removed URLs only, never unchanged ones. So the script keeps a
-// fingerprint of every page's HTML in .indexnow/pages.json (kept between runs in the Actions cache)
-// and submits only what differs. With no fingerprints yet, it submits every page in the sitemap.
-import { createHash } from 'node:crypto';
+// fingerprint of every page's own content in .indexnow/pages.json (kept between runs in the Actions
+// cache) and submits only what differs. What counts as a page's own content is in indexnow-pages.mjs.
+// With no fingerprints yet, it submits every page in the sitemap.
+//
+// A trial run against a local build reads the pages from another address and sends nothing:
+//   INDEXNOW_ORIGIN=http://localhost:4330 INDEXNOW_DRY_RUN=1 node scripts/indexnow.mjs
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { fingerprint, plan, state } from './indexnow-pages.mjs';
 
 const SITE = 'https://silitlabs.com';
 const HOST = 'silitlabs.com';
@@ -14,10 +18,17 @@ const HOST = 'silitlabs.com';
 const KEY = '2a0f480c411a530423ba08e4a4bbdcfc';
 const STATE_DIR = '.indexnow';
 const STATE = `${STATE_DIR}/pages.json`;
+const ORIGIN = (process.env.INDEXNOW_ORIGIN || SITE).replace(/\/$/, '');
+const DRY_RUN = Boolean(process.env.INDEXNOW_DRY_RUN);
+const LOCAL = ORIGIN !== SITE;
+if (LOCAL && !DRY_RUN) throw new Error('INDEXNOW_ORIGIN is for trial runs: set INDEXNOW_DRY_RUN=1 with it.');
+
+// Where to read a page of the site from: the live site, or the local build in a trial run.
+const at = (url) => (url.startsWith(SITE) ? ORIGIN + url.slice(SITE.length) : url);
 
 async function get(url) {
-  const res = await fetch(url, { headers: { 'user-agent': 'silitlabs-indexnow (+https://silitlabs.com)' } });
-  if (!res.ok) throw new Error(`GET ${url} returned ${res.status}`);
+  const res = await fetch(at(url), { headers: { 'user-agent': 'silitlabs-indexnow (+https://silitlabs.com)' } });
+  if (!res.ok) throw new Error(`GET ${at(url)} returned ${res.status}`);
   return res.text();
 }
 
@@ -31,7 +42,7 @@ if (urls.length === 0) throw new Error('The sitemap lists no pages.');
 // IndexNow rejects the submission if the key file is missing or different.
 if ((await get(`${SITE}/${KEY}.txt`)).trim() !== KEY) throw new Error('The IndexNow key file does not match the key.');
 
-let previous = {};
+let previous = null;
 try {
   previous = JSON.parse(await readFile(STATE, 'utf8'));
 } catch {
@@ -39,17 +50,28 @@ try {
 }
 
 const current = {};
-const changed = [];
 for (const url of urls) {
-  const hash = createHash('sha256').update(await get(url)).digest('hex');
-  current[url] = hash;
-  if (previous[url] !== hash) changed.push(url);
+  let html;
+  try {
+    html = await get(url);
+  } catch (err) {
+    // Pages served by another project (the report pages) are not in a local build.
+    if (!LOCAL) throw err;
+    console.log(`  not in the local build, left out: ${url}`);
+    continue;
+  }
+  current[url] = fingerprint(html);
 }
-const removed = Object.keys(previous).filter((url) => !(url in current));
+
+const { changed, removed, rebased } = plan(previous, current);
 const urlList = [...changed, ...removed];
+if (rebased) console.log('The fingerprints from the last run are in an older format: only pages that are new are submitted this time.');
 
 if (urlList.length === 0) {
   console.log(`IndexNow: no page changed (${urls.length} checked).`);
+} else if (DRY_RUN) {
+  console.log(`IndexNow trial run, nothing sent: ${changed.length} new or changed and ${removed.length} removed pages (${urls.length} in the sitemap).`);
+  for (const url of urlList) console.log(`  ${url}`);
 } else {
   const res = await fetch('https://api.indexnow.org/indexnow', {
     method: 'POST',
@@ -66,4 +88,4 @@ if (urlList.length === 0) {
 }
 
 await mkdir(STATE_DIR, { recursive: true });
-await writeFile(STATE, JSON.stringify(current, null, 1));
+await writeFile(STATE, JSON.stringify(state(current), null, 1));
