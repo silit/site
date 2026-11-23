@@ -52,5 +52,23 @@ export const OVERVIEWS = [
   }
 ];
 
+// One question of the sample put to Gemini twice: the search it wrote for itself, its answer and the pages it drew on.
+// `own` marks the business's own site among the sources.
+export const TWICE = {
+  question: 'I arrive in Lisbon by train late at night. Which hotel near Santa Apolónia station is easy to reach?',
+  tries: [
+    {
+      state: 'named', search: 'hotels near Santa Apolónia station',
+      segs: ['Close to Santa Apolónia you will find ', ['Casa Aldora', 'you'], ', a six-minute walk from the station, and ', ['Hotel Marquês Azul', 'rival'], ', about ten minutes away. For a late arrival, a hotel with a 24-hour desk such as ', ['Hotel Marquês Azul', 'rival'], ' is the safer choice.'],
+      sources: [['casaaldora.example', 'own'], ['alfamaguide.example']]
+    },
+    {
+      state: 'absent', search: 'Lisbon hotel late check-in near station',
+      segs: [['Hotel Marquês Azul', 'rival'], ' and ', ['Travessa Nove Suites', 'rival'], ' are both near Santa Apolónia station and suit late arrivals, the first with a night desk and the second with self check-in.'],
+      sources: [['alfamaguide.example']]
+    }
+  ]
+};
+
 export const namedIn = (search) => search.cells.flat().filter((m) => m === 1).length;
 export const answersIn = (search) => search.cells.flat().filter((m) => m !== null).length;
