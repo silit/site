@@ -64,7 +64,7 @@ Before you choose a tool, ask:
 2. **Does it ask real customer questions, or only the keyword?** People ask AI in sentences.
 3. **Can you see the raw answers, rivals and sources?** A score without the evidence behind it is hard to act on.
 4. **Does it tell you what to change?** Tracking alone shows the problem. The value is in knowing which page to fix and how.
-5. **How is it priced?** Most tools charge by the number of questions or keywords and how often they are checked. Work out the cost for the keywords you actually need.
+5. **How is it priced?** Most tools charge by the number of questions or keywords and how often they are checked. Work out the cost for the keywords you actually need. Our [comparison of six tools](/guides/profound-alternatives/) lists what each one charged in November 2026.
 
 ## Where AI SEO Deck fits
 
