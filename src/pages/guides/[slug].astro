@@ -4,6 +4,8 @@ import { getCollection, render } from 'astro:content';
 import { kits, kitPath } from '../../data/kits.js';
 import { templates, templatePath } from '../../data/templates.js';
 import { SITE, apps } from '../../data/site.js';
+import { TOOLS } from '../../data/report.js';
+import CheckForm from '../../components/CheckForm.astro';
 
 export async function getStaticPaths() {
   const guides = await getCollection('guides');
@@ -22,6 +24,9 @@ const product = app
   : tpl
     ? { name: tpl.name.en, lead: tpl.lead.en, href: templatePath(tpl, 'en'), img: tpl.img.hero.src, og: tpl.og, cta: 'See the template' }
     : null;
+// A guide about AI search ends with the form of a free tool instead of a product.
+const tool = TOOLS.find((t) => t.id === g.data.tool);
+const share = product ? product.og : tool ? tool.og : undefined;
 const url = `${SITE.url}/guides/${g.id}/`;
 const fmt = (d) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 const jsonld = [
@@ -34,7 +39,7 @@ const jsonld = [
     author: { '@id': `${SITE.url}/#org` },
     publisher: { '@id': `${SITE.url}/#org` },
     mainEntityOfPage: url,
-    image: product ? new URL(product.img, SITE.url).href : undefined
+    image: product ? new URL(product.img, SITE.url).href : tool ? new URL(tool.og, SITE.url).href : undefined
   },
   {
     '@type': 'BreadcrumbList',
@@ -46,7 +51,7 @@ const jsonld = [
   }
 ];
 ---
-<Base title={g.data.title} description={g.data.description} image={product ? product.og : undefined} jsonld={jsonld} type="article">
+<Base title={g.data.title} description={g.data.description} image={share} jsonld={jsonld} type="article">
   <section class="page-hero">
     <div class="wrap">
       <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/guides/">Guides</a></li><li aria-current="page">{g.data.category}</li></ol>
@@ -68,6 +73,14 @@ const jsonld = [
             <a class="btn" href={product.href}>{product.cta}</a>
           </aside>
         )}
+        {tool && (
+          <aside class="callout">
+            <h2 style="margin:0;font-size:26px">{tool.name}</h2>
+            <p>{tool.line}</p>
+            <CheckForm id="check-guide" tool={tool.id} dark />
+            <p class="small tool-more"><a href={tool.href}>How the check works</a></p>
+          </aside>
+        )}
       </article>
     </div>
   </section>
@@ -75,4 +88,7 @@ const jsonld = [
 <style>
   .guide-h1 { font-size: clamp(36px, 4.6vw, 60px); }
   .article .lead { margin-top: 20px; }
+  .callout .check { margin-top: 20px; }
+  .callout .tool-more { margin-top: 16px; }
+  .callout .tool-more a { color: var(--coral-2); }
 </style>

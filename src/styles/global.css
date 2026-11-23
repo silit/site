@@ -240,3 +240,19 @@ p { text-wrap: pretty; }
 .pprice small { font-family: var(--text); font-size: 14px; font-weight: 500; color: var(--muted); margin-left: 6px; letter-spacing: 0; }
 .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
 .note { font-size: 14px; color: var(--muted); max-width: 52em; }
+
+/* Free tool pages (src/pages/tools) */
+.split.start { align-items: start; }
+.lede { margin-top: 18px; font-size: 18px; color: var(--muted); max-width: 30em; }
+.cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 40px; }
+.cols3 > div { border-top: 2px solid var(--ink); padding-top: 18px; }
+.cols3 p { margin-top: 8px; }
+@media (max-width: 860px) { .cols3 { grid-template-columns: 1fr; gap: 28px; } }
+.dtable-wrap { overflow-x: auto; }
+.dtable { width: 100%; border-collapse: collapse; font-size: 16.5px; }
+.dtable th, .dtable td { text-align: left; padding: 15px 20px 15px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.dtable thead th { padding-top: 0; font-size: 14.5px; font-weight: 700; color: var(--muted); border-bottom: 2px solid var(--ink); vertical-align: bottom; }
+.dtable tbody th { font-weight: 650; }
+.dtable small { display: block; font-weight: 500; font-size: 13.5px; color: var(--muted); }
+.dtable code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .92em; font-weight: 600; }
+@media (max-width: 640px) { .dtable { font-size: 15.5px; } .dtable th, .dtable td { padding-right: 12px; } }

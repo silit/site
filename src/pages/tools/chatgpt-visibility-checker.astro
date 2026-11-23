@@ -1,0 +1,206 @@
+---
+import Base from '../../layouts/Base.astro';
+import CheckForm from '../../components/CheckForm.astro';
+import AnswerDemo from '../../components/AnswerDemo.astro';
+import ReportOffer from '../../components/ReportOffer.astro';
+import { SITE } from '../../data/site.js';
+import { REPORT } from '../../data/report.js';
+
+const url = `${SITE.url}/tools/chatgpt-visibility-checker/`;
+// OpenAI's own page on its crawlers: the table below repeats what it says (read 23 November 2026).
+const OPENAI_BOTS = 'https://developers.openai.com/api/docs/bots';
+
+const shows = [
+  ['Your name, marked', 'Where you appear in the answer and in what order: first, second of three, or not at all.'],
+  ['The names that took your place', 'Every rival ChatGPT recommended, underlined where it stands, and the listing sites it sent the customer to.'],
+  ['The searches it ran', 'ChatGPT usually does not search for the question as typed. It writes its own searches first, and the answer is built from what they bring back.'],
+  ['The pages it read', 'The sources behind the answer, and whether one of them is your own site.']
+];
+
+const crawlers = [
+  ['OAI-SearchBot', 'Finds and reads pages for ChatGPT search.', 'Your site is not shown in ChatGPT search answers.'],
+  ['ChatGPT-User', 'Opens a page when a person\'s request needs it. It does not crawl on its own.', 'OpenAI says robots.txt rules may not apply, because a person started the visit.'],
+  ['GPTBot', 'Collects pages that may be used to train OpenAI\'s models.', 'Your pages are left out of training. It does not hide you from search answers: each setting is independent.']
+];
+
+const faq = [
+  ['How do I check if my business shows up in ChatGPT?', 'By hand: open a new chat with search on, ask what a customer would ask without naming your business, and note who is named. Repeat it, because the next answer can differ. Or type your website above and the checker does it for you, from your customers\' country, and marks every name in the answer.'],
+  ['Is this the same answer I would get in the ChatGPT app?', 'Close, not always identical. We ask through OpenAI\'s API with web search switched on, with no chat history, from your customers\' country. The app can shape an answer around a signed-in person\'s history and settings. A clean reading is the one you can repeat and compare.'],
+  ['Does blocking GPTBot keep me out of ChatGPT answers?', 'No. GPTBot collects pages for training. The crawler behind ChatGPT search is OAI-SearchBot, and OpenAI states that each setting is independent of the others. Blocking OAI-SearchBot is what keeps a site out of ChatGPT search answers.'],
+  ['Can I see my ranking in ChatGPT?', 'There is no fixed ranking to look up. ChatGPT writes a fresh answer each time and the list of names can change between two tries. What you can measure is how often you are named, where in the list you come, and whether your own pages are among the sources.'],
+  ['Is the ChatGPT visibility checker free?', `Yes. It needs no account and no email address, and you can check up to ${REPORT.checksPerDay} websites a day. The same check also shows what Gemini and Google AI Overviews answer. The full report is optional and costs ${REPORT.price}, paid once.`],
+  ['How often should I check?', 'After you change something that could move the answer: a new listing, a rewritten page, a robots.txt fix. Give it a few weeks, since the pages ChatGPT reads have to be crawled again first. The full report includes a re-check after 30 days for that reason.']
+];
+
+const jsonld = [
+  {
+    '@type': 'WebApplication',
+    name: 'ChatGPT Visibility Checker',
+    url,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    description: 'A free check that shows what ChatGPT answers for the searches a business\'s customers make: who it names, the searches it ran and the pages it read.',
+    publisher: { '@id': `${SITE.url}/#org` },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Free tools', item: `${SITE.url}/tools/` },
+      { '@type': 'ListItem', position: 3, name: 'ChatGPT visibility checker', item: url }
+    ]
+  }
+];
+---
+<Base
+  title="ChatGPT visibility checker: free check for any website"
+  description="Type your website and read what ChatGPT answers when customers ask for a business like yours: whether it names you, who comes first and which pages it read."
+  image="/images/og/chatgpt-visibility-checker.jpg"
+  jsonld={jsonld}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li><a href="/tools/">Free tools</a></li><li aria-current="page">ChatGPT visibility checker</li></ol>
+      <div class="grid">
+        <div>
+          <h1>ChatGPT visibility checker</h1>
+          <p class="lead">Type your website. We put your customers' question to ChatGPT with web search on and show you the answer word for word: whether you are in it, who is named before you, and the pages it read to write it.</p>
+          <CheckForm id="check-top" tool="chatgpt-visibility-checker" />
+          <ul class="facts"><li>Free</li><li>About a minute</li><li>No sign-up, no email</li></ul>
+          <p class="small muted also">The same check also asks Gemini and Google AI Overviews.</p>
+        </div>
+        <AnswerDemo open="chatgpt" id="sample" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What you see in a ChatGPT answer</h2>
+        <p>Not a score. The answer itself, with four things marked on it.</p>
+      </div>
+      <div class="shows">
+        {shows.map(([h, p]) => <div><h3>{h}</h3><p class="muted">{p}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split start">
+      <div>
+        <h2>How ChatGPT decides who to name</h2>
+        <p class="lede">With search on, an answer about local shops, hotels or software is not recalled from memory. It is put together in three steps, and each step is a place where a business drops out.</p>
+      </div>
+      <ol class="steps">
+        <li><div><b>It searches</b><span>ChatGPT turns the question into one or more web searches of its own. If your pages do not match those searches, they are not in the pile.</span></div></li>
+        <li><div><b>It reads a few pages</b><span>It opens a handful of results: listings, guides, review sites, sometimes your own site. A page its crawler cannot open is skipped.</span></div></li>
+        <li><div><b>It writes the answer</b><span>It names the businesses it met on those pages and adds what the model already knew. A business that is on none of them has little chance of being named.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section sheet-bg">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>ChatGPT's crawlers, and what blocking each one does</h2>
+        <p>OpenAI visits websites under different names for different jobs. One line in robots.txt can keep you out of answers without you knowing, and another that people fear does not.</p>
+      </div>
+      <div class="dtable-wrap">
+        <table class="dtable crawlers">
+          <caption class="sr">OpenAI's crawlers, what each one does and what happens when robots.txt blocks it</caption>
+          <thead><tr><th scope="col">Crawler</th><th scope="col">What it does</th><th scope="col">If robots.txt blocks it</th></tr></thead>
+          <tbody>
+            {crawlers.map(([name, does, blocked]) => <tr><th scope="row"><code>{name}</code></th><td data-label="What it does">{does}</td><td data-label="If robots.txt blocks it">{blocked}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <p class="note crawl-note">From <a class="link" href={OPENAI_BOTS} rel="noopener">OpenAI's page on its crawlers</a>, read on 23 November 2026. The check reads your robots.txt and tells you when a rule shuts OAI-SearchBot out.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Checker or tracker?</h2>
+        <p>Both ask ChatGPT about you. They answer different questions.</p>
+      </div>
+      <div class="pair">
+        <div>
+          <h3>A checker tells you where you stand</h3>
+          <p class="muted">One dated reading, with the answer in front of you. It is the right first step: if ChatGPT leaves you out today, you need the reasons before you need a chart. This one is free.</p>
+        </div>
+        <div>
+          <h3>A tracker tells you which way you are moving</h3>
+          <p class="muted">The same questions on a schedule, for a monthly fee. It earns its price once you are changing things and want to see the effect. The full report re-checks you once after 30 days, and on a Webflow site <a class="link" href="/webflow-apps/ai-seo-deck/">AI SEO Deck</a> checks every week.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ReportOffer
+    heading="The whole picture, not one answer"
+    intro="The free check is one question, asked once. ChatGPT can name you in one answer and skip you in the next, so the full report asks it twice for each of five searches, and asks five more engines too."
+    engines="engines"
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2>Questions</h2></div>
+      <div class="faq">
+        {faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight sheet-bg">
+    <div class="wrap">
+      <div class="section-head"><h2>Read next</h2></div>
+      <ul class="rows guide-rows">
+        <li><a href="/guides/check-if-chatgpt-recommends-your-business/"><span>How to check if ChatGPT recommends your business</span><span class="meta">8 min</span></a></li>
+        <li><a href="/tools/llm-visibility-checker/"><span>LLM visibility checker: the same check across six models</span><span class="meta">Free tool</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band dark">
+    <div class="wrap">
+      <h2>Read what ChatGPT tells your customers</h2>
+      <CheckForm id="check-last" tool="chatgpt-visibility-checker" dark />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero .grid { align-items: start; }
+  .page-hero h1 { margin-top: 6px; }
+  .also { margin-top: 12px; }
+  .steps li > div { display: grid; gap: 4px; }
+  .shows { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px 36px; }
+  .shows > div { border-top: 2px solid var(--ink); padding-top: 18px; }
+  .shows p { margin-top: 8px; }
+  @media (max-width: 1000px) { .shows { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .shows { grid-template-columns: 1fr; gap: 26px; } }
+  .crawlers th[scope='row'] { white-space: nowrap; }
+  .crawl-note { margin-top: 18px; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .pair > div { background: var(--sheet); border-radius: 22px; padding: clamp(22px, 3vw, 34px); box-shadow: inset 0 0 0 1px var(--line); }
+  .pair p { margin-top: 10px; }
+  @media (max-width: 760px) { .pair { grid-template-columns: 1fr; } }
+  .band .check { margin-top: 26px; }
+  /* on a phone each crawler becomes a block: its name, then the two facts with their labels */
+  @media (max-width: 640px) {
+    .crawlers thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .crawlers, .crawlers tbody, .crawlers tr, .crawlers th, .crawlers td { display: block; }
+    .crawlers tr { padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .crawlers tbody tr:first-child { border-top: 2px solid var(--ink); }
+    .crawlers tbody th, .crawlers td { border: 0; padding: 0; }
+    .crawlers td { margin-top: 10px; }
+    .crawlers td::before { content: attr(data-label); display: block; font-size: 13.5px; font-weight: 700; color: var(--muted); }
+  }
+</style>

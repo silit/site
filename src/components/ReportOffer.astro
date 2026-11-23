@@ -1,0 +1,45 @@
+---
+// The section of a tool page that says what the paid report adds to the free check. The facts come from
+// src/data/report.js. Props: heading, intro, engines (the word this page uses for the six: "LLMs", "AI engines",
+// "answer engines"), so that each page says it in its own words.
+import { REPORT } from '../data/report.js';
+const {
+  heading = 'When one search is not enough',
+  intro = 'The free check is one search on three AI engines. The full report is the whole picture, for one payment.',
+  engines = 'AI engines'
+} = Astro.props;
+const full = [
+  `The ${REPORT.searchesWord} searches your customers make most, on all six ${engines}: about ${REPORT.answers} answers`,
+  'Who gets named in your place, and how often',
+  'The pages the answers were built from, and whether you are on them',
+  'What each one says about you when asked by name',
+  'A fix kit: what to change, who does it, how long it takes, and the text or code to paste',
+  'A re-check after 30 days, with your before and after'
+];
+---
+<section class="section sheet-bg" id="full-report">
+  <div class="wrap split start">
+    <div>
+      <h2>{heading}</h2>
+      <p class="lede">{intro}</p>
+      <p class="price">{REPORT.price}<small>once, no subscription</small></p>
+      <div class="actions">
+        <a class="btn" href={REPORT.sample}>Open the sample report</a>
+        <a class="btn quiet" href={REPORT.href}>About the full report</a>
+      </div>
+      <p class="small muted fine">Paid through Polar, with no account to create. Every sale is final, so run the free check first and decide after you have read your answers.</p>
+    </div>
+    <div>
+      <ul class="rows">
+        {full.map((f) => <li><span class="row">{f}</span></li>)}
+      </ul>
+      <p class="small weekly">Need a check every week? On a Webflow site, <a class="link" href="/webflow-apps/ai-seo-deck/">AI SEO Deck</a> tracks your keywords on the same six engines and applies the fixes for you.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .price { margin-top: 22px; }
+  .fine { margin-top: 18px; max-width: 34em; }
+  .weekly { margin-top: 18px; }
+</style>

@@ -14,7 +14,8 @@ src/
   data/report.js        facts about the AI Visibility Report (price, engines, limits) and the list of free tools
   content/guides/       SEO guides in Markdown (one file per guide)
   components/           Bench (home hero animation), Intro, KitPage, KitsHub, KitFaq, Mark, TemplatePage, TemplatesHub,
-                        CheckForm (starts a free AI visibility check), AnswerDemo (sample answers with their marks)
+                        CheckForm (starts a free AI visibility check), AnswerDemo (sample answers with their marks),
+                        ReportOffer (what the paid report adds, on tool pages)
   layouts/Base.astro    <head> SEO, header, footer, JSON-LD
   pages/                one file per URL
 public/                 images, videos, favicon, robots.txt
@@ -39,13 +40,13 @@ public/                 images, videos, favicon, robots.txt
 
 ## Common changes
 
-**Add a guide.** Create `src/content/guides/<slug>.md` with `title`, `description`, `date`, `category`, `readMinutes` and optionally `product` (a kit id). It appears on `/guides/`, on the home page and in the sitemap.
+**Add a guide.** Create `src/content/guides/<slug>.md` with `title`, `description`, `date`, `category`, `readMinutes` and optionally `product` (a kit id) or `tool` (a tool id from `src/data/report.js`: the guide then ends with that tool's check form). It appears on `/guides/`, on the home page and in the sitemap.
 
 **Add a clinic kit.** Add a record to `src/data/kits.js`, put its images in `public/images/kits/<id>/` and videos in `public/video/`, then add its EN/TR pair to `PAIRS` in `src/data/site.js`. Both language pages are generated.
 
 **Add a template.** Add a record to `src/data/templates.js` with its `kind` (`sheets` or `webflow`; add a kind to `KINDS` for a new type), put its images in `public/images/templates/<id>/` and a 1200x630 share image in `public/images/og/`, then add its EN/TR pair to `PAIRS` in `src/data/site.js`. Both language pages, the hub, the home shelf and the footer update. A template with `price` and `etsy` shows a buy button and Product schema; one with `preview` and `statusNote` shows the live preview and CreativeWork schema without a price.
 
-**Add a free tool.** Add a record to `TOOLS` in `src/data/report.js` and a page under `src/pages/tools/`. A tool that starts the report's free check uses `<CheckForm tool="<id>" />`: it posts the website to `/check/start`, which `vercel.json` passes on to the report's engine, and opens `/check/<id>`. The engine only accepts that request from silitlabs.com, so on a Vercel preview address the form answers "Cross-site request blocked"; it can be tried for real only on the live site. `AnswerDemo` shows the sample answers; give each page a different `open` answer so two pages do not show the same picture. Draw the share image with `/home/claude/site-tools/og.js` (it photographs the built page's own sample; serve `dist` on port 4330 first) and save it in `public/images/og/`. `flow.js` in the same folder checks the form and the sample tabs against a stand-in for the engine. When the report's price, engines or limits change in the app, change `src/data/report.js` too.
+**Add a free tool.** Add a record to `TOOLS` in `src/data/report.js` and a page under `src/pages/tools/`. A tool that starts the report's free check uses `<CheckForm tool="<id>" />`: it posts the website to `/check/start`, which `vercel.json` passes on to the report's engine, and opens `/check/<id>`. The engine only accepts that request from silitlabs.com, so on a Vercel preview address the form answers "Cross-site request blocked"; it can be tried for real only on the live site. `AnswerDemo` shows the sample answers; give each page a different `open` answer so two pages do not show the same picture (so far: the LLM checker opens on AI Overviews, the ChatGPT checker on ChatGPT, the AEO checker on Gemini). `ReportOffer` is the section about the paid report; pass it a heading and an intro in the page's own words. Shared styles for these pages are at the end of `src/styles/global.css`. Draw the share image with `/home/claude/site-tools/og.js` (it photographs the built page's own sample; serve `dist` on port 4330 first) and save it in `public/images/og/`. `flow.js` in the same folder checks the form and the sample tabs against a stand-in for the engine. When the report's price, engines or limits change in the app, change `src/data/report.js` too.
 
 **Add a new product line.** Add a folder under `src/pages/` (for example `src/pages/framer-plugins/`), link it from `NAV` and the home page shelf, and add a card to `src/pages/lab.astro` while it is in progress.
 
