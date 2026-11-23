@@ -22,6 +22,7 @@
 ## Guides
 
 - [Guides](https://silitlabs.com/guides/): practical write-ups on AI search visibility, Webflow sites and clinic documents
+- [LLM visibility](https://silitlabs.com/guides/llm-visibility/): what it is, how to measure it and how to raise it
 - [GEO audit, step by step](https://silitlabs.com/guides/geo-audit/): how to audit a business's place in AI answers by hand
 - [llms.txt on Webflow](https://silitlabs.com/guides/webflow-llms-txt/): how to add the file to a Webflow site, with a template
 

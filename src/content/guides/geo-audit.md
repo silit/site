@@ -9,7 +9,7 @@ readMinutes: 9
 
 A GEO audit answers one question: when a customer asks an AI engine for what you sell, are you in the answer, and if not, why not?
 
-GEO stands for generative engine optimization. The same review is also sold as an AI search audit, an AEO audit and an AI visibility audit. Whatever it is called, it has two halves. The first is reading what the engines say today. The second is finding out what on your site, and on other people's sites, made them say it.
+GEO stands for generative engine optimization: the work of raising a business's [LLM visibility](/guides/llm-visibility/). The same review is also sold as an AI search audit, an AEO audit and an AI visibility audit. Whatever it is called, it has two halves. The first is reading what the engines say today. The second is finding out what on your site, and on other people's sites, made them say it.
 
 Many tools that call themselves GEO audits do only the second half. They grade your pages against a checklist and give you a score out of 100. That is useful, but a score cannot tell you whether anyone is recommending you. This guide does both halves, by hand, in the order that saves you the most work.
 

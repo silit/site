@@ -10,7 +10,7 @@ readMinutes: 7
 
 Rank trackers answer one question well: where does my page sit in Google for this keyword? AI answers do not have positions in the same way. ChatGPT, Gemini or Google's AI Overviews write a short answer, name a few businesses and cite a handful of sources, and the next answer to the same question may look different.
 
-An AI visibility tracker exists to measure that. This guide covers what it should measure, how to read the results and what to check before you choose one.
+An AI visibility tracker exists to measure that. This guide covers what it should measure, how to read the results and what to check before you choose one. If the idea itself is new to you, start with [what LLM visibility is](/guides/llm-visibility/).
 
 A tracker is the second tool, not the first. Before you measure every week, look at everything once and fix what you find: that is an audit, and our [GEO audit guide](/guides/geo-audit/) shows how to run one by hand.
 
