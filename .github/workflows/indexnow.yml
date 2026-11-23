@@ -4,14 +4,17 @@
 name: IndexNow
 
 on:
-  # Vercel reports each deploy as a commit status ("Vercel"), so the run starts when that status turns
-  # to success on a commit in main. deployment_status is kept in case Vercel switches to GitHub deployments.
-  status:
-  deployment_status:
+  # A push to main is a production deploy on Vercel. The job waits until Vercel reports it as finished.
+  # (A run started by Vercel's commit status cannot keep anything for the next run: GitHub gives such
+  # runs read-only storage, so every run compared the site with the same old fingerprints.)
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
+  statuses: read # to see when Vercel has finished the deploy
+  actions: read # to fetch the page fingerprints the last run kept
 
 concurrency:
   group: indexnow
@@ -19,17 +22,10 @@ concurrency:
 
 jobs:
   submit:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'status' &&
-       github.event.state == 'success' &&
-       startsWith(github.event.context, 'Vercel') &&
-       contains(github.event.branches.*.name, 'main')) ||
-      (github.event_name == 'deployment_status' &&
-       github.event.deployment_status.state == 'success' &&
-       startsWith(github.event.deployment.environment, 'Production'))
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
 
@@ -37,22 +33,45 @@ jobs:
         with:
           node-version: 20
 
-      - name: Restore page fingerprints from the last run
-        uses: actions/cache/restore@v4
-        with:
-          path: .indexnow
-          key: indexnow-${{ github.run_id }}
-          restore-keys: indexnow-
+      - name: Wait for Vercel to finish the deploy
+        id: deploy
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "push" ]; then echo "ready=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          for i in $(seq 1 60); do
+            state=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/status" --jq '[.statuses[] | select(.context | startswith("Vercel"))][0].state // "none"' || echo "none")
+            echo "Vercel: $state"
+            if [ "$state" = "success" ]; then
+              sleep 30 # for the deploy to reach silitlabs.com
+              echo "ready=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            if [ "$state" = "failure" ] || [ "$state" = "error" ]; then break; fi
+            sleep 10
+          done
+          echo "::notice::No finished deploy for this commit (Vercel: $state), so nothing is submitted."
+          echo "ready=false" >> "$GITHUB_OUTPUT"
 
-      - name: Wait for the deploy to reach silitlabs.com
-        if: github.event_name != 'workflow_dispatch'
-        run: sleep 30
+      - name: Restore page fingerprints from the last run
+        if: steps.deploy.outputs.ready == 'true'
+        run: |
+          id=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=indexnow-pages&per_page=100" --jq '[.artifacts[] | select(.expired | not)] | sort_by(.created_at) | last | .id // empty')
+          if [ -z "$id" ]; then echo "No fingerprints kept yet."; exit 0; fi
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            -o "$RUNNER_TEMP/indexnow-pages.zip" "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$id/zip"
+          mkdir -p .indexnow
+          unzip -o -q "$RUNNER_TEMP/indexnow-pages.zip" -d .indexnow
+          echo "Fingerprints restored from artifact $id."
 
       - name: Submit new, changed and removed pages
+        if: steps.deploy.outputs.ready == 'true'
         run: node scripts/indexnow.mjs
 
-      - name: Save page fingerprints for the next run
-        uses: actions/cache/save@v4
+      - name: Keep page fingerprints for the next run
+        if: steps.deploy.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
         with:
-          path: .indexnow
-          key: indexnow-${{ github.run_id }}
+          name: indexnow-pages
+          path: .indexnow/pages.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90

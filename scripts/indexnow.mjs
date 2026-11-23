@@ -3,9 +3,9 @@
 // production deploy.
 //
 // IndexNow asks for new, changed and removed URLs only, never unchanged ones. So the script keeps a
-// fingerprint of every page's own content in .indexnow/pages.json (kept between runs in the Actions
-// cache) and submits only what differs. What counts as a page's own content is in indexnow-pages.mjs.
-// With no fingerprints yet, it submits every page in the sitemap.
+// fingerprint of every page's own content in .indexnow/pages.json (the workflow keeps that file between
+// runs as an artifact) and submits only what differs. What counts as a page's own content is in
+// indexnow-pages.mjs. With no fingerprints yet, it submits every page in the sitemap.
 //
 // A trial run against a local build reads the pages from another address and sends nothing:
 //   INDEXNOW_ORIGIN=http://localhost:4330 INDEXNOW_DRY_RUN=1 node scripts/indexnow.mjs
