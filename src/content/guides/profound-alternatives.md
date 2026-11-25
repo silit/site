@@ -50,7 +50,7 @@ What it is not: a tracker. There is no dashboard and no daily trend, and it does
 
 ### 3. Peec AI: built for marketing teams
 
-[Peec AI](https://peec.ai/pricing) starts at $95 a month for 50 prompts on three models of your choice, checked daily, in one country, with unlimited users. Each extra model is $30 a month on that plan. Pro is $245 for 150 prompts and Advanced $495 for 350. There is a free trial.
+[Peec AI](https://peec.ai/pricing) starts at $95 a month for 50 prompts on three models of your choice, checked daily, in one country, with unlimited users. Each extra model is $30 a month on that plan. Pro is $245 for 150 prompts and Advanced $495 for 350. There is a free trial. Our [Peec AI alternatives](/guides/peec-ai-alternatives/) guide sets its plans against the others in more detail.
 
 **Good for:** a team that wants daily data on a real list of prompts and will log in every week.
 
