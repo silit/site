@@ -216,6 +216,7 @@ p { text-wrap: pretty; }
 .article ul, .article ol { padding-left: 22px; }
 .article li + li { margin-top: 6px; }
 .article a { color: var(--blue); text-underline-offset: 3px; }
+.article .table-wrap { overflow-x: auto; }
 .article table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 15.5px; }
 .article th, .article td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .article th { font-weight: 700; background: var(--paper-2); }

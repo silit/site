@@ -50,7 +50,7 @@ What it is not: a tracker. There is no dashboard and no daily trend, and it does
 
 ### 3. Peec AI: built for marketing teams
 
-[Peec AI](https://peec.ai/pricing) starts at $95 a month for 50 prompts on three models of your choice, checked daily, in one country, with unlimited users. Each extra model is $30 a month on that plan. Pro is $245 for 150 prompts and Advanced $495 for 350. There is a free trial.
+[Peec AI](https://peec.ai/pricing) starts at $95 a month for 50 prompts on three models of your choice, checked daily, in one country, with unlimited users. Each extra model is $30 a month on that plan. Pro is $245 for 150 prompts and Advanced $495 for 350. There is a free trial. Our [Peec AI alternatives](/guides/peec-ai-alternatives/) guide sets its plans against the others in more detail.
 
 **Good for:** a team that wants daily data on a real list of prompts and will log in every week.
 
@@ -104,7 +104,7 @@ It is fair to say what the cheaper tools do not match. Profound's Enterprise pla
 
 ### Is there a free alternative to Profound?
 
-For a first look, yes. AthenaHQ has a free plan with 300 credits. Our free check asks one search on three engines with no account. Otterly.AI and Peec AI have free trials. Nothing free tracks a long list of prompts every day.
+For a first look, yes. AthenaHQ has a free plan with 300 credits. Our free check asks one search on three engines with no account. Otterly.AI and Peec AI have free trials. Nothing free tracks a long list of prompts every day. Our list of [GEO tools](/guides/geo-tools/) has the other free checks, from Semrush, Ahrefs and HubSpot, and the free reports in Google Search Console and Bing Webmaster Tools.
 
 ### What is the cheapest Profound alternative?
 
