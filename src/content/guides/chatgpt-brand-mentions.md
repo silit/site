@@ -65,7 +65,7 @@ With search on, ChatGPT does not answer from memory alone. It runs web searches,
 
 **Say who you are in one plain paragraph.** What you do, for whom and where, near the top of your home page, in text. Use the same wording on your listings. When every source describes you the same way, ChatGPT repeats it. When they differ, it guesses.
 
-**Answer the question on a page of your own.** If customers ask "how much does it cost", a page that answers in its first two sentences can be cited as the source. That earns the citation, and a cited business is usually a mentioned one.
+**Answer the question on a page of your own.** If customers ask "how much does it cost", a page that answers in its first two sentences can be cited as the source. That earns the citation, and a cited business is usually a mentioned one. Our guide on [how to get cited by ChatGPT](/guides/how-to-get-cited-by-chatgpt/) covers how it picks those pages.
 
 Third-party pages mostly earn you mentions. Your own pages mostly earn you citations. You need both, and most businesses that are missing from answers are missing from the third-party pages first.
 
