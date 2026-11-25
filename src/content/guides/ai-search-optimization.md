@@ -90,7 +90,7 @@ Ask the same five searches again, on the same engines, and fill in the sheet. Th
 - **Cited:** answers that link to your site.
 - **First:** answers where you are the first name.
 
-Google gives you one more count for free: Search Console's [Generative AI performance report](https://support.google.com/webmasters/answer/16984139) shows how often links to your pages appeared in AI Overviews and AI Mode. In your analytics, visits from ChatGPT carry `utm_source=chatgpt.com`, which OpenAI adds to the links it sends.
+Google gives you one more count for free: Search Console's [Generative AI performance report](https://support.google.com/webmasters/answer/16984139) shows how often links to your pages appeared in AI Overviews and AI Mode. Bing Webmaster Tools does the same for Microsoft Copilot with its [AI Performance report](https://blogs.bing.com/webmaster/February-2026/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview), with a sample of the searches that led to each citation. In your analytics, visits from ChatGPT carry `utm_source=chatgpt.com`, which OpenAI adds to the links it sends.
 
 Expect movement after weeks, not days. The pages the engines read have to be crawled again before an answer can change, and third-party pages change on their authors' schedule.
 
@@ -103,7 +103,7 @@ Expect movement after weeks, not days. The pages the engines read have to be cra
 
 ## Doing it yourself, or with a tool
 
-The plan above needs no tool: a spreadsheet, a private browser window and a few hours a month. Tools save the asking and counting.
+The plan above needs no tool: a spreadsheet, a private browser window and a few hours a month. Tools save the asking and counting. Our list of [GEO tools](/guides/geo-tools/) sorts the free and paid ones by the job they do.
 
 - **A free first pass.** The [AI search audit](/tools/ai-search-audit/) on this page asks one of your customers' searches on ChatGPT, Gemini and Google AI Overviews, and shows the answers with every name marked.
 - **A one-time report.** Our [AI Visibility Report](/ai-visibility-report) asks your five most searched questions on six engines, about 50 answers, lists the pages behind them and ends in a fix kit. It costs $29, once.

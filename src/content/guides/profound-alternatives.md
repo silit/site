@@ -104,7 +104,7 @@ It is fair to say what the cheaper tools do not match. Profound's Enterprise pla
 
 ### Is there a free alternative to Profound?
 
-For a first look, yes. AthenaHQ has a free plan with 300 credits. Our free check asks one search on three engines with no account. Otterly.AI and Peec AI have free trials. Nothing free tracks a long list of prompts every day.
+For a first look, yes. AthenaHQ has a free plan with 300 credits. Our free check asks one search on three engines with no account. Otterly.AI and Peec AI have free trials. Nothing free tracks a long list of prompts every day. Our list of [GEO tools](/guides/geo-tools/) has the other free checks, from Semrush, Ahrefs and HubSpot, and the free reports in Google Search Console and Bing Webmaster Tools.
 
 ### What is the cheapest Profound alternative?
 
