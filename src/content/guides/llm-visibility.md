@@ -102,7 +102,7 @@ Changes to the pages a model reads at answer time can show within weeks: the pag
 
 ### Is LLM visibility the same as AI visibility, GEO or AEO?
 
-It is the same thing seen from different sides. LLM visibility and AI visibility are names for the result: being in the answer. GEO (generative engine optimization) and AEO (answer engine optimization) are names for the work that gets you there.
+It is the same thing seen from different sides. LLM visibility and AI visibility are names for the result: being in the answer. GEO (generative engine optimization) and AEO (answer engine optimization) are names for the work that gets you there, and our [AI search optimization plan](/guides/ai-search-optimization/) puts that work in order.
 
 ### Which models matter most?
 
