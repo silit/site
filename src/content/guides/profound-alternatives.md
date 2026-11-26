@@ -2,6 +2,7 @@
 title: "Profound alternatives: 6 AI visibility tools, with prices"
 description: "Profound now sells only custom Enterprise plans. Six alternatives with prices from each pricing page: a one-time report, trackers from $29 a month and more."
 date: 2026-11-23
+updated: 2026-11-26
 category: "AI search"
 tool: "ai-search-audit"
 readMinutes: 7
@@ -44,7 +45,7 @@ What it is not: a tracker. There is no dashboard and no daily trend, and it does
 
 ### 2. Otterly.AI: the lowest monthly price
 
-[Otterly's Lite plan](https://webflow.otterly.ai/pricing) is $29 a month. Its [help page on plans](https://help.otterly.ai/pricing-of-otterlyai), updated on 10 November 2026, gives Lite 2,000 credits a month: enough for 16 prompts checked daily on four engines, or 21 on three. Standard is $189 a month and Premium $489, with room for roughly 120 and 400 prompts. There is a free trial.
+[Otterly's Lite plan](https://otterly.ai/pricing) is $29 a month. Its [help page on plans](https://help.otterly.ai/pricing-of-otterlyai), updated on 10 November 2026, gives Lite 2,000 credits a month: enough for 16 prompts checked daily on four engines, or 21 on three. Standard is $189 a month and Premium $489, with room for roughly 120 and 400 prompts. There is a free trial. Claude counts as three credits a check, and our [OtterlyAI pricing](/guides/otterly-ai-pricing/) guide works out what each plan tracks.
 
 **Good for:** watching a short list of prompts every day at the lowest monthly cost.
 
@@ -70,7 +71,7 @@ What it is not: a tracker. There is no dashboard and no daily trend, and it does
 
 [AthenaHQ](https://athenahq.ai/plans) has a free plan with 300 credits, where one credit is one AI response. The Starter plan is $295 a month for 3,600 credits and covers eleven models, among them ChatGPT, Perplexity, AI Overviews, AI Mode, Gemini, Claude, Copilot and Grok.
 
-**Good for:** trying a full platform at no cost before deciding, and teams that need many models in one place.
+**Good for:** trying a full platform at no cost before deciding, and teams that need many models in one place. Our [AthenaHQ alternatives](/guides/athenahq-alternatives/) guide shows what its credits buy.
 
 ## What the first year costs
 
@@ -101,6 +102,10 @@ It is fair to say what the cheaper tools do not match. Profound's Enterprise pla
 - **Your site is on Webflow:** AI SEO Deck checks three keywords a month free.
 
 ## Questions
+
+### How much does Profound cost?
+
+Profound lists one plan, Enterprise, at a custom price you get after a demo call. Its pricing page says the Starter and Growth plans for brands were retired in September 2026, and that the $399 and $499 prices associated with them are no longer available for new subscriptions. Enterprise tracks up to ten answer engines daily: ChatGPT, Perplexity, Google AI Mode, Gemini, DeepSeek, Claude, Google AI Overviews, Exa Search, Muse Spark and Qwen (read on 26 November 2026).
 
 ### Is there a free alternative to Profound?
 
