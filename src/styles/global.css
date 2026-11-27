@@ -199,6 +199,8 @@ p { text-wrap: pretty; }
 .foot ul { list-style: none; display: grid; gap: 8px; }
 .foot a { text-decoration: none; }
 .foot a:hover { text-decoration: underline; }
+.foot .fazier { display: inline-block; margin-top: 18px; line-height: 0; }
+.foot .fazier:hover { text-decoration: none; }
 .foot .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 48px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
 @media (max-width: 800px) { .foot .cols { grid-template-columns: 1fr 1fr; } .foot .cols > :first-child { grid-column: 1 / -1; } }
 
